@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset = "utf-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1">
+	<link rel = "stylesheet" href = "/stile.css?version=2">
+
+	<title> Add Actors </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href = "/"><img src = "/logo-siw.png" id = "logo"></a>
+
+		<form th:action = "@{/searchMovie}" method = "post" id = "searchBarForm">
+			<input type = "text" th:value = "${year}" name = "year" placeholder = "Search a movie based on its year" id = "searchBar">
+		</form>
+
+		<span class = "dropdown">
+			<div class = "dropbtn"> Movies </div>
+			<div class = "dropdown-content">
+				<a href = "/manageMovies"> Vedi Film </a>
+				<a href = "/formSearchMovies"> Cerca Film </a>
+				<a href = "/formNewMovie"> Inserisci Film </a>
+			</div>
+		</span>
+
+		<span class = "dropdown">
+			<div class = "dropbtn"> Actors </div>
+			<div class = "dropdown-content">
+				<a href = "/showArtists"> Vedi Artisti </a>
+				<a href = "/formNewArtist"> Aggiungi Artista </a>
+			</div>
+		</span>
+	</nav>
+
+
+	<header>
+		<div th:if = "${movie}" th:object = ${movie}>
+			<h1 th:text = "'Modifica gli attori del film: ' + *{title}"> </h1>
+		</header>
+
+
+		<div>
+			<div th:if = "${movie}">
+				<div> Attori Aggiunti: 
+					<p th:if = "${movie.artists.isEmpty()}"> Nessun attore aggiunto </p>
+					<div th:unless = "${movie.artists.isEmpty()}">
+						<ul>
+							<li th:each = "artist : ${artistList}">
+								<a th:href = "@{'/removeActor' + '/' + ${movie.id} + '/' + ${artist.id}}" th:text = "${artist.name} + ' (' + ${artist.age} + ')'"> </a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div> Attori Non Aggiunti: 
+					<ul>
+						<li th:each = "artist : ${notArtistList}">
+							<a th:href = "@{'/addActor' + '/' + ${movie.id} + '/' + ${artist.id}}" th:text = "${artist.name} + ' (' + ${artist.age} + ')'"> </a>
+						</li>
+					</ul>
+				</div>
+
+				<a th:href = "@{'/formUpdateMovie' + '/' + ${movie.id}}"> Modifica </a>
+
+
+			</div>
+		</div>
+
+		<footer> 
+
+		</footer>
+
+	</body>
+
+	</html>

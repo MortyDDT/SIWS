@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset = "utf-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1">
+	<link rel = "stylesheet" href = "/stile.css?version=2">
+
+	<title> Add Director </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href = "/"><img src = "/logo-siw.png" id = "logo"></a>
+
+		<form th:action = "@{/searchMovie}" method = "post" id = "searchBarForm">
+			<input type = "text" th:value = "${year}" name = "year" placeholder = "Search a movie based on its year" id = "searchBar">
+		</form>
+
+		<span class = "dropdown">
+			<div class = "dropbtn"> Movies </div>
+			<div class = "dropdown-content">
+				<a href = "/manageMovies"> Vedi Film </a>
+				<a href = "/formSearchMovies"> Cerca Film </a>
+				<a href = "/formNewMovie"> Inserisci Film </a>
+			</div>
+		</span>
+
+		<span class = "dropdown">
+			<div class = "dropbtn"> Actors </div>
+			<div class = "dropdown-content">
+				<a href = "/showArtists"> Vedi Artisti </a>
+				<a href = "/formNewArtist"> Aggiungi Artista </a>
+			</div>
+		</span>
+
+	</nav>
+
+
+	<header>
+		<h1> Aggiungi Regista Per Il Film: </h1>
+		<h1 th:text = "${movie.title}"> Titolo film </h1>
+	</header>
+
+
+	<div>
+		<div th:if = "${artists.isEmpty()}"> Il database e vuoto! </div>
+		<ul>
+			<li th:each = "artist : ${artists}" th:object = ${artist}>
+				<a th:href = "@{'/setDirectorToMovie' + '/' + ${movie.id} + '/' + *{id}}" th:text = "*{name} + ' (' + *{age} + ')'"> </a>
+			</li>
+		</ul>
+	</div>
+
+
+	<footer> 
+
+	</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/stile.css?version=2">
+
+	<title th:text="${movie.title}"> Movie </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href="/"><img src="/logo-siw.png" id="logo"></a>
+
+		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
+			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
+				id="searchBar">
+		</form>
+
+		<span class="dropdown">
+			<div class="dropbtn"> Movies </div>
+			<div class="dropdown-content">
+				<a href="/manageMovies"> Vedi Film </a>
+				<a href="/formSearchMovies"> Cerca Film </a>
+				<a href="/formNewMovie"> Inserisci Film </a>
+			</div>
+		</span>
+
+		<span class="dropdown">
+			<div class="dropbtn"> Actors </div>
+			<div class="dropdown-content">
+				<a href="/showArtists"> Vedi Artisti </a>
+				<a href="/formNewArtist"> Aggiungi Artista </a>
+			</div>
+		</span>
+
+	</nav>
+
+
+	<header>
+		<div th:unless="${movie}"> Film non trovato! </div>
+	</header>
+
+
+	<div>
+		<div th:if="${movie}" th:object=${movie}>
+			<h1 th:text="*{title}"> </h1>
+			<span> <img th:src="@{${movie.ImagePath}}" class="thumbnail"> </span>
+			<div> Anno: <span th:text="'(' + *{year} + ')'"> </span> </div>
+
+			<a th:href="@{'/updateMovie' + '/' + *{id}}"> Aggiorna </a>
+		</div>
+	</div>
+
+
+	<footer>
+
+	</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset = "utf-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1">
+	<link rel = "stylesheet" href = "/stile.css?version=2">
+
+	<title> Add Artist </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href = "/"><img src = "/logo-siw.png" id = "logo"></a>
+
+		<form th:action = "@{/searchMovie}" method = "post" id = "searchBarForm">
+			<input type = "text" th:value = "${year}" name = "year" placeholder = "Search a movie based on its year" id = "searchBar">
+		</form>
+
+		<span class = "dropdown">
+			<div class = "dropbtn"> Movies </div>
+			<div class = "dropdown-content">
+				<a href = "/manageMovies"> Vedi Film </a>
+				<a href = "/formSearchMovies"> Cerca Film </a>
+				<a href = "/formNewMovie"> Inserisci Film </a>
+			</div>
+		</span>
+		
+		<span class = "dropdown">
+			<div class = "dropbtn"> Actors </div>
+			<div class = "dropdown-content">
+				<a href = "/showArtists"> Vedi Artisti </a>
+				<a href = "/formNewArtist"> Aggiungi Artista </a>
+			</div>
+		</span>
+		
+	</nav>
+
+
+	<header>
+		<h1> Aggiungi un'artista nel database </h1>
+	</header>
+
+
+	<div>
+		<form th:action = "@{/showArtists}" method = "post">
+			<div th:text = "${messaggioErrore}"> Errore </div>
+			<div> Nome: <input required type = "text" th:field = "${artist.name}"> </div>
+			<div> Eta: <input required type = "text" th:field = "${artist.age}"> </div>
+			<div> <button type = "submit"> Aggiungi </button> </div>
+		</form>
+	</div>
+
+
+	<footer> 
+
+	</footer>
+
+</body>
+
+</html>

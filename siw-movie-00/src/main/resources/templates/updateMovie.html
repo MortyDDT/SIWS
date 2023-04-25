@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/stile.css?version=2">
+
+	<title> Update Movie </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href="/"><img src="/logo-siw.png" id="logo"></a>
+
+		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
+			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
+				id="searchBar">
+		</form>
+
+		<span class="dropdown">
+			<div class="dropbtn"> Movies </div>
+			<div class="dropdown-content">
+				<a href="/manageMovies"> Vedi Film </a>
+				<a href="/formSearchMovies"> Cerca Film </a>
+				<a href="/formNewMovie"> Inserisci Film </a>
+			</div>
+		</span>
+
+		<span class="dropdown">
+			<div class="dropbtn"> Actors </div>
+			<div class="dropdown-content">
+				<a href="/showArtists"> Vedi Artisti </a>
+				<a href="/formNewArtist"> Aggiungi Artista </a>
+			</div>
+		</span>
+	</nav>
+
+
+	<header>
+		<div th:if="${movie}" th:object=${movie}>
+			<h1 th:text="*{title}"> </h1>
+			<div> Anno: <span th:text="'(' + *{year} + ')'"> </span> </div>
+		</div>
+		<div th:unless="${movie}">
+			<h1> Film non trovato! </h1>
+		</div>
+	</header>
+
+
+	<div>
+		<div th:if="${movie}">
+			<div> Regista:
+				<a th:if="${movie.director == null}" th:href="@{'/addDirectorToMovie' + '/' + ${movie.id}}"> Aggiungi </a>
+				<span th:unless="${movie.director == null}">
+					<span th:text="${movie.director.name}"> </span>
+					<a th:href="@{'/addDirectorToMovie' + '/' + ${movie.id}}"> Modifica </a>
+				</span>
+			</div>
+
+			<div> Attori:
+				<a th:if="${movie.artists.isEmpty()}" th:href="@{'/changeActors' + '/' + ${movie.id}}"> Aggiungi </a>
+				<div th:unless="${movie.artists.isEmpty()}">
+					<ul>
+						<li th:each="artist : ${movie.artists}">
+							<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
+						</li>
+					</ul>
+					<a th:href="@{'/changeActors' + '/' + ${movie.id}}"> Modifica </a>
+				</div>
+			</div>
+
+			<!-- <div>
+				<form th:action="@{/updateImage}" enctype="multipart/form-data" method="post" th:object=${movie}>
+					<div>
+						<label>Imagine: </label>
+						<input type="file" accept="image/png, image/jpeg" name="image">
+					</div>
+					<div> <button type="submit"> Modifica </button> </div>
+				</form>
+			</div> -->
+		</div>
+	</div>
+
+	<footer>
+
+	</footer>
+
+</body>
+
+</html>
