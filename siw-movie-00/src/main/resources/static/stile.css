@@ -1,7 +1,11 @@
-/****************************** Main Items ********************************/
-/*top right bot left*/
+/******************************************************************************************************************************************************************************/
+/**************************************************************************** Main Items **************************************************************************************/
+/******************************************************************************************************************************************************************************/
 
-:root{
+/*top right bot left*/
+@import url('https://unpkg.com/css.gg@2.0.0/icons/css/search.css');
+
+:root {
   --dark: #1a1a1a;
   --less_dark: #333333;
   --dark_text: #999999;
@@ -9,40 +13,43 @@
 
 body {
   background-color: var(--dark);
-  //margin:0;padding:0;
-  
   font-family: "Lucida Console", "Courier New", monospace;
   color: var(--dark_text);
-  
-  //border: 1px dotted white;
+
+  /* border: 1px dotted white; */
 }
 
 nav {
+  display: flex;
+  justify-content: start;
   background-color: var(--less_dark);
   padding: 0px;
   margin: -8px -8px 0px -8px;
-  max-height: 50px; 
-  display: flex;
-  justify-content: start;
-  
-  //border: 2px dotted white;
+  max-height: 50px;
+  /* border: 2px dotted white; */
 }
 
 header {
   background-color: var(--dark);
-  
-  //border: 2px dotted green;
+
+  /* border: 2px dotted green; */
+}
+
+section.box {
+  border: 3px groove var(--less_dark);
+  border-radius: 10px;
 }
 
 footer {
-  position: fixed; bottom: 0;
+  position: fixed;
+  bottom: 0;
   width: 100%;
   margin: 0px -8px 0px -8px;
   background-color: var(--less_dark);
   display: flex;
   justify-content: center;
-  
-  //border: 2px dotted royalblue;
+
+  /* border: 2px dotted royalblue; */
 }
 
 div {
@@ -50,25 +57,32 @@ div {
   letter-spacing: 3px;
   font-family: Helvetica;
   padding: 0px 5px 10px 5px;
-  
-  //border: 2px dotted pink;
+
+  /* border: 2px dotted pink; */
 }
 
-span{
+span {
   display: inline-block;
-  
-  //border: 2px dotted yellow;
+
+  /* border: 2px dotted yellow; */
 }
 
-/**************************** Text Modifiers ******************************/
+/******************************************************************************************************************************************************************************/
+/***************************************************************************** Text Mod ***************************************************************************************/
+/******************************************************************************************************************************************************************************/
 
 h1 {
-  margin: 0px 20px 40px 5px;                    /* top right bot left */
-  color: white;  
+  margin: 0px 20px 40px 5px;
+  /* top right bot left */
+  color: white;
 }
 
-p { 
+p {
   font-size: .9em;
+}
+
+#movie_title {
+  border-bottom: 2px solid var(--less_dark);
 }
 
 header > h1 {
@@ -79,11 +93,17 @@ header > h1 {
   font-family: "Times New Roman", Times, serif;
 }
 
-/***************************** General Items *******************************/
+/******************************************************************************************************************************************************************************/
+/****************************************************************************** General ***************************************************************************************/
+/******************************************************************************************************************************************************************************/
 
-.centered{
- padding-left: 50%;
- padding-top: 50%;
+.centered {
+  padding-left: 50%;
+  padding-top: 50%;
+}
+
+ul.no_bullet {
+  list-style: none;
 }
 
 #logo {
@@ -92,43 +112,50 @@ header > h1 {
   object-fit: scale-down;
 }
 
-img.thumbnail {
-  width: 200px;
+div.moved_a_lil{
+  margin-left: 15px;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: #c2c2d6;
   text-decoration: none;
   line-height: 20px;
 }
-a:hover, a:active {
+
+a:hover,
+a:active {
   color: white;
 }
 
 
 
-.hover_img a { 
-  position:relative;
+.hover_img a {
+  position: relative;
 }
-.hover_img a span { 
-  position:absolute; top: -150%; left: 105%; 
-  display:none;
-  z-index:99;
+
+.hover_img a span {
+  position: absolute;
+  top: -150%;
+  left: 105%;
+  display: none;
+  z-index: 99;
 
 }
 
-.hover_img a span img{ 
+.hover_img a span img {
   height: 120px;
   border: 3px groove var(--less_dark);
 }
 
-.hover_img a:hover span { 
+.hover_img a:hover span {
   display: block;
 }
 
 
 
-a.button:link, a.button:visited {
+a.button:link,
+a.button:visited {
   background-color: white;
   color: black;
   border: 2px solid black;
@@ -137,28 +164,56 @@ a.button:link, a.button:visited {
   text-decoration: none;
   display: inline-block;
 }
-a.button:hover, a.button:active {
- background-color: var(--dark);
- color: white;
+
+a.button:hover,
+a.button:active {
+  background-color: var(--dark);
+  color: white;
 }
 
-form#searchBarForm{
-  width: 50%;
+#searchBarForm {
+  width: 60%;
   margin: 5px 10px 5px 10px;
-  
-  //border: 2px dotted pink;
 }
+
 input[type=text]#searchBar {
   background-color: var(--dark);
-  float: left;
-  width: 98%;
+  color: var(--dark_text);
+  display: inline-block;
+  width: 99%;
   padding: 10px;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
   font-size: 17px;
-  color: var(--dark_text);
 }
 
+input[type=text]#searchBar:focus{
+  border-radius: 20px;
+  transition: 0.1s;
+}
+
+i {
+  display: block;
+  position: relative;
+  top: -70%;
+  left: 98.4%;
+}
+i:hover {
+  color: white;
+}
+
+#searchBar_button {
+  width: 33px;
+  height: 36px;
+  position: relative;
+  top: -7px;
+  left: -7px;
+  background: transparent;
+  border: none !important;
+  font-size: 0;
+  cursor: pointer;
+  z-index: 1;
+}
 
 .dropbtn {
   background-color: #333333;
@@ -168,6 +223,7 @@ input[type=text]#searchBar {
   border: none;
   cursor: pointer;
 }
+
 .dropdown:hover .dropbtn {
   background-color: #404040;
   color: white;
@@ -183,10 +239,12 @@ input[type=text]#searchBar {
 
 .dropdown-content {
   display: none;
-  position: absolute; top: 47px; left: -1px;
+  position: absolute;
+  top: 47px;
+  left: -1px;
   background-color: #333333;
   min-width: 170px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
@@ -207,7 +265,9 @@ input[type=text]#searchBar {
 }
 
 .carousel-container {
-  position: absolute; top: 10%; left: 50%;
+  position: absolute;
+  top: 10%;
+  left: 50%;
   max-width: 45%;
   margin-bottom: 2px;
 }
@@ -220,6 +280,7 @@ input[type=text]#searchBar {
   margin-left: 45%;
   margin-right: 0%;
 }
+
 /* Hides the scrollbar in webkit browsers*/
 .carousel::-webkit-scrollbar {
   display: none;
@@ -237,20 +298,24 @@ input[type=text]#searchBar {
 .carousel_movie {
   display: inline-block;
   padding: 6px 30px;
-  height: 1000px; max-height: 600px;
+  height: 1000px;
+  max-height: 600px;
   width: 400px;
   object-fit: scale-down;
 }
 
 .controls {
-  position: absolute; right: 0; left: 25em;
+  position: absolute;
+  right: 0;
+  left: 25em;
   text-align: center;
   user-select: none;
 }
 
 .controls_dot {
   display: inline-block;
-  width: 0.65em; height: 0.65em;
+  width: 0.65em;
+  height: 0.65em;
   border-radius: 50%;
   outline: none;
   background-color: white;
@@ -258,30 +323,45 @@ input[type=text]#searchBar {
   cursor: pointer;
   transition: opacity 0.2s;
 }
-  
-  &:not(:first-child) {
-    margin-left: 0.45em;
-  }
 
-  &:hover,
-  &:focus {
-    opacity: 1;
-  }
-
-
-/******************************* Flex **********************************/
-
-#flex-container {
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: flex-end;
+&:not(:first-child) {
+  margin-left: 0.45em;
 }
 
-.flex-item {
+&:hover,
+&:focus {
+  opacity: 1;
+}
+
+
+/******************************************************************************************************************************************************************************/
+/**************************************************************************** Flex Items **************************************************************************************/
+/******************************************************************************************************************************************************************************/
+
+.centered_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3%;
+}
+
+#movie_description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+  height: 700px;
+  
+  border: 3px groove var(--less_dark);
   border-radius: 10px;
-  background-color: purple;
-  margin: 2px;
-  width: 50px;
-  height: 50px;
-  flex-grow: 1;
+}
+
+img.thumbnail {
+  margin: 5px; 
+  height: 98%;
+}
+
+section.movie_info {
+  min-width: 500px;
+  border-left: 3px dashed var(--less_dark);
 }

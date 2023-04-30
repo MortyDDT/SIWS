@@ -3,9 +3,9 @@
 
 <head>
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="/stile.css?version=2">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/stile.css?version=2" />
 
 	<title> Update Movie </title>
 
@@ -19,7 +19,10 @@
 
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
 			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
-				id="searchBar">
+				id="searchBar" />
+			<i class="gg-search">
+				<input type="submit" id="searchBar_button" />
+			</i>
 		</form>
 
 		<span class="dropdown">
@@ -55,7 +58,8 @@
 	<div>
 		<div th:if="${movie}">
 			<div> Regista:
-				<a th:if="${movie.director == null}" th:href="@{'/addDirectorToMovie' + '/' + ${movie.id}}"> Aggiungi </a>
+				<a th:if="${movie.director == null}" th:href="@{'/addDirectorToMovie' + '/' + ${movie.id}}"> Aggiungi
+				</a>
 				<span th:unless="${movie.director == null}">
 					<span th:text="${movie.director.name}"> </span>
 					<a th:href="@{'/addDirectorToMovie' + '/' + ${movie.id}}"> Modifica </a>
@@ -65,7 +69,7 @@
 			<div> Attori:
 				<a th:if="${movie.artists.isEmpty()}" th:href="@{'/changeActors' + '/' + ${movie.id}}"> Aggiungi </a>
 				<div th:unless="${movie.artists.isEmpty()}">
-					<ul>
+					<ul class="no_bullet">
 						<li th:each="artist : ${movie.artists}">
 							<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
 						</li>

@@ -17,8 +17,12 @@
 	<nav>
 		<a href = "/"><img src = "/logo-siw.png" id = "logo"></a>
 
-		<form th:action = "@{/searchMovie}" method = "post" id = "searchBarForm">
-			<input type = "text" th:value = "${year}" name = "year" placeholder = "Search a movie based on its year" id = "searchBar">
+		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
+			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
+				id="searchBar" />
+			<i class="gg-search">
+				<input type="submit" id="searchBar_button" />
+			</i>
 		</form>
 
 		<span class = "dropdown">

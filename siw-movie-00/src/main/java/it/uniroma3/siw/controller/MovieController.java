@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.ArtistRepository;
@@ -42,24 +40,31 @@ public class MovieController {
 	// @Autowired
 	// private ObjectMapper objectMapper;
 
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.setAllowedFields("title", "year"); // specifies which input field attributes should get binded to the
-													// object
+	// @InitBinder
+	// public void initBinder(WebDataBinder binder) {
+	// 	binder.setAllowedFields("title", "year"); // specifies which input field attributes should get binded to the
+	// 												// ModelAttribute
+	// 	// binder.setDisallowedFields("image");
+	// }
+
+	@PostMapping("/searchMovie")
+	public String searchMovies(Model model, @RequestParam Year year) {
+		model.addAttribute("movies", movieRepository.findByYear(year));
+		return "manageMovies.html";
 	}
 
 	@PostMapping("/addMovie") // nome funzione chiamata nel template
-	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, Model model,
-			@RequestParam("image") MultipartFile file) throws IOException { // ordine dei elem e importante
+	public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, Model model/*,
+			@RequestParam("image") MultipartFile file*/) /*throws IOException*/ { // ordine dei elem e importante
 
 		this.movieValidator.validate(movie, bindingResult); // validator usato per definire se i campi sono giusti/se ci
 															// sono errori
 		if (!bindingResult.hasErrors()) {
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			movie.setImage(fileName);
+			// String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+			// movie.setImage(fileName);
 			Movie savedMovie = movieRepository.save(movie); // salva il film per ricevere un id
-			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-			FileUploadUtil.saveFile(uploadDir, fileName, file);
+			// String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
+			// FileUploadUtil.saveFile(uploadDir, fileName, file);
 
 			model.addAttribute("movie", movie);
 			return "movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
@@ -72,23 +77,24 @@ public class MovieController {
 
 	}
 
-	@PostMapping("/updateImage")
-	public String updateImage(Movie movie, Model model, @RequestParam("image") MultipartFile file) throws IOException {
+	// @PostMapping("/updateImage")
+	// public String updateImage(Movie movie, Model model, @RequestParam("image")
+	// MultipartFile file) throws IOException {
 
-		if (movieRepository.existsById(movie.getId())) {
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			// Movie movie = movieRepository.findById(id).get();
-			movie.setImage(fileName);
-			movieRepository.updateMovieImageById(fileName, movie.getId());
-			String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
-			FileUploadUtil.saveFile(uploadDir, fileName, file);
+	// if (movieRepository.existsById(movie.getId())) {
+	// String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+	// // Movie movie = movieRepository.findById(id).get();
+	// movie.setImage(fileName);
+	// movieRepository.updateMovieImageById(fileName, movie.getId());
+	// String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
+	// FileUploadUtil.saveFile(uploadDir, fileName, file);
 
-			model.addAttribute("movie", movie);
-		}
+	// model.addAttribute("movie", movie);
+	// }
 
-		return "updateMovie.html";
+	// return "updateMovie.html";
 
-	}
+	// }
 
 	// @PatchMapping("/updateImage/{id}")
 	// ResponseEntity<?> updateImage(@RequestBody Map<String, String> movie) {
@@ -96,31 +102,11 @@ public class MovieController {
 	// movieRepository.patch(toBePatchedMovie);
 	// }
 
-	@PostMapping("/searchMovie")
-	public String searchMovies(Model model, @RequestParam Year year) {
-		model.addAttribute("movies", movieRepository.findByYear(year));
-		return "foundMovies.html";
+	@GetMapping("/")
+	public String indexMovies(Model model) {
+		model.addAttribute("movies", movieRepository.findAll());
+		return "index.html";
 	}
-
-	@PostMapping("/showArtists")
-	public String newArtist(@ModelAttribute("artist") Artist artist, Model model) {
-		if (!artistRepository.existsByNameAndAge(artist.getName(), artist.getAge())) {
-			this.artistRepository.save(artist);
-			model.addAttribute("artists", artistRepository.findAll());
-			return "showArtists.html";
-		} else {
-			model.addAttribute("messaggioErrore", "Quest'artista e stato gia aggiunto nel database!");
-			return "formNewArtist.html";
-		}
-	}
-
-	// @GetMapping("/")
-	// public String indexMovies(Model model) {
-	// model.addAttribute("movie1", movieRepository.findById((long) 1).get());
-	// model.addAttribute("movie2", movieRepository.findById((long) 2).get());
-	// model.addAttribute("movie3", movieRepository.findById((long) 3).get());
-	// return "index.html";
-	// }
 
 	@GetMapping("/manageMovies")
 	public String showMovies(Model model) {
@@ -134,6 +120,15 @@ public class MovieController {
 		return "movie.html";
 	}
 
+	// @GetMapping("/searchMovie/{year}")
+	// public String showMoviesByYear(@PathVariable("year") Year year, Model model)
+	// {
+	// // model.addAttribute("movie", movieRepository.findById(id).get());
+	// // return "movie.html";
+	// model.addAttribute("movies", movieRepository.findByYear(year));
+	// return "manageMovies.html";
+	// }
+
 	@GetMapping("/formNewMovie")
 	public String formNewMovie(Model model) {
 		model.addAttribute("movie", new Movie());
@@ -143,12 +138,6 @@ public class MovieController {
 	@GetMapping("/formSearchMovies")
 	public String formSearchMovies() {
 		return "formSearchMovies.html";
-	}
-
-	@GetMapping("/formNewArtist")
-	public String formNewArtist(Model model) {
-		model.addAttribute("artist", new Artist());
-		return "formNewArtist.html";
 	}
 
 	@GetMapping("/showArtists")

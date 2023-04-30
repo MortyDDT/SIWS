@@ -19,7 +19,10 @@
 
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
 			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
-				id="searchBar">
+				id="searchBar" />
+			<i class="gg-search">
+				<input type="submit" id="searchBar_button" />
+			</i>
 		</form>
 
 		<span class="dropdown">
@@ -46,16 +49,39 @@
 		<div th:unless="${movie}"> Film non trovato! </div>
 	</header>
 
-
-	<div>
-		<div th:if="${movie}" th:object=${movie}>
-			<h1 th:text="*{title}"> </h1>
+	<section class="centered_box">
+		<section th:if="${movie}" th:object=${movie} id="movie_description">
 			<span> <img th:src="@{${movie.ImagePath}}" class="thumbnail"> </span>
-			<div> Anno: <span th:text="'(' + *{year} + ')'"> </span> </div>
 
-			<a th:href="@{'/updateMovie' + '/' + *{id}}"> Aggiorna </a>
-		</div>
-	</div>
+
+			<section class="movie_info">
+				<div class="centered_box">
+					<h1 th:text="*{title}" id="movie_title"> Berserk Golden Age </h1>
+				</div>
+
+				<div class="moved_a_lil">
+
+					<div> Regista:
+						<span th:unless="${movie.director == null}">
+							<span th:text="${movie.director.name}"> </span>
+						</span>
+					</div>
+
+					<div> Anno: <span th:text="*{year}"> </span> </div>
+
+					<div> Attori:
+						<ul class="no_bullet">
+							<li th:each="artist : ${movie.artists}">
+								<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
+							</li>
+						</ul>
+					</div>
+					<a th:href="@{'/updateMovie' + '/' + *{id}}" class="centered_box"> Aggiorna Film </a>
+				</div>
+
+			</section>
+		</section>
+	</section>
 
 
 	<footer>

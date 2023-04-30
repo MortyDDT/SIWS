@@ -12,6 +12,8 @@ import it.uniroma3.siw.repository.MovieRepository;
 
 @Component
 public class MovieValidator implements Validator {
+	
+	private static final int ANNO_PRIMO_FILM = 1878;
 	@Autowired
 	private MovieRepository movieRepository;
 
@@ -35,7 +37,7 @@ public class MovieValidator implements Validator {
 			if(movie.getYear().getClass() != Year.class)
 				errors.reject("typeMismatch.java.lang.Integer");
 			
-			if(movie.getYear().getValue() < 1878)
+			if(movie.getYear().getValue() < ANNO_PRIMO_FILM)
 				errors.reject("Min.year");
 			
 			if(movie.getYear().getValue() > Year.now().getValue())

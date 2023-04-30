@@ -1,55 +1,74 @@
-  <!DOCTYPE html>
-  <html>
+<!DOCTYPE html>
+<html>
 
-  <head>
+<head>
 
-    <meta charset = "utf-8">
-    <meta name = "viewport" content = "width=device-width, initial-scale=1">
-    <link rel = "stylesheet" href = "/stile.css?version=2">
-    <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/stile.css?version=2">
+  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
-    <title> Main Page </title>
+  <title> Main Page </title>
 
-  </head>
-
-
-  <body>
-
-    <nav>
-      <a href = "/"><img src = "/logo-siw.png" id = "logo"></a>
-      <form th:action = "@{/searchMovie}" method = "post" id = "searchBarForm">
-        <input type = "text" th:value = "${year}" name = "year" placeholder = "Search a movie based on its year" id = "searchBar">
-      </form>
-
-      <span class = "dropdown">
-        <div class = "dropbtn"> Movies </div>
-        <div class = "dropdown-content">
-          <a th:href = "@{'/manageMovies'}"> Vedi Film </a>
-          <a href = "/formSearchMovies"> Cerca Film </a>
-          <a href = "/formNewMovie"> Inserisci Film </a>
-        </div>
-      </span>
-      
-      <span class = "dropdown">
-        <div class = "dropbtn"> Actors </div>
-        <div class = "dropdown-content">
-          <a href = "/showArtists"> Vedi Artisti </a>
-          <a href = "/formNewArtist"> Aggiungi Artista </a>
-        </div>
-      </span>
-      
-    </nav>
+</head>
 
 
-    <header>
-    	<h1> Welcome to MovieDB!</h1>
-    	<p> We have movies here! </p>
-    </header>
+<body>
 
-   <footer> 
-     <p> Sito creato per il corso SIW di Roma3 </p>
-   </footer>
+  <nav>
+    <a href="/"><img src="/logo-siw.png" id="logo"></a>
+    <form th:action="@{/searchMovie}" method="post" id="searchBarForm">
+      <input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year" id="searchBar" />
+      <i class="gg-search">
+        <input type="submit" id="searchBar_button" />
+      </i>
+    </form>
 
- </body>
 
- </html>
+    <span class="dropdown">
+      <div class="dropbtn"> Movies </div>
+      <div class="dropdown-content">
+        <a th:href="@{'/manageMovies'}"> Vedi Film </a>
+        <a href="/formSearchMovies"> Cerca Film </a>
+        <a href="/formNewMovie"> Inserisci Film </a>
+      </div>
+    </span>
+
+    <span class="dropdown">
+      <div class="dropbtn"> Actors </div>
+      <div class="dropdown-content">
+        <a href="/showArtists"> Vedi Artisti </a>
+        <a href="/formNewArtist"> Aggiungi Artista </a>
+      </div>
+    </span>
+
+  </nav>
+
+
+  <header>
+    <h1> Welcome to MovieDB!</h1>
+    <p> We have movies here! </p>
+  </header>
+
+  <section>
+    <span>
+      <ul>
+        <li th:each="movie : ${movies}" th:object=${movie}>
+          <span class="hover_img">
+            <a th:href="@{'/manageMovies' + '/' + *{id}}">
+              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
+              <span><img th:src="@{${movie.ImagePath}}"></span>
+            </a>
+          </span>
+        </li>
+      </ul>
+    </span>
+  </section>
+
+  <footer>
+    <p> Sito creato per il corso SIW di Roma3 </p>
+  </footer>
+
+</body>
+
+</html>
