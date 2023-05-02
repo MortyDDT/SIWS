@@ -50,10 +50,15 @@
 
 
 	<div>
-		<form th:action="@{/showArtists}" method="post">
-			<div th:text="${messaggioErrore}"> Errore </div>
-			<div> Nome: <input required type="text" th:field="${artist.name}"> </div>
-			<div> Eta: <input required type="text" th:field="${artist.age}"> </div>
+		<form th:action="@{/addArtist}" method="post" th:object="${artist}">
+			<div> Nome: 
+				<span> <input required type="text" th:field="${artist.name}" /> </span>
+				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			</div>
+			<div> Eta: 
+				<span> <input required type="text" th:field="${artist.age}" /> </span>
+				<span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> </span>
+			</div>
 			<div> <button type="submit"> Aggiungi </button> </div>
 		</form>
 	</div>

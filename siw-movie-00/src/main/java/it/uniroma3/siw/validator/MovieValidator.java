@@ -12,38 +12,23 @@ import it.uniroma3.siw.repository.MovieRepository;
 
 @Component
 public class MovieValidator implements Validator {
-	
+
 	private static final int ANNO_PRIMO_FILM = 1878;
+
 	@Autowired
 	private MovieRepository movieRepository;
 
 	@Override
 	public void validate(Object o, Errors errors) {
 		Movie movie = (Movie) o;
-		
-		if(movie.getTitle() == null)
-			errors.reject("NotBlank.movie.title");
-		
-		if(movie.getYear() == null)
-			errors.reject("NotBlank.movie.year");
-		
-		
-		if (movie.getTitle() != null && movie.getYear() != null
-				&& movieRepository.existsByTitleAndYear(movie.getTitle(), movie.getYear())) {
+		String title = movie.getTitle();
+		Year year = movie.getYear();
+
+		if ((title != null && year != null) && movieRepository.existsByTitleAndYear(title, year))
 			errors.reject("movie.duplicate");
-		}
-		
-		if(movie.getYear() != null) {
-			if(movie.getYear().getClass() != Year.class)
-				errors.reject("typeMismatch.java.lang.Integer");
-			
-			if(movie.getYear().getValue() < ANNO_PRIMO_FILM)
-				errors.reject("Min.year");
-			
-			if(movie.getYear().getValue() > Year.now().getValue())
-				errors.reject("Max.year");
-		}
-		
+
+		if (year != null && year.getValue() < ANNO_PRIMO_FILM)
+			errors.reject("movie.minyear");
 
 	}
 

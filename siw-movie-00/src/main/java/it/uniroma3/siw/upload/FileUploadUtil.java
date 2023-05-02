@@ -16,12 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadUtil {
 
 	public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
-
-		// if (Files.exists(Paths.get(uploadDir)))												// se era gia stato creato un folder per questo oggetto cancellalo
-			// FileUtils.deleteDirectory(new File(uploadDir));
 		
+		while (Files.exists(Paths.get(uploadDir)))								// se il path era usato precedentemente cancellalo + il vecchio file
+			FileUtils.deleteDirectory(new File(uploadDir));	
+
 		Path uploadPath = Paths.get(uploadDir);
-		Files.createDirectories(uploadPath);
+
+		if(!Files.exists(uploadPath))
+			Files.createDirectories(uploadPath);
 		
 		try (InputStream inputStream = multipartFile.getInputStream()) {
 			Path filePath = uploadPath.resolve(fileName);

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
 import org.springframework.data.annotation.Transient;
@@ -30,6 +31,7 @@ public class Movie {
 	@NotBlank
 	private String title;
 	
+	@NotNull
 	@PastOrPresent
 	private Year year;
 	

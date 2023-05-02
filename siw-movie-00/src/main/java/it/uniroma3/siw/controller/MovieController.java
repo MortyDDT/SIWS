@@ -1,12 +1,15 @@
 package it.uniroma3.siw.controller;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.Year;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -40,12 +43,23 @@ public class MovieController {
 	// @Autowired
 	// private ObjectMapper objectMapper;
 
-	// @InitBinder
-	// public void initBinder(WebDataBinder binder) {
-	// 	binder.setAllowedFields("title", "year"); // specifies which input field attributes should get binded to the
-	// 												// ModelAttribute
-	// 	// binder.setDisallowedFields("image");
-	// }
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setAllowedFields("title", "year"); // specifies which input parameters get binded to model
+
+		binder.registerCustomEditor(Year.class, new PropertyEditorSupport() {
+			public void setAsText(String value) {
+				try {
+					setValue(Year.parse(value));
+				} catch (ParseException | DateTimeException e) {
+					setValue(null);
+				}
+			}
+			public String getAsText(Year year) {
+				return year.toString();
+			}
+		});
+	}
 
 	@PostMapping("/searchMovie")
 	public String searchMovies(Model model, @RequestParam Year year) {
@@ -54,17 +68,17 @@ public class MovieController {
 	}
 
 	@PostMapping("/addMovie") // nome funzione chiamata nel template
-	public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, Model model/*,
-			@RequestParam("image") MultipartFile file*/) /*throws IOException*/ { // ordine dei elem e importante
+	public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+			Model model, @RequestParam("image") MultipartFile file) throws IOException { // ordine dei elem e importante
 
-		this.movieValidator.validate(movie, bindingResult); // validator usato per definire se i campi sono giusti/se ci
-															// sono errori
+		movieValidator.validate(movie, bindingResult); // verifica errori nei campi inseriti
+
 		if (!bindingResult.hasErrors()) {
-			// String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			// movie.setImage(fileName);
+			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+			movie.setImage(fileName);
 			Movie savedMovie = movieRepository.save(movie); // salva il film per ricevere un id
-			// String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-			// FileUploadUtil.saveFile(uploadDir, fileName, file);
+			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
+			FileUploadUtil.saveFile(uploadDir, fileName, file);
 
 			model.addAttribute("movie", movie);
 			return "movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
@@ -103,6 +117,12 @@ public class MovieController {
 	// }
 
 	@GetMapping("/")
+	public String Main(Model model) {
+		model.addAttribute("movies", movieRepository.findAll());
+		return "index.html";
+	}
+	
+	@GetMapping("/index")
 	public String indexMovies(Model model) {
 		model.addAttribute("movies", movieRepository.findAll());
 		return "index.html";
@@ -219,9 +239,6 @@ public class MovieController {
 
 		movieRepository.save(movie);
 		artistRepository.save(artist);
-
-		// List<Artist> notArtists = (List<Artist>) artistRepository.findAll();
-		// notArtists.removeAll(movie.getArtists());
 
 		List<Artist> notArtists = artistRepository.findArtistsThatDidntActInMovie(movie);
 
