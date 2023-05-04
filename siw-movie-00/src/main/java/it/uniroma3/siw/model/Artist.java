@@ -9,12 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "artists")
 public class Artist {
 	
 	@Id
@@ -42,24 +44,28 @@ public class Artist {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Integer getAge() {
 		return age;
 	}
 	public void setAge(Integer age) {
 		this.age = age;
 	}
+
 	public List<Movie> getFilmRegizati() {
 		return moviesDirected;
 	}
 	public void setFilmRegizati(List<Movie> filmRegizati) {
 		this.moviesDirected = filmRegizati;
 	}
+
 	public List<Movie> getMoviesActed() {
 		return moviesActed;
 	}
@@ -67,13 +73,14 @@ public class Artist {
 		this.moviesActed = moviesActed;
 	}
 	
-//	private List<Customer> findCustomerByFirstName(String firstName, EntityManager em) {
-//		TypedQuery<Customer> query = em.createQuery("SELECT c FROM Customer c WHERE c.firstName = :name", Customer.class);
-//		query.setParameter("name", firstName);
-//		List<Customer> resultList = query.getResultList();
-//		return resultList;
-//		}
-	
+	public List<Movie> getMoviesDirected() {
+		return moviesDirected;
+	}
+	public void setMoviesDirected(List<Movie> moviesDirected) {
+		this.moviesDirected = moviesDirected;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(age, name);

@@ -49,8 +49,8 @@
 		<div th:unless="${movie}"> Film non trovato! </div>
 	</header>
 
-	<section class="centered_box">
-		<section th:if="${movie}" th:object=${movie} id="movie_description">
+	<section th:if="${movie}" class="centered_box">
+		<section th:object=${movie} id="movie_description">
 			<span> <img th:src="@{${movie.ImagePath}}" class="thumbnail"> </span>
 
 
@@ -78,11 +78,39 @@
 					</div>
 					<a th:href="@{'/updateMovie' + '/' + *{id}}" class="centered_box"> Aggiorna Film </a>
 				</div>
-
 			</section>
 		</section>
-	</section>
 
+		<section class="reviews">
+			<div>
+				<ul class="comments">
+					<li th:each="review : ${reviews}" th:object=${review}>
+						<div th:text="'Voto:' + *{score}"> </div>
+						<div th:text="*{comment}"> </div>
+					</li>
+				</ul>
+			</div>
+		</section>
+	</section>
+	<section id="add_review">
+
+		<form th:action="@{'/addReview' + '/' + ${movie.id}}" method="post" th:object="${review}">
+
+			<div>
+				<label for="cmt">Aggiungi recensione</label>
+				<textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${review.comment}"
+					placeholder="type shomething.."></textarea>
+			</div>
+			<div class="p_rev">
+				<span>
+					<input required type="number" th:field="${review.score}" min="1" max="5" placeholder="Voto"
+						class="score">
+					<!-- <span th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></span> -->
+				</span>
+				<span> <button type="submit"> Pubblica </button> </span>
+			</div>
+		</form>
+	</section>
 
 	<footer>
 

@@ -26,8 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
+import it.uniroma3.siw.model.Review;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.MovieRepository;
+import it.uniroma3.siw.repository.ReviewRepository;
 import it.uniroma3.siw.upload.FileUploadUtil;
 import it.uniroma3.siw.validator.MovieValidator;
 
@@ -38,6 +40,8 @@ public class MovieController {
 	MovieRepository movieRepository; // gli id dei movie nel repo sono creati automaticamente
 	@Autowired
 	ArtistRepository artistRepository;
+	@Autowired
+	ReviewRepository reviewRepository;
 	@Autowired
 	MovieValidator movieValidator;
 	// @Autowired
@@ -55,6 +59,7 @@ public class MovieController {
 					setValue(null);
 				}
 			}
+
 			public String getAsText(Year year) {
 				return year.toString();
 			}
@@ -80,6 +85,7 @@ public class MovieController {
 			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
 			FileUploadUtil.saveFile(uploadDir, fileName, file);
 
+			model.addAttribute("review", new Review());
 			model.addAttribute("movie", movie);
 			return "movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
 		} else {
@@ -121,7 +127,7 @@ public class MovieController {
 		model.addAttribute("movies", movieRepository.findAll());
 		return "index.html";
 	}
-	
+
 	@GetMapping("/index")
 	public String indexMovies(Model model) {
 		model.addAttribute("movies", movieRepository.findAll());
@@ -136,7 +142,10 @@ public class MovieController {
 
 	@GetMapping("/manageMovies/{id}")
 	public String getMovie(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", movieRepository.findById(id).get());
+		Movie movie = movieRepository.findById(id).get();
+		model.addAttribute("movie", movie);
+		model.addAttribute("review", new Review());
+		model.addAttribute("reviews", reviewRepository.findReviewsByMovie(movie));
 		return "movie.html";
 	}
 

@@ -18,7 +18,8 @@
 		<a href="/"><img src="/logo-siw.png" id="logo"></a>
 
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year" id="searchBar" />
+			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
+				id="searchBar" />
 			<i class="gg-search">
 				<input type="submit" id="searchBar_button" />
 			</i>
@@ -49,23 +50,31 @@
 	</header>
 
 
-	<div>
-		<form th:action="@{/addMovie}" enctype="multipart/form-data" method="post" th:object="${movie}">
+	<section class="input_form">
+		<form th:action="@{/addMovie}" enctype="multipart/form-data" method="post" th:object="${movie}"
+			class="data_input">
 			<div>
-				<span> Titolo: <input required type="text" th:field="${movie.title}"> </span>
+				<label> Titolo </label>
+				<input required type="text" th:field="${movie.title}" placeholder="insert title..." />
 				<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
 			</div>
 			<div>
-				<span> Anno: <input required type="text" th:field="${movie.year}"> </span>
+				<label> Anno </label>
+				<input required type="text" th:field="${movie.year}" placeholder="yyyy" />
 				<span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
 			</div>
-			<div>
-				<label>Image: </label><input type="file" accept="image/png, image/jpeg" name="image">
+
+			<div class="centered_box">
+				<label for="file-upload" class="custom-file-upload">
+					<i class="fa fa-cloud-upload"></i> Upload Image
+				</label>
+				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
 			</div>
 
-			<div> <button type="submit"> Aggiungi </button> </div>
+			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
+
 		</form>
-	</div>
+	</section>
 
 
 	<footer>

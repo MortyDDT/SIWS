@@ -49,19 +49,21 @@
 	</header>
 
 
-	<div>
-		<form th:action="@{/addArtist}" method="post" th:object="${artist}">
-			<div> Nome: 
+	<section class="input_form">
+		<form th:action="@{/addArtist}" method="post" th:object="${artist}" class="data_input">
+			<div>
+				<label> Nome </label>
 				<span> <input required type="text" th:field="${artist.name}" /> </span>
 				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 			</div>
-			<div> Eta: 
+			<div> 
+				<label> Eta </label> 
 				<span> <input required type="text" th:field="${artist.age}" /> </span>
 				<span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> </span>
 			</div>
-			<div> <button type="submit"> Aggiungi </button> </div>
+			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
 		</form>
-	</div>
+	</section>
 
 
 	<footer>

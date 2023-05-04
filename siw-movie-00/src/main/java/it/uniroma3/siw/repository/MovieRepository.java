@@ -13,7 +13,8 @@ public interface MovieRepository extends CrudRepository<Movie, Long> {
 	public List<Movie> findByYear(Year year);
 	public boolean existsByTitleAndYear(String title, Year year);
 	
-	@Modifying
-	@Query("update Movie m set m.image = ?1 where m.id = ?2")
-	void updateMovieImageById(String imageName, Long movieId);
+	// @Modifying
+	// @Query("update Movie m set m.image = ?1 where m.id = ?2")
+	// void updateMovieImageById(String imageName, Long movieId);
+
 }

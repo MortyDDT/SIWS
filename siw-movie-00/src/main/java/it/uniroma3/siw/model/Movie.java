@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -20,6 +22,7 @@ import org.springframework.data.annotation.Transient;
 
 
 @Entity
+@Table(name = "movies")
 public class Movie {
 	
 	public static final String IMAGE_PATH = "src/main/resources/movie-images";
@@ -44,7 +47,10 @@ public class Movie {
 	@ManyToMany(mappedBy = "moviesActed")
 	private List<Artist> artists;
 	
+	@OneToMany(mappedBy = "movie")
+	private List<Review> reviews;
 	
+
 	@Transient
     public String getImagePath() {
         if (image == null || id == null) 
@@ -58,37 +64,48 @@ public class Movie {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	public Year getYear() {
 		return year;
 	}
 	public void setYear(Year year) {
 		this.year = year;
 	}
+	
 	public Artist getDirector() {
 		return director;
 	}
 	public void setDirector(Artist director) {
 		this.director = director;
 	}
+	
 	public List<Artist> getArtists() {
 		return artists;
 	}
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
 	}
+	
 	public String getImage() {
 		return image;
 	}
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
 	
 	
 	@Override
@@ -103,6 +120,6 @@ public class Movie {
 			return false;
 		Movie other = (Movie) obj;
 		return Objects.equals(title, other.title) && Objects.equals(year, other.year);
-	}
+	}	
 
 }
