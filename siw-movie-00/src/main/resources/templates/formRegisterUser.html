@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/css/stile.css?version=2">
+
+  <title> Add Artist </title>
+
+</head>
+
+
+<body>
+
+  <nav>
+    <a href="/"><img src="/images/logo-siw.png" id="logo"></a>
+    <form th:action="@{/searchMovie}" method="post" id="searchBarForm">
+      <input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year" id="searchBar" />
+      <i class="gg-search">
+        <input type="submit" id="searchBar_button" />
+      </i>
+    </form>
+
+
+    <span class="dropdown">
+      <div class="dropbtn"> Movies </div>
+      <div class="dropdown-content">
+        <a href="/movies"> Vedi Film </a>
+        <a href="/formSearchMovies"> Cerca Film </a>
+      </div>
+    </span>
+
+    <span class="dropdown">
+      <div class="dropbtn"> Actors </div>
+      <div class="dropdown-content">
+        <a href="/artists"> Vedi Artisti </a>
+      </div>
+    </span>
+
+    <span class="dropdown">
+      <div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
+      <div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
+        Username </div>
+      <div class="dropdown-content">
+        <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
+        <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
+				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+      </div>
+    </span>
+  </nav>
+
+
+  <header>
+    <h1> Crea un account: </h1>
+  </header>
+
+
+  <section id="register_form">
+    <form th:action="@{/register}" method="post" class="data_input">
+      <div>
+        <label>Username</label>
+        <span>
+          <input type="text" placeholder="username" required th:field="${credentials.username}" />
+        </span>
+        <span th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}"
+          th:style="'color:red'">
+        </span>
+      </div>
+      <div>
+        <label>Password</label>
+        <span><input type="password" placeholder="password" required th:field="${credentials.password}" />
+        </span>
+        <span th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}"
+          th:style="'color:red'">
+        </span>
+      </div>
+      <div>
+        <label>Nome</label>
+        <span><input type="text" placeholder="name" required th:field="${user.name}" /></span>
+        <span th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" th:style="'color:red'">
+        </span>
+      </div>
+      <div>
+        <label>Cognome</label>
+        <span><input type="text" placeholder="surname" required th:field="${user.surname}" /></span>
+        <span th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}" th:style="'color:red'">
+        </span>
+      </div>
+      <div>
+        <label>Email</label>
+        <span><input type="text" placeholder="email" required th:field="${user.email}" /></span>
+        <span th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}" th:style="'color:red'">
+        </span>
+      </div>
+      <div class="centered_box"> <button type="submit"> Registrati </button> </div>
+    </form>
+  </section>
+
+
+  <footer>
+
+  </footer>
+
+</body>
+
+</html>

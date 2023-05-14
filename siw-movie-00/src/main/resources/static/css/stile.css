@@ -372,7 +372,7 @@ textarea {
   border: 2px solid #ccc;
   border-radius: 4px;
   background-color: var(--less_dark);
-  color: var(--dark_text)
+  color: var(--dark_text);
   resize: none;
 }
 
@@ -424,9 +424,23 @@ input[type=number].score:focus{
 #add_review{
   margin-top: 40px;
 }
+.user_name{
+  padding-top: 3px;
+  color: aliceblue;
+  border-bottom: 3px groove var(--less_dark);
+}
 
 .p_rev{
-  margin-left: 43%; 
+  margin-left: 36%; 
+}
+
+.p_rev input{
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: var(--less_dark);
+  color: var(--dark_text);
+  width: 200px;
+  height: 30px;
 }
 
 ul.comments {
@@ -457,7 +471,19 @@ ul.comments li{
   align-items: center;
   width: 350px;
   height: 300px;
-  margin: 6% 0px 0px 25%;
+  margin: 6% 0px 0px 40%;
+  border: 3px groove var(--dark);
+  border-radius: 10px;
+  background-color: var(--less_dark);
+}
+
+#register_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 400px;
+  margin: 6% 0px 0px 40%;
   border: 3px groove var(--dark);
   border-radius: 10px;
   background-color: var(--less_dark);

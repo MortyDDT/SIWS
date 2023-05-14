@@ -6,9 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
-  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
-  <title> Main Page </title>
+  <title> Add Artist </title>
 
 </head>
 
@@ -47,34 +46,37 @@
       <div class="dropdown-content">
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
       </div>
     </span>
   </nav>
 
 
   <header>
-    <h1> Welcome to MovieDB! </h1>
-    <p> We have movies here! </p>
+    <h1> Collegati con il tuo account: </h1>
   </header>
 
-  <section>
-    <span>
-      <ul>
-        <li th:each="movie : ${movies}" th:object=${movie}>
-          <span class="hover_img">
-            <a th:href="@{'/movies' + '/' + *{id}}">
-              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
-            </a>
-          </span>
-        </li>
-      </ul>
-    </span>
+
+  <section class="input_form">
+    <form th:action="@{/login}" method="post">
+      <div>
+        <label> Username </label>
+        <span> <input required type="text" name="username" /> </span>
+      </div>
+      <div>
+        <label> Password </label>
+        <span> <input required type="password" name="password" /> </span>
+      </div>
+      <div>
+        <span th:if="${param.error != null}">Username o password errati</span>
+      </div>
+      <div class="centered_box"> <button type="submit"> Login </button> </div>
+    </form>
   </section>
 
+
   <footer>
-    <p> Sito creato per il corso SIW di Roma3 </p>
+
   </footer>
 
 </body>

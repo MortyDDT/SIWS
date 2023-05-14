@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Artist;
+import it.uniroma3.siw.model.validator.ArtistValidator;
 import it.uniroma3.siw.repository.ArtistRepository;
-import it.uniroma3.siw.validator.ArtistValidator;
+import it.uniroma3.siw.tool.AuthUtil;
 
 @Controller
 public class ArtistController {
@@ -25,28 +26,42 @@ public class ArtistController {
 	@Autowired
 	ArtistValidator artistValidator;
 
+	/******************************************************************************/
+	/******************************** FOR ADMINS **********************************/
+	/******************************************************************************/
+
 	@PostMapping("/addArtist")
-	public String newArtist(@Valid @ModelAttribute("artist") Artist artist, BindingResult bindingResult, Model model) {		
+	public String newArtist(@Valid @ModelAttribute("artist") Artist artist, BindingResult bindingResult, Model model) {
 		artistValidator.validate(artist, bindingResult);
 
 		if (!bindingResult.hasErrors()) {
 			artistRepository.save(artist);
-			
+
 			model.addAttribute("artists", artistRepository.findAll());
-			return "showArtists.html";
+			return "admin/artists.html";
 		} else {
 			List<ObjectError> errors = bindingResult.getAllErrors();
 			for (ObjectError oe : errors)
 				System.out.println(oe);
-			
-			return "formNewArtist.html";
+
+			return "admin/formNewArtist.html";
 		}
 	}
 
 	@GetMapping("/formNewArtist")
 	public String formNewArtist(Model model) {
 		model.addAttribute("artist", new Artist());
-		return "formNewArtist.html";
+		return "admin/formNewArtist.html";
+	}
+
+	/******************************************************************************/
+	/********************************** SHARED ************************************/
+	/******************************************************************************/
+
+	@GetMapping("/artists")
+	public String showArtists(Model model) {
+		model.addAttribute("artists", artistRepository.findAll());
+		return AuthUtil.parseLink("artists.html");
 	}
 
 }

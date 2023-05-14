@@ -1,13 +1,14 @@
-package it.uniroma3.siw.upload;
+package it.uniroma3.siw.tool;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import java.io.File;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,12 +18,8 @@ public class FileUploadUtil {
 
 	public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
 
-		if (Files.exists(Paths.get(uploadDir))) { 			// se il path era usato precedentemente cancellalo + il vecchio file
+		if (Files.exists(Paths.get(uploadDir))) // se il path era usato precedentemente cancellalo + il vecchio file
 			FileUtils.deleteDirectory(new File(uploadDir));
-		}
-
-		// while (Files.exists(Paths.get(uploadDir)))
-		// 		System.out.println("deleting " + uploadDir + " folder...");
 
 		Path uploadPath = Paths.get(uploadDir);
 
@@ -33,9 +30,33 @@ public class FileUploadUtil {
 
 		try (InputStream inputStream = multipartFile.getInputStream()) {
 			Path filePath = uploadPath.resolve(fileName);
+			
 			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+			while(!isCompletelyWritten(filePath.toFile())){
+				System.out.println("copying/////////////////////////////////////");
+			}
+
 		} catch (IOException ioe) {
 			throw new IOException("Could not save image file: " + fileName, ioe);
 		}
+	}
+
+	private static boolean isCompletelyWritten(File file) {
+		RandomAccessFile stream = null;
+		try {
+			stream = new RandomAccessFile(file, "rw");
+			return true;
+		} catch (Exception e) {
+			System.out.println("Skipping file " + file.getName() + " for this iteration due it's not completely written");
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					System.out.println("Exception during closing file " + file.getName());
+				}
+			}
+		}
+		return false;
 	}
 }

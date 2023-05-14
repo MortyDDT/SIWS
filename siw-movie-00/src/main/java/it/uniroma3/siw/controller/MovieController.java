@@ -27,11 +27,12 @@ import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.model.Review;
+import it.uniroma3.siw.model.validator.MovieValidator;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.repository.ReviewRepository;
-import it.uniroma3.siw.upload.FileUploadUtil;
-import it.uniroma3.siw.validator.MovieValidator;
+import it.uniroma3.siw.tool.AuthUtil;
+import it.uniroma3.siw.tool.FileUploadUtil;
 
 @Controller
 public class MovieController {
@@ -66,37 +67,6 @@ public class MovieController {
 		});
 	}
 
-	@PostMapping("/searchMovie")
-	public String searchMovies(Model model, @RequestParam Year year) {
-		model.addAttribute("movies", movieRepository.findByYear(year));
-		return "manageMovies.html";
-	}
-
-	@PostMapping("/addMovie") // nome funzione chiamata nel template
-	public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
-			Model model, @RequestParam("image") MultipartFile file) throws IOException { // ordine dei elem e importante
-
-		movieValidator.validate(movie, bindingResult); // verifica errori nei campi inseriti
-
-		if (!bindingResult.hasErrors()) {
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			movie.setImage(fileName);
-			Movie savedMovie = movieRepository.save(movie); // salva il film per ricevere un id
-			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-			FileUploadUtil.saveFile(uploadDir, fileName, file);
-
-			model.addAttribute("review", new Review());
-			model.addAttribute("movie", movie);
-			return "movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
-		} else {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			for (ObjectError oe : errors)
-				System.out.println(oe);
-			return "formNewMovie.html"; // link passato in caso di errore
-		}
-
-	}
-
 	// @PostMapping("/updateImage")
 	// public String updateImage(Movie movie, Model model, @RequestParam("image")
 	// MultipartFile file) throws IOException {
@@ -122,74 +92,61 @@ public class MovieController {
 	// movieRepository.patch(toBePatchedMovie);
 	// }
 
-	@GetMapping("/")
-	public String Main(Model model) {
-		model.addAttribute("movies", movieRepository.findAll());
-		return "index.html";
-	}
-
-	@GetMapping("/index")
-	public String indexMovies(Model model) {
-		model.addAttribute("movies", movieRepository.findAll());
-		return "index.html";
-	}
-
-	@GetMapping("/manageMovies")
-	public String showMovies(Model model) {
-		model.addAttribute("movies", movieRepository.findAll());
-		return "manageMovies.html";
-	}
-
-	@GetMapping("/manageMovies/{id}")
-	public String getMovie(@PathVariable("id") Long id, Model model) {
-		Movie movie = movieRepository.findById(id).get();
-		model.addAttribute("movie", movie);
-		model.addAttribute("review", new Review());
-		model.addAttribute("reviews", reviewRepository.findReviewsByMovie(movie));
-		return "movie.html";
-	}
-
-	// @GetMapping("/searchMovie/{year}")
-	// public String showMoviesByYear(@PathVariable("year") Year year, Model model)
-	// {
-	// // model.addAttribute("movie", movieRepository.findById(id).get());
-	// // return "movie.html";
-	// model.addAttribute("movies", movieRepository.findByYear(year));
-	// return "manageMovies.html";
+	// @GetMapping("/")
+	// public String Main(Model model) {
+	// model.addAttribute("movies", movieRepository.findAll());
+	// return "index.html";
 	// }
+
+	// @GetMapping("/index")
+	// public String indexMovies(Model model) {
+	// model.addAttribute("movies", movieRepository.findAll());
+	// return "index.html";
+	// }
+
+	/******************************************************************************/
+	/******************************** FOR ADMINS **********************************/
+	/******************************************************************************/
+
+	@PostMapping("/addMovie") // nome funzione chiamata nel template
+	public String addMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult,
+			Model model, @RequestParam("image") MultipartFile file) throws IOException { // ordine dei elem e importante
+
+		movieValidator.validate(movie, bindingResult); // verifica errori nei campi inseriti
+
+		if (!bindingResult.hasErrors()) {
+			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+			movie.setImage(fileName);
+			Movie savedMovie = movieRepository.save(movie); // salva il film per ricevere un id
+			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
+			
+			FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+			model.addAttribute("review", new Review());
+			model.addAttribute("movie", movie);
+			return "admin/movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
+		} else {
+			List<ObjectError> errors = bindingResult.getAllErrors();
+			for (ObjectError oe : errors)
+				System.out.println(oe);
+			return "admin/formNewMovie.html"; // link passato in caso di errore
+		}
+
+	}
 
 	@GetMapping("/formNewMovie")
 	public String formNewMovie(Model model) {
 		model.addAttribute("movie", new Movie());
-		return "formNewMovie.html";
+		return "admin/formNewMovie.html";
 	}
 
-	@GetMapping("/formSearchMovies")
-	public String formSearchMovies() {
-		return "formSearchMovies.html";
-	}
-
-	@GetMapping("/showArtists")
-	public String showArtists(Model model) {
-		model.addAttribute("artists", artistRepository.findAll());
-		return "showArtists.html";
-	}
-
-	@GetMapping("/updateMovie/{id}")
-	public String updateMovie(@PathVariable("id") Long id, Model model) {
+	@GetMapping("/manageMovie/{id}")
+	public String manageMovie(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", movieRepository.findById(id).get());
-		return "updateMovie.html";
+		return "admin/manageMovie.html";
 	}
 
-	@GetMapping("/addDirectorToMovie/{id}")
-	public String addDirector(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", movieRepository.findById(id).get());
-		model.addAttribute("artists", artistRepository.findAll());
-		return "addDirector.html";
-	}
-
-	@GetMapping("/setDirectorToMovie/{movieId}/{artistId}") // gli id vengono presi dalla pagina che chiama la funzione
-															// e sono da passare alla prossima pagina
+	@GetMapping("/setDirectorToMovie/{movieId}/{artistId}") // id presi dal template che chiama il metodo
 	public String setDirectorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("artistId") Long artistId,
 			Model model) {
 		Movie movie = movieRepository.findById(movieId).get();
@@ -200,7 +157,14 @@ public class MovieController {
 		model.addAttribute("movie", movie);
 		model.addAttribute("artist", director);
 
-		return "updateMovie.html";
+		return "admin/manageMovie.html";
+	}
+
+	@GetMapping("/changeMovieDirector/{id}")
+	public String addDirector(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("movie", movieRepository.findById(id).get());
+		model.addAttribute("artists", artistRepository.findAll());
+		return "admin/changeMovieDirector.html";
 	}
 
 	@GetMapping("/changeActors/{movieId}")
@@ -213,7 +177,7 @@ public class MovieController {
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
 
-		return "addActors.html";
+		return "admin/changeMovieActors.html";
 	}
 
 	@GetMapping("/addActor/{movieId}/{artistId}")
@@ -234,7 +198,7 @@ public class MovieController {
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
 
-		return "addActors.html";
+		return "admin/changeMovieActors.html";
 	}
 
 	@GetMapping("/removeActor/{movieId}/{artistId}")
@@ -255,7 +219,39 @@ public class MovieController {
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
 
-		return "addActors.html";
+		return "admin/changeMovieActors.html";
+	}
+
+	/******************************************************************************/
+	/********************************** SHARED ************************************/
+	/******************************************************************************/
+
+	@PostMapping("/searchMovie")
+	public String searchMovies(Model model, @RequestParam Year year) {
+		model.addAttribute("movies", movieRepository.findByYear(year));
+		return AuthUtil.parseLink("movies.html");
+	}
+
+	@GetMapping("/formSearchMovies")
+	public String formSearchMovies() {
+		return AuthUtil.parseLink("formSearchMovies.html");
+	}
+
+	@GetMapping("/movies")
+	public String showMovies(Model model) {
+		model.addAttribute("movies", movieRepository.findAll());
+
+		return AuthUtil.parseLink("movies.html");
+	}
+
+	@GetMapping("/movies/{id}")
+	public String getMovie(@PathVariable("id") Long id, Model model) {
+		Movie movie = movieRepository.findById(id).get();
+		model.addAttribute("movie", movie);
+		model.addAttribute("review", new Review());
+		model.addAttribute("reviews", reviewRepository.findReviewsByMovie(movie));
+
+		return AuthUtil.parseLink("movie.html");
 	}
 
 }

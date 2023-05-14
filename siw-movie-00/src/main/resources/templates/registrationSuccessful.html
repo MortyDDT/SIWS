@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/css/stile.css?version=2">
 
-	<title> Search Movie </title>
+	<title> Add Artist </title>
 
 </head>
 
@@ -55,16 +55,24 @@
 
 
 	<header>
-		<h1> Cerca un film in base all'anno </h1>
+		<h1> Congratulazioni ti sei registrato con le seguenti credenziali: </h1>
 	</header>
 
 
-	<div>
-		<form th:action="@{/searchMovie}" method="post">
-			<div> Anno: <input type="text" th:value="${year}" name="year" /> </div>
-			<div> <input type="submit" /> </div>
-		</form>
-	</div>
+	<section>
+		<div>
+			<span>Nome: </span>
+			<span th:text="${user.name}"></span>
+		</div>
+		<div>
+			<span>Cognome: </span>
+			<span th:text="${user.surname}"></span>
+		</div>
+		<div>
+			<span>Email: </span>
+			<span th:text="${user.email}"></span>
+		</div>
+	</section>
 
 
 	<footer>

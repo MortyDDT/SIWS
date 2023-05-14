@@ -5,7 +5,7 @@
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="/stile.css?version=2">
+	<link rel="stylesheet" href="/css/stile.css?version=2">
 
 	<title> Add Artist </title>
 
@@ -15,19 +15,20 @@
 <body>
 
 	<nav>
-		<a href="/"><img src="/logo-siw.png" id="logo"></a>
-
+		<a href="/"><img src="/images/logo-siw.png" id="logo"></a>
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year" id="searchBar" />
+			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
+				id="searchBar" />
 			<i class="gg-search">
 				<input type="submit" id="searchBar_button" />
 			</i>
 		</form>
 
+
 		<span class="dropdown">
 			<div class="dropbtn"> Movies </div>
 			<div class="dropdown-content">
-				<a href="/manageMovies"> Vedi Film </a>
+				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
 				<a href="/formNewMovie"> Inserisci Film </a>
 			</div>
@@ -36,11 +37,22 @@
 		<span class="dropdown">
 			<div class="dropbtn"> Actors </div>
 			<div class="dropdown-content">
-				<a href="/showArtists"> Vedi Artisti </a>
+				<a href="/artists"> Vedi Artisti </a>
 				<a href="/formNewArtist"> Aggiungi Artista </a>
 			</div>
 		</span>
 
+		<span class="dropdown">
+			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
+				class="dropbtn">
+				Username </div>
+			<div class="dropdown-content">
+				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
+				<a th:unless="${#request.userPrincipal}" href="/login">Login</a>
+				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+			</div>
+		</span>
 	</nav>
 
 
@@ -56,8 +68,8 @@
 				<span> <input required type="text" th:field="${artist.name}" /> </span>
 				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 			</div>
-			<div> 
-				<label> Eta </label> 
+			<div>
+				<label> Eta </label>
 				<span> <input required type="text" th:field="${artist.age}" /> </span>
 				<span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> </span>
 			</div>

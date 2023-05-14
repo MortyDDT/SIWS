@@ -25,7 +25,7 @@ import org.springframework.data.annotation.Transient;
 @Table(name = "movies")
 public class Movie {
 	
-	public static final String IMAGE_PATH = "src/main/resources/movie-images";
+	public static final String IMAGE_PATH = "src/main/resources/static/images/movie-images";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,7 +55,9 @@ public class Movie {
     public String getImagePath() {
         if (image == null || id == null) 
         	return null;
-        return "/" + IMAGE_PATH + "/" + id + "/" + image;
+		// need the relative path since in authConfig only /images/** is authorized not /src...
+		String relative_path = IMAGE_PATH.substring(25);
+        return relative_path + "/" + id + "/" + image;
     }
 	
 	public Long getId() {

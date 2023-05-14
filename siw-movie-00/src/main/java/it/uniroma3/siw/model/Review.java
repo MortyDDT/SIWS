@@ -22,14 +22,15 @@ public class Review {
 	@Min(1)
     @Max(5)
 	private Integer score;
-	
+    
+    private String title;
     private String comment;
 
     @ManyToOne
     private Movie movie;
 
-    // @ManyToOne     also change hashcode and repo functions
-    // private User user;
+    @ManyToOne
+    private User user;
 
 
     public Long getId() {
@@ -59,15 +60,27 @@ public class Review {
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
-
+    
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((score == null) ? 0 : score.hashCode());
         result = prime * result + ((movie == null) ? 0 : movie.hashCode());
+        result = prime * result + ((user == null) ? 0 : user.hashCode());
         return result;
     }
     @Override
@@ -79,19 +92,19 @@ public class Review {
         if (getClass() != obj.getClass())
             return false;
         Review other = (Review) obj;
-        if (score == null) {
-            if (other.score != null)
-                return false;
-        } else if (!score.equals(other.score))
-            return false;
         if (movie == null) {
             if (other.movie != null)
                 return false;
         } else if (!movie.equals(other.movie))
             return false;
+        if (user == null) {
+            if (other.user != null)
+                return false;
+        } else if (!user.equals(other.user))
+            return false;
         return true;
     }
 
-    
+
 
 }
