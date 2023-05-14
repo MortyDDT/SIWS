@@ -31,6 +31,8 @@ public class Artist {
 	@NotNull
 	private Integer age;
 
+	
+
 	@OneToMany(mappedBy = "director")
 	private List<Movie> moviesDirected;
 
