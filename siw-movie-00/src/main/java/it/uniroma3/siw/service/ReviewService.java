@@ -51,6 +51,7 @@ public class ReviewService {
         review.setMovie(movie);
         review.setUser(utenteAttuale);
     }
+
     @Transactional
     public List<Review> addReviewAndSave(Review review) {
 
@@ -69,12 +70,11 @@ public class ReviewService {
         return reviews;
     }
 
-
     @Transactional
     public List<Review> removeReview(Review review) {
         User user = review.getUser();
         Movie movie = review.getMovie();
-        
+
         user.getReviews().remove(review);
         movie.getReviews().remove(review);
 
