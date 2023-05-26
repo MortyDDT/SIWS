@@ -75,6 +75,7 @@ public class Review {
     }
 
 
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -104,6 +105,9 @@ public class Review {
             return false;
         return true;
     }
+
+
+    
 
 
 

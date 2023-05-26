@@ -53,6 +53,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 				"/movies/{id}",
 				"/movie",
 				"/artists",
+				"/artists/{id}",
+				"/artist",
 				"/formSearchMovies"
 		};
 

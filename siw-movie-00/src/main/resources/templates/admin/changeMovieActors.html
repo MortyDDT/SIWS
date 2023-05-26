@@ -70,7 +70,7 @@
 					<ul>
 						<li th:each="artist : ${artistList}">
 							<a th:href="@{'/removeActor' + '/' + ${movie.id} + '/' + ${artist.id}}"
-								th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </a>
+								th:text="${artist.name} + ' (' + ${artist.birthDate} + ')'"> </a>
 						</li>
 					</ul>
 				</div>
@@ -80,7 +80,7 @@
 				<ul>
 					<li th:each="artist : ${notArtistList}">
 						<a th:href="@{'/addActor' + '/' + ${movie.id} + '/' + ${artist.id}}"
-							th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </a>
+							th:text="${artist.name} + ' (' + ${artist.birthDate} + ')'"> </a>
 					</li>
 				</ul>
 			</div>

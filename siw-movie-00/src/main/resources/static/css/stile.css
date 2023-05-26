@@ -98,6 +98,11 @@ header > h1 {
   font-family: "Times New Roman", Times, serif;
 }
 
+.errors{
+  color: red;
+  margin-left: 38.5%;
+}
+
 /******************************************************************************************************************************************************************************/
 /****************************************************************************** General ***************************************************************************************/
 /******************************************************************************************************************************************************************************/
@@ -347,7 +352,7 @@ form.data_input input{
   margin-top: 2px;
   padding: 8px 13px;
   border-radius: 5px;
-  width: 210px;
+  width: 220px;
 }
 
 form.data_input input:focus{
@@ -471,6 +476,18 @@ ul.comments li{
   align-items: center;
   width: 350px;
   height: 300px;
+  margin: 6% 0px 0px 40%;
+  border: 3px groove var(--dark);
+  border-radius: 10px;
+  background-color: var(--less_dark);
+}
+
+.input_form_artist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 420px;
   margin: 6% 0px 0px 40%;
   border: 3px groove var(--dark);
   border-radius: 10px;

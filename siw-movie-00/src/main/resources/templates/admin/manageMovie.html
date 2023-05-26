@@ -44,8 +44,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -67,41 +66,54 @@
 	</header>
 
 
-	<div>
-		<div th:if="${movie}">
-			<div> Regista:
-				<a th:if="${movie.director == null}" th:href="@{'/changeMovieDirector' + '/' + ${movie.id}}"> Aggiungi
-				</a>
-				<span th:unless="${movie.director == null}">
-					<span th:text="${movie.director.name}"> </span>
-					<a th:href="@{'/changeMovieDirector' + '/' + ${movie.id}}"> Modifica </a>
-				</span>
+	<section class="input_form">
+		<form th:action="@{'/modifyMovie' + '/' + ${movie.id}}" enctype="multipart/form-data" method="post"
+			class="data_input">
+			<div>
+				<label> Titolo </label>
+				<input type="text" name="titolo" />
+			</div>
+			<div>
+				<label> Anno </label>
+				<input type="text" name="anno" />
 			</div>
 
-			<div> Attori:
-				<a th:if="${movie.artists.isEmpty()}" th:href="@{'/changeActors' + '/' + ${movie.id}}"> Aggiungi </a>
-				<div th:unless="${movie.artists.isEmpty()}">
-					<ul class="no_bullet">
-						<li th:each="artist : ${movie.artists}">
-							<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
-						</li>
-					</ul>
-					<span> <a th:href="@{'/changeActors' + '/' + ${movie.id}}"> Modifica </a> </span>
-					<span> <a th:href="@{'/movies' + '/' + ${movie.id}}"> Indietro </a> </span>
-				</div>
+			<div class="centered_box">
+				<label for="file-upload" class="custom-file-upload">
+					<i class="fa fa-cloud-upload"></i> Upload Image
+				</label>
+				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
 			</div>
 
-			<!-- <div>
-				<form th:action="@{/updateImage}" enctype="multipart/form-data" method="post" th:object=${movie}>
-					<div>
-						<label>Imagine: </label>
-						<input type="file" accept="image/png, image/jpeg" name="image">
-					</div>
-					<div> <button type="submit"> Modifica </button> </div>
-				</form>
-			</div> -->
+			<div class="centered_box"> <button type="submit"> Modifica </button> </div>
+		</form>
+	</section>
+
+
+	<section th:if="${movie}">
+		<div> Regista:
+			<a th:if="${movie.director == null}" th:href="@{'/changeMovieDirector' + '/' + ${movie.id}}"> Aggiungi
+			</a>
+			<span th:unless="${movie.director == null}">
+				<span th:text="${movie.director.name}"> </span>
+				<a th:href="@{'/changeMovieDirector' + '/' + ${movie.id}}"> Modifica </a>
+			</span>
 		</div>
-	</div>
+
+		<div> Attori:
+			<a th:if="${movie.artists.isEmpty()}" th:href="@{'/changeActors' + '/' + ${movie.id}}"> Aggiungi </a>
+			<div th:unless="${movie.artists.isEmpty()}">
+				<ul class="no_bullet">
+					<li th:each="artist : ${movie.artists}">
+						<p th:text="${artist.name} + ' (' + ${artist.birthDate} + ')'"> </p>
+					</li>
+				</ul>
+				<span> <a th:href="@{'/changeActors' + '/' + ${movie.id}}"> Modifica </a> </span>
+			</div>
+		</div>
+		<span> <a th:href="@{'/movies' + '/' + ${movie.id}}"> Indietro </a> </span>
+	</section>
+
 
 	<footer>
 

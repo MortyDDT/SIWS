@@ -61,7 +61,7 @@
 		<div th:if="${movies.isEmpty()}"> Non ci sono film salvati nel database! </div>
 	</header>
 
-	<span>
+	<div>
 		<ul>
 			<li th:each="movie : ${movies}" th:object=${movie}>
 				<span class="hover_img">
@@ -72,7 +72,7 @@
 				</span>
 			</li>
 		</ul>
-	</span>
+	</div>
 
 	<span th:if="${movies.size() >= 3}" class="carousel-container">
 		<div class="carousel">

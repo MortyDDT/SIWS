@@ -30,33 +30,10 @@ public class FileUploadUtil {
 
 		try (InputStream inputStream = multipartFile.getInputStream()) {
 			Path filePath = uploadPath.resolve(fileName);
-			
 			Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-			while(!isCompletelyWritten(filePath.toFile())){
-				System.out.println("copying/////////////////////////////////////");
-			}
-
 		} catch (IOException ioe) {
 			throw new IOException("Could not save image file: " + fileName, ioe);
 		}
 	}
 
-	private static boolean isCompletelyWritten(File file) {
-		RandomAccessFile stream = null;
-		try {
-			stream = new RandomAccessFile(file, "rw");
-			return true;
-		} catch (Exception e) {
-			System.out.println("Skipping file " + file.getName() + " for this iteration due it's not completely written");
-		} finally {
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					System.out.println("Exception during closing file " + file.getName());
-				}
-			}
-		}
-		return false;
-	}
 }

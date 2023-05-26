@@ -67,7 +67,7 @@
 		<ul>
 			<li th:each="artist : ${artists}" th:object=${artist}>
 				<a th:href="@{'/setDirectorToMovie' + '/' + ${movie.id} + '/' + *{id}}"
-					th:text="*{name} + ' (' + *{age} + ')'"> </a>
+					th:text="*{name} + ' (' + *{birthDate} + ')'"> </a>
 			</li>
 		</ul>
 	</div>

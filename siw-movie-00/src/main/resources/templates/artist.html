@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/css/stile.css?version=2">
 
-	<title> Actor List </title>
+	<title th:text="${artist.name} + '  ' + ${artist.surname}"> Artist </title>
 
 </head>
 
@@ -55,23 +55,25 @@
 
 
 	<header>
-		<h1 th:if="${artists.isEmpty()}"> Non ci sono artisti nel database </h1>
-		<h1 th:unless="${artists.isEmpty()}"> Artisti: </h1>
+		<div th:unless="${artist}"> Artista non trovato! </div>
 	</header>
 
-	<div>
-		<ul>
-			<li th:each="artist : ${artists}" th:object=${artist}>
-				<span class="hover_img">
-					<a th:href="@{'/artists' + '/' + *{id}}">
-						<p th:text="*{name} + '  ' + *{surname}  + ' (' + ${artist.birthDate} + ')'" > </p>
-						<span><img th:src="${artist.ImagePath}" /></span>
-					</a>
-				</span>
-			</li>
-		</ul>
-	</div>
+	<section th:if="${artist}" class="centered_box">
+		<section th:object=${artist} id="movie_description">
+			<span> <img th:src="${artist.ImagePath}" class="thumbnail" /> </span>
 
+			<section class="movie_info">
+				<div class="centered_box">
+					<h1 th:text="*{name} + '  ' + *{surname}" id="movie_title"> M D </h1>
+				</div>
+
+				<div class="moved_a_lil">
+					<div> Data Nascita: <span th:text="*{birthDate}"> </span> </div>
+					<div th:if="*{deathDate}"> Data Morte: <span th:text="*{deathDate}"> </span> </div>
+				</div>
+			</section>
+		</section>
+	</section>
 
 	<footer>
 

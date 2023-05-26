@@ -44,8 +44,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -64,7 +63,7 @@
 		<section th:object=${movie} id="movie_description">
 			<span> <img th:src="${movie.ImagePath}" class="thumbnail" /> </span>
 
-			<section class="movie_info">
+			<div class="movie_info">
 				<div class="centered_box">
 					<h1 th:text="*{title}" id="movie_title"> Berserk Golden Age </h1>
 				</div>
@@ -73,22 +72,26 @@
 
 					<div> Regista:
 						<span th:unless="${movie.director == null}">
-							<span th:text="${movie.director.name}"> </span>
+							<a th:href="@{'/artists' + '/' + ${movie.director.id}}"
+								th:text="${movie.director.name} + '  ' + ${movie.director.surname}"> </a>
 						</span>
 					</div>
 
 					<div> Anno: <span th:text="*{year}"> </span> </div>
+					<div th:text="'Media Voti: ' + ${movie.AverageScore}"> Media Voti: </div>
 
 					<div> Attori:
 						<ul class="no_bullet">
 							<li th:each="artist : ${movie.artists}">
-								<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
+								<a th:href="@{'/artists' + '/' + ${artist.id}}"
+									th:text="${artist.name} + '  ' + ${artist.surname}"> </a>
 							</li>
 						</ul>
 					</div>
-					<a th:href="@{'/manageMovie' + '/' + *{id}}" class="centered_box"> Aggiorna Film </a>
+					<div> <a th:href="@{'/manageMovie' + '/' + *{id}}" class="centered_box"> Aggiorna Film </a> </div>
+					<div> <a th:href="@{'/removeMovie' + '/' + *{id}}" class="centered_box"> Rimuovi Film </a> </div>
 				</div>
-			</section>
+			</div>
 		</section>
 
 		<section class="reviews">
@@ -101,6 +104,7 @@
 							<span th:text="'   Voto:' + *{score}"> </span>
 						</div>
 						<div th:text="*{comment}"> </div>
+						<a th:href="@{'/removeReview' + '/' + *{id}}"> Rimuovi </a>
 					</li>
 				</ul>
 			</div>
@@ -110,7 +114,7 @@
 
 		<form th:action="@{'/addReview' + '/' + ${movie.id}}" method="post" th:object="${review}">
 
-			
+
 			<div>
 				<label for="cmt">Aggiungi recensione</label>
 				<textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${review.comment}"
@@ -120,14 +124,19 @@
 				<span>
 					<span> Titolo </span>
 					<span> <input required type="text" th:field="${review.title}" /> </span>
-					<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
 				</span>
 				<span>
 					<input required type="number" th:field="${review.score}" min="1" max="5" placeholder="Voto"
 						class="score">
-					<span th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></span>
 				</span>
 				<span> <button type="submit"> Pubblica </button> </span>
+			</div>
+
+
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('score')}" th:errors="*{score}" class="errors"></div>
+			<div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
 			</div>
 		</form>
 	</section>

@@ -3,11 +3,11 @@
 
 <head>
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="/css/stile.css?version=2">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/css/stile.css?version=2" />
 
-	<title> Add Movie </title>
+	<title> Update Actor </title>
 
 </head>
 
@@ -44,8 +44,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -57,40 +56,53 @@
 
 
 	<header>
-		<h1> Aggiungi un film nel database </h1>
+		<h1> Aggiorna dati artista: </h1>
+		<div th:if="${artist}" th:object=${artist}>
+			<h1 th:text="*{name} + ' ' + *{surname}"> </h1>
+			<div> Data Nascita - Morte:
+				<span th:text="'(' + *{birthDate} + ')'"> </span>
+				<span th:if="*{deathDate}" th:text="' - (' + *{deathDate} + ')'"> </span>
+			</div>
+		</div>
+		<div th:unless="${artist}">
+			<h1> Artista non trovato! </h1>
+		</div>
 	</header>
 
 
-	<section class="input_form">
-		<form th:action="@{/addMovie}" enctype="multipart/form-data" method="post" th:object="${movie}"
+	<section class="input_form_artist">
+		<form th:action="@{'/modifyArtist' + '/' + ${artist.id}}" enctype="multipart/form-data" method="post"
 			class="data_input">
 			<div>
-				<label> Titolo </label>
-				<input required type="text" th:field="${movie.title}" placeholder="insert title..." />
+				<label> Nome </label>
+				<input type="text" name="nm" />
 			</div>
 			<div>
-				<label> Anno </label>
-				<input required type="text" th:field="${movie.year}" placeholder="yyyy" />
+				<label> Cognome </label>
+				<input type="text" name="sn" />
 			</div>
+			<div>
+				<label> Data Nascita </label>
+				<input type="date" name="bd" />
+			</div>
+			<div>
+				<label> Data Morte </label>
+				<input type="date" name="dd" />
+			</div>
+
 			<div class="centered_box">
 				<label for="file-upload" class="custom-file-upload">
 					<i class="fa fa-cloud-upload"></i> Upload Image
 				</label>
 				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
 			</div>
-			
 
-			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
-
-
-			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors"></div>
-			<div th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="errors"></div>
-			<div th:if="${#fields.hasGlobalErrors()}">
-				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
-			</div>
+			<div class="centered_box"> <button type="submit"> Modifica </button> </div>
 
 		</form>
 	</section>
+
+	<div> <a th:href="@{'/artists' + '/' + ${artist.id}}"> Indietro </a> </div>
 
 
 	<footer>

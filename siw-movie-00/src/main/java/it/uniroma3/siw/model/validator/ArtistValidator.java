@@ -18,9 +18,9 @@ public class ArtistValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Artist artist = (Artist) o;
         String name = artist.getName();
-        Integer age = artist.getAge();
+        String surname = artist.getSurname();
 
-        if ((name != null && age != null) && artistRepository.existsByNameAndAge(name, age))
+        if ((name != null && surname != null) && artistRepository.existsByNameAndSurname(name, surname))
             errors.reject("artist.duplicate");
     }
 

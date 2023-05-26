@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -28,25 +26,25 @@ import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.model.Review;
 import it.uniroma3.siw.model.validator.MovieValidator;
-import it.uniroma3.siw.repository.ArtistRepository;
-import it.uniroma3.siw.repository.MovieRepository;
-import it.uniroma3.siw.repository.ReviewRepository;
+import it.uniroma3.siw.service.ArtistService;
+import it.uniroma3.siw.service.MovieService;
+import it.uniroma3.siw.service.ReviewService;
 import it.uniroma3.siw.tool.AuthUtil;
-import it.uniroma3.siw.tool.FileUploadUtil;
 
 @Controller
 public class MovieController {
 
 	@Autowired
-	MovieRepository movieRepository; // gli id dei movie nel repo sono creati automaticamente
+	MovieService movieService;
+
 	@Autowired
-	ArtistRepository artistRepository;
+	ArtistService artistService;
+
 	@Autowired
-	ReviewRepository reviewRepository;
+	ReviewService reviewService;
+
 	@Autowired
 	MovieValidator movieValidator;
-	// @Autowired
-	// private ObjectMapper objectMapper;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -60,49 +58,8 @@ public class MovieController {
 					setValue(null);
 				}
 			}
-
-			public String getAsText(Year year) {
-				return year.toString();
-			}
 		});
 	}
-
-	// @PostMapping("/updateImage")
-	// public String updateImage(Movie movie, Model model, @RequestParam("image")
-	// MultipartFile file) throws IOException {
-
-	// if (movieRepository.existsById(movie.getId())) {
-	// String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-	// // Movie movie = movieRepository.findById(id).get();
-	// movie.setImage(fileName);
-	// movieRepository.updateMovieImageById(fileName, movie.getId());
-	// String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
-	// FileUploadUtil.saveFile(uploadDir, fileName, file);
-
-	// model.addAttribute("movie", movie);
-	// }
-
-	// return "updateMovie.html";
-
-	// }
-
-	// @PatchMapping("/updateImage/{id}")
-	// ResponseEntity<?> updateImage(@RequestBody Map<String, String> movie) {
-	// Movie toBePatchedMovie = objectMapper.convertValue(movie, Movie.class);
-	// movieRepository.patch(toBePatchedMovie);
-	// }
-
-	// @GetMapping("/")
-	// public String Main(Model model) {
-	// model.addAttribute("movies", movieRepository.findAll());
-	// return "index.html";
-	// }
-
-	// @GetMapping("/index")
-	// public String indexMovies(Model model) {
-	// model.addAttribute("movies", movieRepository.findAll());
-	// return "index.html";
-	// }
 
 	/******************************************************************************/
 	/******************************** FOR ADMINS **********************************/
@@ -113,25 +70,13 @@ public class MovieController {
 			Model model, @RequestParam("image") MultipartFile file) throws IOException { // ordine dei elem e importante
 
 		movieValidator.validate(movie, bindingResult); // verifica errori nei campi inseriti
-
 		if (!bindingResult.hasErrors()) {
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			movie.setImage(fileName);
-			Movie savedMovie = movieRepository.save(movie); // salva il film per ricevere un id
-			String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-			
-			FileUploadUtil.saveFile(uploadDir, fileName, file);
-
-			model.addAttribute("review", new Review());
+			movieService.addMovie(movie, file);
 			model.addAttribute("movie", movie);
+			model.addAttribute("review", new Review());
 			return "admin/movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
-		} else {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			for (ObjectError oe : errors)
-				System.out.println(oe);
-			return "admin/formNewMovie.html"; // link passato in caso di errore
 		}
-
+		return "admin/formNewMovie.html"; // link passato in caso di errore
 	}
 
 	@GetMapping("/formNewMovie")
@@ -140,85 +85,80 @@ public class MovieController {
 		return "admin/formNewMovie.html";
 	}
 
+	@GetMapping("/removeMovie/{id}")
+	public String removeMovie(@PathVariable("id") Long id, Model model) {
+		List<Movie> movies = movieService.removeMovie(id);
+
+		model.addAttribute("movies", movies);
+		return "admin/movies.html";
+	}
+
 	@GetMapping("/manageMovie/{id}")
 	public String manageMovie(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", movieRepository.findById(id).get());
+		model.addAttribute("movie", movieService.findById(id));
+		return "admin/manageMovie.html";
+	}
+
+	@PostMapping("/modifyMovie/{movieId}")
+	public String modifyMovie(Model model, @PathVariable("movieId") Long movieId,
+			@RequestParam(value = "titolo", required = false) String titolo,
+			@RequestParam(value = "anno", required = false) Year anno,
+			@RequestParam(value = "image", required = false) MultipartFile file) throws IOException {
+
+		Movie movie = movieService.modifyMovie(movieId, titolo, anno, file);
+		model.addAttribute("movie", movie);
 		return "admin/manageMovie.html";
 	}
 
 	@GetMapping("/setDirectorToMovie/{movieId}/{artistId}") // id presi dal template che chiama il metodo
 	public String setDirectorToMovie(@PathVariable("movieId") Long movieId, @PathVariable("artistId") Long artistId,
 			Model model) {
-		Movie movie = movieRepository.findById(movieId).get();
-		Artist director = artistRepository.findById(artistId).get();
-		movie.setDirector(director);
-		movieRepository.save(movie);
+		Movie movie = movieService.setDirectorToMovie(movieId, artistId);
 
 		model.addAttribute("movie", movie);
-		model.addAttribute("artist", director);
-
+		model.addAttribute("artist", movie.getDirector());
 		return "admin/manageMovie.html";
 	}
 
 	@GetMapping("/changeMovieDirector/{id}")
 	public String addDirector(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("movie", movieRepository.findById(id).get());
-		model.addAttribute("artists", artistRepository.findAll());
+		model.addAttribute("movie", movieService.findById(id));
+		model.addAttribute("artists", artistService.findAll());
 		return "admin/changeMovieDirector.html";
 	}
 
 	@GetMapping("/changeActors/{movieId}")
-	public String modifyArtists(@PathVariable("movieId") Long movieId, Model model) {
-		Movie movie = movieRepository.findById(movieId).get();
-
-		List<Artist> notArtists = artistRepository.findArtistsThatDidntActInMovie(movie);
+	public String changeActors(@PathVariable("movieId") Long movieId, Model model) {
+		Movie movie = movieService.findById(movieId);
+		List<Artist> notArtists = artistService.findArtistsNotInMovie(movie);
 
 		model.addAttribute("movie", movie);
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
-
 		return "admin/changeMovieActors.html";
 	}
 
 	@GetMapping("/addActor/{movieId}/{artistId}")
-	public String addArtist(@PathVariable("movieId") Long movieId, @PathVariable("artistId") Long artistId,
+	public String addActor(@PathVariable("movieId") Long movieId, @PathVariable("artistId") Long artistId,
 			Model model) {
-		Movie movie = movieRepository.findById(movieId).get();
-		Artist artist = artistRepository.findById(artistId).get();
-
-		movie.getArtists().add(artist);
-		artist.getMoviesActed().add(movie);
-
-		movieRepository.save(movie);
-		artistRepository.save(artist);
-
-		List<Artist> notArtists = artistRepository.findArtistsThatDidntActInMovie(movie);
+		Movie movie = movieService.addActorToMovie(artistId, movieId);
+		List<Artist> notArtists = artistService.findArtistsNotInMovie(movie);
 
 		model.addAttribute("movie", movie);
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
-
 		return "admin/changeMovieActors.html";
 	}
 
 	@GetMapping("/removeActor/{movieId}/{artistId}")
 	public String removeArtist(@PathVariable("movieId") Long movieId, @PathVariable("artistId") Long artistId,
 			Model model) {
-		Movie movie = movieRepository.findById(movieId).get();
-		Artist artist = artistRepository.findById(artistId).get();
-
-		movie.getArtists().remove(artist);
-		artist.getMoviesActed().remove(movie);
-
-		movieRepository.save(movie);
-		artistRepository.save(artist);
-
-		List<Artist> notArtists = artistRepository.findArtistsThatDidntActInMovie(movie);
+		Movie movie = movieService.removeActorFromMovie(artistId, movieId);
+		List<Artist> notArtists = artistService.findArtistsNotInMovie(movie);
 
 		model.addAttribute("movie", movie);
 		model.addAttribute("artistList", movie.getArtists());
 		model.addAttribute("notArtistList", notArtists);
-
 		return "admin/changeMovieActors.html";
 	}
 
@@ -228,7 +168,7 @@ public class MovieController {
 
 	@PostMapping("/searchMovie")
 	public String searchMovies(Model model, @RequestParam Year year) {
-		model.addAttribute("movies", movieRepository.findByYear(year));
+		model.addAttribute("movies", movieService.findByYear(year));
 		return AuthUtil.parseLink("movies.html");
 	}
 
@@ -239,18 +179,17 @@ public class MovieController {
 
 	@GetMapping("/movies")
 	public String showMovies(Model model) {
-		model.addAttribute("movies", movieRepository.findAll());
-
+		model.addAttribute("movies", movieService.findAll());
 		return AuthUtil.parseLink("movies.html");
 	}
 
 	@GetMapping("/movies/{id}")
 	public String getMovie(@PathVariable("id") Long id, Model model) {
-		Movie movie = movieRepository.findById(id).get();
+		Movie movie = movieService.findById(id);
+
 		model.addAttribute("movie", movie);
 		model.addAttribute("review", new Review());
-		model.addAttribute("reviews", reviewRepository.findReviewsByMovie(movie));
-
+		model.addAttribute("reviews", reviewService.findReviewsByMovie(movie));
 		return AuthUtil.parseLink("movie.html");
 	}
 

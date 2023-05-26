@@ -40,4 +40,5 @@ public class AuthUtil {
 					return ADMIN_REDIRECT + link;
 		return link;
 	}
+
 }

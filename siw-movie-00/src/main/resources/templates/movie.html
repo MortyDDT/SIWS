@@ -68,19 +68,22 @@
 				</div>
 
 				<div class="moved_a_lil">
-
 					<div> Regista:
 						<span th:unless="${movie.director == null}">
-							<span th:text="${movie.director.name}"> </span>
+							<a th:href="@{'/artists' + '/' + ${movie.director.id}}"
+								th:text="${movie.director.name} + '  ' + ${movie.director.surname}"> </a>
 						</span>
 					</div>
 
 					<div> Anno: <span th:text="*{year}"> </span> </div>
+					<div th:text="'Media Voti: ' + ${movie.AverageScore}"> Media Voti: </div>
+
 
 					<div> Attori:
 						<ul class="no_bullet">
 							<li th:each="artist : ${movie.artists}">
-								<p th:text="${artist.name} + ' (' + ${artist.age} + ')'"> </p>
+								<a th:href="@{'/artists' + '/' + ${artist.id}}"
+									th:text="${artist.name} + '  ' + ${artist.surname}"> </a>
 							</li>
 						</ul>
 					</div>
@@ -103,14 +106,10 @@
 			</div>
 		</section>
 	</section>
-	<section th:if="${#request.userPrincipal}" id="add_review">
 
+
+	<section th:if="${#request.userPrincipal}" id="add_review">
 		<form th:action="@{'/addReview' + '/' + ${movie.id}}" method="post" th:object="${review}">
-			<div>
-				<span> titolo </span>
-				<span> <input required type="text" th:field="${review.title}" /> </span>
-				<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
-			</div>
 			<div>
 				<label for="cmt">Aggiungi recensione</label>
 				<textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${review.comment}"
@@ -120,14 +119,19 @@
 				<span>
 					<span> Titolo </span>
 					<span> <input required type="text" th:field="${review.title}" /> </span>
-					<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
 				</span>
 				<span>
 					<input required type="number" th:field="${review.score}" min="1" max="5" placeholder="Voto"
 						class="score">
-					<span th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></span>
 				</span>
 				<span> <button type="submit"> Pubblica </button> </span>
+			</div>
+
+
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('score')}" th:errors="*{score}" class="errors"></div>
+			<div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
 			</div>
 		</form>
 	</section>

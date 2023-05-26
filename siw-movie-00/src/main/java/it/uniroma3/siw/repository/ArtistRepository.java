@@ -12,9 +12,9 @@ import it.uniroma3.siw.model.Movie;
 
 public interface ArtistRepository extends CrudRepository<Artist, Long> {
 	
-	public boolean existsByNameAndAge(String name, Integer age);
+	public boolean existsByNameAndSurname(String name, String surname);
 
-	public List<Artist> findByName(String name);
+	public List<Artist> findByNameAndSurname(String name, String surname);
 	
 	@Query(value = "SELECT a FROM Artist a WHERE :movie NOT MEMBER OF a.moviesActed")		// MEMBER OF if the COLLECTION IS INSIDE THE ENTITY "IN" if its a random collection
 	public List<Artist> findArtistsThatDidntActInMovie(@Param("movie") Movie movieActed);

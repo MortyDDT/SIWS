@@ -67,10 +67,8 @@
         <label> Password </label>
         <span> <input required type="password" name="password" /> </span>
       </div>
-      <div>
-        <span th:if="${param.error != null}">Username o password errati</span>
-      </div>
       <div class="centered_box"> <button type="submit"> Login </button> </div>
+      <div th:if="${param.error != null}">Username o password errati</div>
     </form>
   </section>
 

@@ -65,7 +65,12 @@
 	<div>
 		<ul>
 			<li th:each="artist : ${artists}" th:object=${artist}>
-				<span th:text="*{name} + ' (' + *{age} + ')'"> </span>
+				<span class="hover_img">
+					<a th:href="@{'/artists' + '/' + *{id}}">
+						<p th:text="*{name} + '  ' + *{surname}  + ' (' + ${artist.birthDate} + ')'" > </p>
+						<span><img th:src="${artist.ImagePath}" /></span>
+					</a>
+				</span>
 			</li>
 		</ul>
 	</div>

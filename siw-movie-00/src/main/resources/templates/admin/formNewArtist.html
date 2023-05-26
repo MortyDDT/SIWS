@@ -61,19 +61,42 @@
 	</header>
 
 
-	<section class="input_form">
-		<form th:action="@{/addArtist}" method="post" th:object="${artist}" class="data_input">
+	<section class="input_form_artist">
+		<form th:action="@{/addArtist}" enctype="multipart/form-data" method="post" th:object="${artist}" class="data_input">
 			<div>
 				<label> Nome </label>
 				<span> <input required type="text" th:field="${artist.name}" /> </span>
-				<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 			</div>
 			<div>
-				<label> Eta </label>
-				<span> <input required type="text" th:field="${artist.age}" /> </span>
-				<span th:if="${#fields.hasErrors('age')}" th:errors="*{age}"> </span>
+				<label> Cognome </label>
+				<span> <input required type="text" th:field="${artist.surname}" /> </span>
 			</div>
+			<div>
+				<label> Data Nascita </label>
+				<input required type="date" th:field="${artist.birthDate}" />
+			</div>
+			<div>
+				<label> Data Morte </label>
+				<input type="date" th:field="${artist.deathDate}" />
+			</div>
+
+			<div class="centered_box">
+				<label for="file-upload" class="custom-file-upload">
+					<i class="fa fa-cloud-upload"></i> Upload Image
+				</label>
+				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
+			</div>
+			
+
 			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
+			
+			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('deathDate')}" th:errors="*{deathDate}" class="errors"></div>
+			<div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+			</div>
 		</form>
 	</section>
 
