@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/css/stile.css?version=2">
 
-	<title> Movie List </title>
+	<title> Movies </title>
 
 </head>
 
@@ -17,8 +17,7 @@
 	<nav>
 		<a href="/"><img src="/images/logo-siw.png" id="logo"></a>
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
-				id="searchBar" />
+			<input type="text" name="substring" placeholder="Search movie" id="searchBar" />
 			<i class="gg-search">
 				<input type="submit" id="searchBar_button" />
 			</i>

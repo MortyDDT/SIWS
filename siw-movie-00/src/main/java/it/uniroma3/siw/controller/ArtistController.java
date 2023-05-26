@@ -66,7 +66,7 @@ public class ArtistController {
 		if (!bindingResult.hasErrors()) {
 			List<Artist> artists = artistService.addArtist(artist, file);
 			model.addAttribute("artists", artists);
-			return "admin/artists.html";
+			model.addAttribute("messaggioSuccesso", "L'artista e stato aggiunto!");
 		}
 
 		List<ObjectError> errors = bindingResult.getAllErrors();
@@ -91,7 +91,8 @@ public class ArtistController {
 
 		Artist artist = artistService.modifyArtist(artistId, name, surname, birthDate, deathDate, file);
 		model.addAttribute("artist", artist);
-		return "admin/artist.html";
+		model.addAttribute("messaggioSuccesso", "L'artista e stato modificato!");
+		return "admin/manageArtist.html";
 	}
 
 	@GetMapping("/manageArtist/{id}")

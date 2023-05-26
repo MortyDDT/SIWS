@@ -72,9 +72,8 @@ public class MovieController {
 		movieValidator.validate(movie, bindingResult); // verifica errori nei campi inseriti
 		if (!bindingResult.hasErrors()) {
 			movieService.addMovie(movie, file);
-			model.addAttribute("movie", movie);
-			model.addAttribute("review", new Review());
-			return "admin/movie.html"; // link passato se oper. effetuata (necessita funzione get di questo link)
+			model.addAttribute("movie", new Movie());
+			model.addAttribute("messaggioSuccesso", "Il film e stato aggiunto!");
 		}
 		return "admin/formNewMovie.html"; // link passato in caso di errore
 	}
@@ -107,6 +106,7 @@ public class MovieController {
 
 		Movie movie = movieService.modifyMovie(movieId, titolo, anno, file);
 		model.addAttribute("movie", movie);
+		model.addAttribute("messaggioSuccesso", "Il film e stato modificato!");
 		return "admin/manageMovie.html";
 	}
 
@@ -167,6 +167,12 @@ public class MovieController {
 	/******************************************************************************/
 
 	@PostMapping("/searchMovie")
+	public String searchMoviesByName(Model model, @RequestParam(value = "substring") String substring) {
+		model.addAttribute("movies", movieService.findByTitleContaining(substring));
+		return AuthUtil.parseLink("movies.html");
+	}
+
+	@PostMapping("/searchMovieByYear")
 	public String searchMovies(Model model, @RequestParam Year year) {
 		model.addAttribute("movies", movieService.findByYear(year));
 		return AuthUtil.parseLink("movies.html");

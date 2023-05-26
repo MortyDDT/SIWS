@@ -17,8 +17,7 @@
 	<nav>
 		<a href="/"><img src="/images/logo-siw.png" id="logo"></a>
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
-				id="searchBar" />
+			<input type="text" name="substring" placeholder="Search movie" id="searchBar" />
 			<i class="gg-search">
 				<input type="submit" id="searchBar_button" />
 			</i>
@@ -82,7 +81,7 @@
 
 			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
 
-
+			<div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
 			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors"></div>
 			<div th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="errors"></div>
 			<div th:if="${#fields.hasGlobalErrors()}">

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
 
-  <title> Add Artist </title>
+  <title> Login </title>
 
 </head>
 
@@ -17,7 +17,7 @@
   <nav>
     <a href="/"><img src="/images/logo-siw.png" id="logo"></a>
     <form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-      <input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year" id="searchBar" />
+      <input type="text" name="substring" placeholder="Search movie" id="searchBar" />
       <i class="gg-search">
         <input type="submit" id="searchBar_button" />
       </i>
@@ -58,7 +58,7 @@
 
 
   <section class="input_form">
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post" class="data_input">
       <div>
         <label> Username </label>
         <span> <input required type="text" name="username" /> </span>

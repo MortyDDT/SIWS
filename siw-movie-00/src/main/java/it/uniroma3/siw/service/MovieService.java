@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Movie;
-import it.uniroma3.siw.model.Review;
-import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.repository.ReviewRepository;
@@ -144,6 +142,16 @@ public class MovieService {
     public List<Movie> findAll() {
         List<Movie> movies = new ArrayList<>();
         Iterable<Movie> iterable = movieRepository.findAll();
+        for (Movie movie : iterable)
+            movies.add(movie);
+
+        return movies;
+    }
+
+    @Transactional
+    public List<Movie> findByTitleContaining(String substring) {
+        List<Movie> movies = new ArrayList<>();
+        Iterable<Movie> iterable = movieRepository.findByTitleContainingIgnoreCase(substring);
         for (Movie movie : iterable)
             movies.add(movie);
 

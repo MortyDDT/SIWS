@@ -55,13 +55,14 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 				"/artists",
 				"/artists/{id}",
 				"/artist",
-				"/formSearchMovies"
+				"/formSearchMovies",
 		};
 
 		String[] publicPostMethods = {
 				"/login",
 				"/register",
-				"/searchMovies"
+				"/searchMovie",
+				"/searchMovieByYear",
 		};
 
 		http

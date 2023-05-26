@@ -17,8 +17,7 @@
 	<nav>
 		<a href="/"><img src="/images/logo-siw.png" id="logo"></a>
 		<form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-			<input type="text" th:value="${year}" name="year" placeholder="Search a movie based on its year"
-				id="searchBar" />
+			<input type="text" name="substring" placeholder="Search movie" id="searchBar" />
 			<i class="gg-search">
 				<input type="submit" id="searchBar_button" />
 			</i>
@@ -62,7 +61,7 @@
 
 
 	<div>
-		<form th:action="@{/searchMovie}" method="post">
+		<form th:action="@{/searchMovieByYear}" method="post" class="data_input">
 			<div> Anno: <input type="text" th:value="${year}" name="year" /> </div>
 			<div> <input type="submit" /> </div>
 		</form>

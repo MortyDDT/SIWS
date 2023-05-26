@@ -18,13 +18,15 @@ public class FileUploadUtil {
 
 	public static void saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
 
-		if (Files.exists(Paths.get(uploadDir))) // se il path era usato precedentemente cancellalo + il vecchio file
-			FileUtils.deleteDirectory(new File(uploadDir));
-
 		Path uploadPath = Paths.get(uploadDir);
+		
+		if (Files.exists(uploadPath)) // se esisteva gia un folder per questo id
+			FileUtils.deleteDirectory(new File(uploadDir));
+			
+		if (Files.exists(uploadPath))
+			Files.delete(uploadPath);
 
-		if (!Files.exists(uploadPath))
-			Files.createDirectories(uploadPath);
+		Files.createDirectories(uploadPath);
 
 		System.out.println(uploadPath);
 
