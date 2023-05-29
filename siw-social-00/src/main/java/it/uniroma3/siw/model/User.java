@@ -50,6 +50,12 @@ public class User {
 	@ManyToMany(mappedBy = "friends")
 	private List<User> friends;
 
+	@ManyToMany(mappedBy = "friendRequests")
+	private List<User> friendRequests;
+
+
+
+
 
 
 	@Transient
@@ -136,6 +142,14 @@ public class User {
 	}
 
 	
+	public List<User> getFriendRequests() {
+		return friendRequests;
+	}
+
+	public void setFriendRequests(List<User> friendRequests) {
+		this.friendRequests = friendRequests;
+	}
+
 
 	@Override
 	public int hashCode() {

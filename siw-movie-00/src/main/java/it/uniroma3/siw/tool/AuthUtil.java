@@ -14,7 +14,7 @@ public class AuthUtil {
 
 	private static final String ADMIN_REDIRECT = "admin/";
 
-	/* CHECK IF GIVEN THE AUTHENTICATION THE USER HAS ADMIN ROLE */
+	/* CHECKS IF THE CURRENT USER HAS ADMIN ROLE */
 	public static boolean isAdmin() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

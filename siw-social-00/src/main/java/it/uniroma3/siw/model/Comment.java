@@ -1,7 +1,6 @@
 package it.uniroma3.siw.model;
 
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,11 +18,11 @@ public class Comment {
 
    private String descrizione; 
 
-   @ManyToOne
-	private List<User> author;
+   @ManyToOne(cascade = {CascadeType.PERSIST})
+	private User author;
 
-   @ManyToOne
-	private List<Story> story;
+   @ManyToOne(cascade = {CascadeType.PERSIST})
+	private Story story;
 
 
 
@@ -43,19 +42,19 @@ public class Comment {
       this.descrizione = descrizione;
    }
 
-   public List<User> getAuthor() {
+   public User getAuthor() {
       return author;
    }
 
-   public void setAuthor(List<User> author) {
+   public void setAuthor(User author) {
       this.author = author;
    }
 
-   public List<Story> getStory() {
+   public Story getStory() {
       return story;
    }
 
-   public void setStory(List<Story> story) {
+   public void setStory(Story story) {
       this.story = story;
    }
 

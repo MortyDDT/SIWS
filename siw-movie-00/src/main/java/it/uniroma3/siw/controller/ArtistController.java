@@ -96,13 +96,13 @@ public class ArtistController {
 	}
 
 	@GetMapping("/manageArtist/{id}")
-	public String manageMovie(@PathVariable("id") Long id, Model model) {
+	public String manageArtist(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("artist", artistService.findById(id));
 		return "admin/manageArtist.html";
 	}
 
 	@GetMapping("/removeArtist/{id}")
-	public String removeMovie(@PathVariable("id") Long id, Model model) {
+	public String removeArtist(@PathVariable("id") Long id, Model model) {
 		List<Artist> artists = artistService.removeArtist(id);
 
 		model.addAttribute("artists", artists);
@@ -120,7 +120,7 @@ public class ArtistController {
 	}
 
 	@GetMapping("/artists/{id}")
-	public String getMovie(@PathVariable("id") Long id, Model model) {
+	public String getArtist(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("artist", artistService.findById(id));
 		return AuthUtil.parseLink("artist.html");
 	}

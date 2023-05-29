@@ -3,6 +3,7 @@ package it.uniroma3.siw.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Transient;
@@ -25,6 +27,7 @@ public class Story {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
    
+   @NotBlank
    private String description;
    
    private Integer likes;
@@ -35,10 +38,10 @@ public class Story {
    @Column(nullable = true, length = 64)
 	private String imageName;
 
-   @ManyToOne
-	private List<User> author;
+   @ManyToOne(cascade = {CascadeType.PERSIST})
+	private User author;
 
-	@OneToMany(mappedBy = "story")
+	@OneToMany(mappedBy = "story", cascade = {CascadeType.REMOVE})
 	private List<Comment> comments;
 
 
@@ -51,7 +54,12 @@ public class Story {
 		return relative_path + "/" + id + "/" + imageName;
 	}
 
+   @Transient
+	public void addLike() {
+		likes++;
+	}
 
+   
    
    public Long getId() {
       return id;
@@ -98,11 +106,11 @@ public class Story {
    }
 
 
-   public List<User> getAuthor() {
+   public User getAuthor() {
       return author;
    }
 
-   public void setAuthor(List<User> author) {
+   public void setAuthor(User author) {
       this.author = author;
    }
 
