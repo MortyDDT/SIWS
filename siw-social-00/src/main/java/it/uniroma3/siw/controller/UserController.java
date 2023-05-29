@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Story;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.UserService;
 import it.uniroma3.siw.tool.AuthUtil;
 
@@ -47,68 +48,45 @@ public class UserController {
 		});
 	}
 
-	/******************************************************************************/
-	/******************************** FOR ADMINS **********************************/
-	/******************************************************************************/
 
 	/******************************************************************************/
 	/********************************** SHARED ************************************/
 	/******************************************************************************/
 
-	@PostMapping("/modifyUser/{id}")
-	public String modifyUser(Model model, @PathVariable("id") Long id,
+	@PostMapping("/modifyUser")
+	public String modifyUser(Model model,
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "surname", required = false) String surname,
 			@RequestParam(value = "birthdate", required = false) LocalDate birthDate,
 			@RequestParam(value = "email", required = false) String email,
 			@RequestParam(value = "image", required = false) MultipartFile file) throws IOException {
 
-		User user = userService.modifyUser(id, name, surname, birthDate, email, file);
+		User user = userService.modifyUser(name, surname, birthDate, email, file);
 		model.addAttribute("user", user);
 		model.addAttribute("messaggioSuccesso", "Il profilo e stato modificato!");
 		return AuthUtil.parseLink("manageUser.html");
 	}
 
-	@GetMapping("/manageUser/{id}")
-	public String manageUser(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("user", userService.getUser(id));
+	@GetMapping("/manageUser")
+	public String manageUser(Model model) {
+		model.addAttribute("user", userService.getCurrentUser());
 		return AuthUtil.parseLink("manageUser.html");
+	}
+
+	@GetMapping("/myProfile") /// user to my profile should be received from the template directly from
+												/// autheticated user
+	public String showMyProfile(Model model) {
+		User user = userService.getCurrentUser();
+		List<Story> stories = user.getStories();
+		model.addAttribute("user", user);
+		model.addAttribute("stories", stories);
+		return AuthUtil.parseLink("profile.html");
 	}
 
 	@GetMapping("/users")
 	public String showUsers(Model model) {
 		model.addAttribute("users", userService.findAll());
 		return AuthUtil.parseLink("users.html");
-	}
-
-	@GetMapping("/friends/{id}")
-	public String showFriends(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("users", userService.findFriends(id));
-		return AuthUtil.parseLink("users.html");
-	}
-
-	@GetMapping("/removeFriend/{idUser1}/{idUser2}")
-	public String removeFriend(@PathVariable("idUser1") Long idUser1, @PathVariable("idUser2") Long idUser2, Model model) {
-		model.addAttribute("users", userService.removeFriend(idUser1, idUser2));
-		return AuthUtil.parseLink("users.html");
-	}
-
-	@GetMapping("/sendFriendRequest/{idUser1}/{idUser2}")
-	public String sendFriendRequest(@PathVariable("idUser1") Long idUser1, @PathVariable("idUser2") Long idUser2, Model model) {
-		model.addAttribute("user", userService.sendFriendRequest(idUser1, idUser2));
-		return AuthUtil.parseLink("user.html");
-	}
-
-	@GetMapping("/acceptFriendRequest/{idUser1}/{idUser2}")
-	public String acceptFriendRequest(@PathVariable("idUser1") Long idUser1, @PathVariable("idUser2") Long idUser2, Model model) {
-		model.addAttribute("users", userService.acceptFriendRequest(idUser1, idUser2));
-		return AuthUtil.parseLink("friendRequests.html");
-	}
-
-	@GetMapping("/declineFriendRequest/{idUser1}/{idUser2}")
-	public String declineFriendRequest(@PathVariable("idUser1") Long idUser1, @PathVariable("idUser2") Long idUser2, Model model) {
-		model.addAttribute("users", userService.declineFriendRequest(idUser1, idUser2));
-		return AuthUtil.parseLink("friendRequests.html");
 	}
 
 	@GetMapping("/users/{id}")
@@ -120,14 +98,40 @@ public class UserController {
 		return AuthUtil.parseLink("user.html");
 	}
 
-	@GetMapping("/myProfile/{id}") /// user to my profile should be received from the template directly from
-												/// autheticated user
-	public String showMyProfile(@PathVariable("id") Long id, Model model) {
-		User user = userService.getUser(id);
-		List<Story> stories = user.getStories();
-		model.addAttribute("user", user);
-		model.addAttribute("stories", stories);
-		return AuthUtil.parseLink("profile.html");
+	@GetMapping("/searchUser")
+	public String searchUser(Model model, @RequestParam(value = "substring") String substring) {
+		model.addAttribute("users", userService.searchUser(substring));
+		return AuthUtil.parseLink("users.html");
+	}
+
+	@GetMapping("/friends")
+	public String showFriends(Model model) {
+		model.addAttribute("users", userService.findFriends());
+		return AuthUtil.parseLink("users.html");
+	}
+
+	@GetMapping("/removeFriend/{idUser}")
+	public String removeFriend(@PathVariable("idUser") Long idUser, Model model) {
+		model.addAttribute("users", userService.removeFriend(idUser));
+		return AuthUtil.parseLink("users.html");
+	}
+
+	@GetMapping("/sendFriendRequest/{idUser}")
+	public String sendFriendRequest(@PathVariable("idUser") Long idUser, Model model) {
+		model.addAttribute("user", userService.sendFriendRequest(idUser));
+		return AuthUtil.parseLink("user.html");
+	}
+
+	@GetMapping("/acceptFriendRequest/{idUser}")
+	public String acceptFriendRequest(@PathVariable("idUser") Long idUser, Model model) {
+		model.addAttribute("users", userService.acceptFriendRequest(idUser));
+		return AuthUtil.parseLink("friendRequests.html");
+	}
+
+	@GetMapping("/declineFriendRequest/{idUser}")
+	public String declineFriendRequest(@PathVariable("idUser") Long idUser, Model model) {
+		model.addAttribute("users", userService.declineFriendRequest(idUser));
+		return AuthUtil.parseLink("friendRequests.html");
 	}
 
 }

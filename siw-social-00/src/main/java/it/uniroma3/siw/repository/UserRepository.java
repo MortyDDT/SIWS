@@ -13,5 +13,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
    @Query(value = "SELECT u FROM User u WHERE :user MEMBER OF u.friends")
    public List<User> findFriends(@Param("user") User user);
+
+   public List<User> findByNameContainingIgnoreCase(String title);
+
    
 }

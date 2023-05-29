@@ -47,13 +47,20 @@ public class User {
 	@OneToMany(mappedBy = "author")
 	private List<Comment> comments;
 
-	@ManyToMany(mappedBy = "friends")
+
+
+	@ManyToMany
+	private List<User> friendOf;
+	
+	@ManyToMany(mappedBy = "friendOf")
 	private List<User> friends;
 
-	@ManyToMany(mappedBy = "friendRequests")
+	
+	@ManyToMany
+	private List<User> requestedFriendships;
+
+	@ManyToMany(mappedBy = "requestedFriendships")
 	private List<User> friendRequests;
-
-
 
 
 
@@ -151,6 +158,26 @@ public class User {
 	}
 
 
+	public List<User> getFriendOf() {
+		return friendOf;
+	}
+
+	public void setFriendOf(List<User> friendOf) {
+		this.friendOf = friendOf;
+	}
+
+
+
+	public List<User> getRequestedFriendships() {
+		return requestedFriendships;
+	}
+
+	public void setRequestedFriendships(List<User> requestedFriendships) {
+		this.requestedFriendships = requestedFriendships;
+	}
+
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -175,7 +202,6 @@ public class User {
 			return false;
 		return true;
 	}
-
 	
 }
 

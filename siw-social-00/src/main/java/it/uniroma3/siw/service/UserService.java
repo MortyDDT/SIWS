@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.CredentialsRepository;
 import it.uniroma3.siw.repository.UserRepository;
+import it.uniroma3.siw.tool.AuthUtil;
 import it.uniroma3.siw.tool.FileUploadUtil;
 
 /**
@@ -45,10 +47,10 @@ public class UserService {
     }
 
     @Transactional
-    public User modifyUser(Long userId, String name, String surname, LocalDate birthDate, String email,
+    public User modifyUser(String name, String surname, LocalDate birthDate, String email,
             MultipartFile file) throws IOException {
 
-        User user = userRepository.findById(userId).get();
+        User user = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
 
         if (!(name.isEmpty() || name.isBlank())) // in spring 2 empty fields get parsed as ""
             user.setName(name);
@@ -74,12 +76,15 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> removeFriend(Long idUser1, Long idUser2) {
-        User user1 = userRepository.findById(idUser1).get();
-        User user2 = userRepository.findById(idUser2).get();
+    public List<User> removeFriend(Long idUser) {
+        User user1 = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
+        User user2 = userRepository.findById(idUser).get();
 
         user1.getFriends().remove(user2);
+        user1.getFriendOf().remove(user2);
+
         user2.getFriends().remove(user1);
+        user2.getFriendOf().remove(user1);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -88,24 +93,31 @@ public class UserService {
     }
 
     @Transactional
-    public User sendFriendRequest(Long idUser1, Long idUser2) {
-        User user1 = userRepository.findById(idUser1).get();
-        User user2 = userRepository.findById(idUser2).get();
+    public User sendFriendRequest(Long idUser) {
+        User user1 = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
+        User user2 = userRepository.findById(idUser).get();
 
+        user1.getRequestedFriendships().add(user2);
         user2.getFriendRequests().add(user1);
+
+        userRepository.save(user1);
         userRepository.save(user2);
 
         return user2;
     }
 
     @Transactional
-    public List<User> acceptFriendRequest(Long idUser1, Long idUser2) {
-        User user1 = userRepository.findById(idUser1).get();
-        User user2 = userRepository.findById(idUser2).get();
+    public List<User> acceptFriendRequest(Long idUser) {
+        User user1 = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
+        User user2 = userRepository.findById(idUser).get();
 
         user1.getFriendRequests().remove(user2);
+        user2.getRequestedFriendships().remove(user1);
+
         user1.getFriends().add(user2);
+        user1.getFriendOf().add(user2);
         user2.getFriends().add(user1);
+        user2.getFriendOf().add(user1);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -114,12 +126,15 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> declineFriendRequest(Long idUser1, Long idUser2) {
-        User user1 = userRepository.findById(idUser1).get();
-        User user2 = userRepository.findById(idUser2).get();
+    public List<User> declineFriendRequest(Long idUser) {
+        User user1 = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
+        User user2 = userRepository.findById(idUser).get();
 
         user1.getFriendRequests().remove(user2);
+        user2.getRequestedFriendships().remove(user1);
+
         userRepository.save(user1);
+        userRepository.save(user2);
 
         return user1.getFriendRequests();
     }
@@ -170,8 +185,8 @@ public class UserService {
     }
 
     @Transactional
-    public List<User> findFriends(Long id) {
-        User user = userRepository.findById(id).get();
+    public List<User> findFriends() {
+        User user = credentialsRepository.findByUsername(AuthUtil.getCurrentUsername()).get().getUser();
 
         List<User> users = new ArrayList<>();
         Iterable<User> iterable = this.userRepository.findFriends(user);
@@ -179,4 +194,17 @@ public class UserService {
             users.add(u);
         return users;
     }
+
+    @Transactional
+    public List<User> searchUser(String name) {
+        return this.userRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    @Transactional
+    public User getCurrentUser() {
+        String currentUsername = AuthUtil.getCurrentUsername();
+        Credentials credentials = credentialsRepository.findByUsername(currentUsername).get();
+        return credentials.getUser();
+    }
+
 }

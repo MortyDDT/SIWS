@@ -26,6 +26,15 @@ public class AuthUtil {
 		return false;
 	}
 
+	/* RETURNS THE USERNAME OF THE CURRENT LOGGED-IN USER */
+	public static String getCurrentUsername() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		if (authentication instanceof AnonymousAuthenticationToken)
+			return null;
+		return username;
+	}
+
 	/*
 	 * PARSES THE LINK TO AN ADMIN TEMPLATE OR NOT IF AUTHENTICATED AS ADMIN (WORKS
 	 * ONLY IF THE TEMPLATE HAS THE SAME NAME)
