@@ -124,4 +124,9 @@ public class ArtistService {
         return artists;
     }
 
+    @Transactional
+    public boolean existsByNameAndSurname(String name, String surname) {
+        return artistRepository.existsByNameAndSurname(name, surname);
+    }
+
 }

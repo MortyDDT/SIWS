@@ -1,10 +1,8 @@
 package it.uniroma3.siw.model;
 
-import java.beans.Transient;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,48 +14,53 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.annotation.Transient;
 
 @Entity
-@Table(name = "artists")
-public class Artist {
-
-	public static final String IMAGE_PATH = "src/main/resources/static/images/actor-images";
-
+@Table(name = "users") // cambiamo nome perchè in postgres user e' una parola riservata
+public class User {
+	
+	public static final String IMAGE_PATH = "src/main/resources/static/images/user-images";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotBlank
 	private String name;
+
 	@NotBlank
 	private String surname;
 
 	@NotNull
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate birthDate;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private LocalDate deathDate;
+	@NotBlank
+	private String email;
 
 	@Column(nullable = true, length = 64)
 	private String imageName;
 
-	@OneToMany(mappedBy = "director")
-	private List<Movie> moviesDirected;
+	@OneToMany(mappedBy = "author")
+	private List<Story> stories;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST })
-	private List<Movie> moviesActed;
+	@OneToMany(mappedBy = "author")
+	private List<Comment> comments;
+
+	@ManyToMany(mappedBy = "friends")
+	private List<User> friends;
+
+
 
 	@Transient
 	public String getImagePath() {
 		if (imageName == null || id == null)
 			return null;
-		// need the relative path since in authConfig only /images/** is authorized not
-		// /src...
 		String relative_path = IMAGE_PATH.substring(25);
 		return relative_path + "/" + id + "/" + imageName;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -91,12 +94,12 @@ public class Artist {
 		this.birthDate = birthDate;
 	}
 
-	public LocalDate getDeathDate() {
-		return deathDate;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDeathDate(LocalDate deathDate) {
-		this.deathDate = deathDate;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getImageName() {
@@ -107,28 +110,38 @@ public class Artist {
 		this.imageName = imageName;
 	}
 
-	public List<Movie> getMoviesDirected() {
-		return moviesDirected;
+	public List<Story> getStories() {
+		return stories;
 	}
 
-	public void setMoviesDirected(List<Movie> moviesDirected) {
-		this.moviesDirected = moviesDirected;
+	public void setStories(List<Story> stories) {
+		this.stories = stories;
 	}
 
-	public List<Movie> getMoviesActed() {
-		return moviesActed;
+	public List<User> getFriends() {
+		return friends;
 	}
 
-	public void setMoviesActed(List<Movie> moviesActed) {
-		this.moviesActed = moviesActed;
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
 	}
+
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		return result;
 	}
 
@@ -140,18 +153,15 @@ public class Artist {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Artist other = (Artist) obj;
-		if (name == null) {
-			if (other.name != null)
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
 				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (surname == null) {
-			if (other.surname != null)
-				return false;
-		} else if (!surname.equals(other.surname))
+		} else if (!email.equals(other.email))
 			return false;
 		return true;
 	}
 
+	
 }
+

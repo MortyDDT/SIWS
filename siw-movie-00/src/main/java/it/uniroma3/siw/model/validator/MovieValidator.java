@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.MovieRepository;
+import it.uniroma3.siw.service.MovieService;
 
 @Component
 public class MovieValidator implements Validator {
@@ -16,7 +17,7 @@ public class MovieValidator implements Validator {
 	private static final int ANNO_PRIMO_FILM = 1878;
 
 	@Autowired
-	private MovieRepository movieRepository;
+	private MovieService movieService;
 
 	@Override
 	public void validate(Object o, Errors errors) {
@@ -24,7 +25,7 @@ public class MovieValidator implements Validator {
 		String title = movie.getTitle();
 		Year year = movie.getYear();
 
-		if ((title != null && year != null) && movieRepository.existsByTitleAndYear(title, year))
+		if ((title != null && year != null) && movieService.existsByTitleAndYear(title, year))
 			errors.reject("movie.duplicate");
 
 		if (year != null && year.getValue() < ANNO_PRIMO_FILM)

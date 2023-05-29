@@ -149,6 +149,11 @@ public class MovieService {
     }
 
     @Transactional
+    public boolean existsByTitleAndYear(String title, Year year) {
+        return movieRepository.existsByTitleAndYear(title, year);
+    }
+
+    @Transactional
     public List<Movie> findByTitleContaining(String substring) {
         List<Movie> movies = new ArrayList<>();
         Iterable<Movie> iterable = movieRepository.findByTitleContainingIgnoreCase(substring);
