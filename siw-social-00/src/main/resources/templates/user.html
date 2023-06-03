@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/stile.css?version=2">
   <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
-  <title th:text="${user.surname} + ' ' + ${user.name}" > Utente </title>
+  <title th:text="${user.surname} + ' ' + ${user.name}"> Utente </title>
 
 </head>
 
@@ -33,7 +33,7 @@
         <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
       </div>
     </span>
 
@@ -50,7 +50,8 @@
 
   <header class="centered_box">
     <div id="profile_description" th:object="${user}">
-      <span><img th:if="*{ImagePath}" th:src="*{ImagePath}" class="propic" /></span>
+      <span><img th:src="*{ImagePath}" class="propic"
+          onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
       <div class="user_info">
         <div>
           <h1 th:text="*{surname} + ' ' + *{name}">Surname Name</h1>
@@ -58,9 +59,9 @@
         <div th:text="'Born on:' + *{birthDate}"> Born on: 03/01/2001 </div>
         <div th:text="'Email:' + *{email}"> Email: test@gmail.com </div>
         <div th:text="'Friends:' + *{NumberOfFriends}"> Friends: 274 </div>
-        <div><a th:href="'/sendFriendRequest' + '/' + *{id}"> Send Friend Request </a><div>
-      </div>
-    </div>
+        <div th:unless="${alreadyFriends}">
+          <a th:href="'/sendFriendRequest' + '/' + *{id}"> Send Friend Request </a>
+        </div>
   </header>
 
   <div id="stories_divisor"> Stories </div>
@@ -70,11 +71,11 @@
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
           <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
-          
+
           <span class="story_desc">
             <div th:text="*{description}"> </div>
             <div>
-              <div th:text="*{dateAdded}"> </div>
+              <div th:text="*{DateParsed}"> </div>
               <div th:text="'   Likes:' + *{likes}"> </div>
             </div>
           </span>

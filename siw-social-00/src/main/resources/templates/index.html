@@ -53,6 +53,28 @@
     <p> Meet some new friends here! </p>
   </header>
 
+  <section th:if="${#request.userPrincipal}" class="reviews">
+    <div>
+      <ul class="stories">
+        <li th:each="s : ${stories}" th:object=${s}>
+          <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+          
+          <span class="story_desc">
+              <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
+              <div th:text="*{DateParsed}"> </div>
+              <div th:text="*{description}"> </div>
+              <div th:text="'   Likes:' + *{likes}"> </div>
+          </span>
+
+          <div>
+            <a th:href="@{'/likeStoryIndex' + '/' + *{id}}"> Like </a>
+            <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <footer>
     <p> Sito creato per il corso SIW di Roma3 </p>
   </footer>

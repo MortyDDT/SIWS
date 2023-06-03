@@ -33,7 +33,7 @@
         <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
       </div>
     </span>
 
@@ -51,50 +51,49 @@
   <header>
   </header>
 
-	<section th:if="${story}" class="centered_box">
-		<section th:object=${story} id="movie_description">
-			<span> <img th:src="*{ImagePath}" class="thumbnail" /> </span>
+  <section th:if="${story}" class="centered_box">
+    <section th:object=${story} id="movie_description">
+      <span> <img th:src="*{ImagePath}" class="thumbnail" /> </span>
 
-			<span class="story_desc">
-        <div th:text="*{author.surname} + ' ' + *{author.name}"> </div>
+      <span class="story_desc">
+        <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
+        <div th:text="*{DateParsed}"> </div>
         <div th:text="*{description}"> </div>
-        <div>
-          <div th:text="*{dateAdded}"> </div>
-          <div th:text="'   Likes:' + *{likes}"> </div>
-        </div>
+        <div th:text="'   Likes:' + *{likes}"> </div>
       </span>
-		</section>
+    </section>
 
-		<section class="reviews">
-			<div>
-				<ul class="comments">
-					<li th:each="cmt : ${comments}" th:object=${cmt}>
-						<div>
-							<div th:text="*{author.surname} + ' ' + *{author.name}" class="user_name"> </div>
-              <div th:text="*{dateAdded}"> </div>
+    <section class="reviews">
+      <div>
+        <ul class="comments">
+          <li th:each="cmt : ${comments}" th:object=${cmt}>
+            <div>
+              <div th:text="*{author.surname} + ' ' + *{author.name}" class="user_name"> </div>
+              <div th:text="*{DateParsed}"> </div>
               <div th:text="*{description}"> </div>
-              <a th:if="${authenticatedUser != null && (authenticatedUser.equals(story.author))}" th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</section>
-	</section>
+              <a th:if="${authenticatedUser != null && (authenticatedUser.equals(story.author))}"
+                th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </section>
 
 
-	<section th:if="${#request.userPrincipal}" id="add_review">
-		<form th:action="@{'/addComment' + '/' + ${story.id} + '/' + ${story.author.id}}" method="post" th:object="${comment}">
-			<div>
-				<label for="cmt">Add a comment to the story:</label>
-				<textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
-					placeholder="type something.."></textarea>
-			</div>
+  <section th:if="${#request.userPrincipal}" id="add_review">
+    <form th:action="@{'/addComment' + '/' + ${story.id} + '/' + ${story.author.id}}" method="post"
+      th:object="${comment}">
+      <div>
+        <label for="cmt">Add a comment to the story:</label>
+        <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
+          placeholder="type something.."></textarea>
+      </div>
       <div> <button type="submit"> Pubblica </button> </div>
-		</form>
-	</section>
+    </form>
+  </section>
 
   <footer>
-    <p> Sito creato per il corso SIW di Roma3 </p>
   </footer>
 
 </body>

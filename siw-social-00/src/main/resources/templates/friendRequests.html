@@ -49,24 +49,24 @@
 
 
   <header>
-    <h1> Welcome to MovieDB! </h1>
-    <p> We have movies here! </p>
+    <h1> Requests </h1>
+    <p th:if="${users.isEmpty()}"> You have no new friend requests! </p>
   </header>
 
-  <section>
-    <span>
-      <ul>
-        <li th:each="movie : ${movies}" th:object=${movie}>
-          <span class="hover_img">
-            <a th:href="@{'/movies' + '/' + *{id}}">
-              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
-            </a>
-          </span>
-        </li>
-      </ul>
-    </span>
-  </section>
+  <span>
+    <ul>
+      <li th:each="user : ${users}" th:object=${user}>
+        <span class="hover_img">
+          <a th:href="@{'/users' + '/' + *{id}}">
+            <p th:text="*{surname} + ' ' + *{name}"> </p>
+            <span><img th:src="*{ImagePath}"  onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'"/></span>
+          </a>
+        </span>
+        <span> <a th:href="@{'/acceptFriendRequest' + '/' + *{id}}"> Accept </a> </span>
+        <span> <a th:href="@{'/declineFriendRequest' + '/' + *{id}}"> Decline </a> </span>
+      </li>
+    </ul>
+  </span>
 
   <footer>
     <p> Sito creato per il corso SIW di Roma3 </p>

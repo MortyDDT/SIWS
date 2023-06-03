@@ -50,7 +50,7 @@
 
   <header class="centered_box">
     <div id="profile_description" th:object="${user}">
-      <span><img th:if="*{ImagePath}" th:src="*{ImagePath}" class="propic" /></span>
+      <span><img th:src="*{ImagePath}" class="propic" onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
       <div class="user_info">
         <div>
           <h1 th:text="*{surname} + ' ' + *{name}">Surname Name</h1>
@@ -89,12 +89,12 @@
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
+          
           <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
-
           <span class="story_desc">
             <div th:text="*{description}"> </div>
             <div>
-              <div th:text="*{dateAdded}"> </div>
+              <div th:text="*{DateParsed}"> </div>
               <div th:text="'   Likes:' + *{likes}"> </div>
             </div>
           </span>

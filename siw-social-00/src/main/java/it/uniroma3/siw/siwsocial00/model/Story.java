@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwsocial00.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,44 +23,63 @@ import org.springframework.data.annotation.Transient;
 public class Story {
 
    public static final String IMAGE_PATH = "src/main/resources/static/images/story-images";
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-   
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
+
    @NotBlank
    private String description;
-   
+
    private Integer likes;
 
-	private LocalDate dateAdded;
+   private LocalDateTime dateAdded;
 
    @Column(nullable = true, length = 64)
-	private String imageName;
+   private String imageName;
 
-   @ManyToOne(cascade = {CascadeType.PERSIST})
-	private User author;
+   @ManyToOne
+   private User author;
 
-	@OneToMany(mappedBy = "story", cascade = {CascadeType.REMOVE})
-	private List<Comment> comments;
+   @OneToMany(mappedBy = "story", cascade = { CascadeType.REMOVE })
+   private List<Comment> comments;
 
-
-
-   @Transient
-	public String getImagePath() {
-		if (imageName == "" || imageName == null || id == null)
-			return null;
-		String relative_path = IMAGE_PATH.substring(25);
-		return relative_path + "/" + id + "/" + imageName;
-	}
+   @ManyToMany
+   private List<User> usersThatLiked;
 
    @Transient
-	public void addLike() {
-		likes++;
-	}
+   public String getImagePath() {
+      if (imageName.isBlank() || imageName == null || id == null)
+         return null;
+      String relative_path = IMAGE_PATH.substring(25);
+      return relative_path + "/" + id + "/" + imageName;
+   }
 
-   
-   
+   @Transient
+   public void addLike() {
+      likes++;
+   }
+
+   @Transient
+   public void removeLike() {
+      if (likes > 0)
+         likes--;
+   }
+
+   @Transient
+   public String getDateParsed() {
+      DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+      return dateAdded.format(dateFormat);
+   }
+
+   public List<User> getUsersThatLiked() {
+      return usersThatLiked;
+   }
+
+   public void setUsersThatLiked(List<User> usersThatLiked) {
+      this.usersThatLiked = usersThatLiked;
+   }
+
    public Long getId() {
       return id;
    }
@@ -66,7 +87,6 @@ public class Story {
    public void setId(Long id) {
       this.id = id;
    }
-
 
    public String getDescription() {
       return description;
@@ -76,7 +96,6 @@ public class Story {
       this.description = description;
    }
 
-
    public Integer getLikes() {
       return likes;
    }
@@ -85,15 +104,13 @@ public class Story {
       this.likes = likes;
    }
 
-
-   public LocalDate getDateAdded() {
+   public LocalDateTime getDateAdded() {
       return dateAdded;
    }
 
-   public void setDateAdded(LocalDate dateAdded) {
+   public void setDateAdded(LocalDateTime dateAdded) {
       this.dateAdded = dateAdded;
    }
-
 
    public String getImageName() {
       return imageName;
@@ -103,7 +120,6 @@ public class Story {
       this.imageName = imageName;
    }
 
-
    public User getAuthor() {
       return author;
    }
@@ -112,7 +128,6 @@ public class Story {
       this.author = author;
    }
 
-
    public List<Comment> getComments() {
       return comments;
    }
@@ -120,8 +135,6 @@ public class Story {
    public void setComments(List<Comment> comments) {
       this.comments = comments;
    }
-
-
 
    @Override
    public int hashCode() {

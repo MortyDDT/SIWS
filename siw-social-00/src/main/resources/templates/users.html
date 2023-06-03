@@ -55,14 +55,19 @@
 
   <span>
     <ul>
-      <li th:each="user : ${users}" th:object=${user}>
-        <span class="hover_img">
-          <a th:href="@{'/users' + '/' + *{id}}">
-            <p th:text="*{surname} + ' ' + *{name}"> </p>
-            <span><img th:src="*{ImagePath}" /></span>
-          </a>
-        </span>
-      </li>
+      <span>
+        <li th:each="user : ${users}" th:object=${user}>
+          <span class="hover_img">
+            <a th:href="@{'/users' + '/' + *{id}}">
+              <p th:text="*{surname} + ' ' + *{name}"> </p>
+              <span><img th:src="*{ImagePath}"
+                  onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
+            </a>
+          </span>
+          <span th:if="${friendsCheck}"> <a th:href="@{'/removeFriend' + '/' + *{id}}" style="color: red"> Remove Friend </a> </span>
+
+        </li>
+      </span>
     </ul>
   </span>
 

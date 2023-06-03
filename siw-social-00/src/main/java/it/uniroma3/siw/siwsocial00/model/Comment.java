@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwsocial00.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "comments")
@@ -20,14 +25,21 @@ public class Comment {
 
    private String description;
 
-   private LocalDate dateAdded;
+   @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+   private LocalDateTime dateAdded;
 
-   @ManyToOne(cascade = {CascadeType.PERSIST})
+   @ManyToOne
 	private User author;
 
-   @ManyToOne(cascade = {CascadeType.PERSIST})
+   @ManyToOne
 	private Story story;
 
+
+   @Transient
+   public String getDateParsed() {
+      DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+      return dateAdded.format(dateFormat);
+   }
 
 
    public Long getId() {
@@ -62,11 +74,11 @@ public class Comment {
       this.story = story;
    }
 
-   public LocalDate getDateAdded() {
+   public LocalDateTime getDateAdded() {
       return dateAdded;
    }
 
-   public void setDateAdded(LocalDate dateAdded) {
+   public void setDateAdded(LocalDateTime dateAdded) {
       this.dateAdded = dateAdded;
    }
    

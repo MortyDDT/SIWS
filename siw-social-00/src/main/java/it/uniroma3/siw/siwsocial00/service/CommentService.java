@@ -1,6 +1,6 @@
 package it.uniroma3.siw.siwsocial00.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class CommentService {
     public void addComment(Comment comment, Long storyId, Long userId) {
         Story story = storyRepository.findById(storyId).get();
         User user = userRepository.findById(userId).get();
-        comment.setDateAdded(LocalDate.now());
+        comment.setDateAdded(LocalDateTime.now());
 
         story.getComments().add(comment);
         user.getComments().add(comment);

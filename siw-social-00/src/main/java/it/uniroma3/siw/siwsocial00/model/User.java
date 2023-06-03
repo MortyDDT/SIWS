@@ -19,9 +19,9 @@ import org.springframework.data.annotation.Transient;
 @Entity
 @Table(name = "users") // cambiamo nome perchè in postgres user e' una parola riservata
 public class User {
-	
+
 	public static final String IMAGE_PATH = "src/main/resources/static/images/user-images";
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -47,27 +47,21 @@ public class User {
 	@OneToMany(mappedBy = "author")
 	private List<Comment> comments;
 
-
-
 	@ManyToMany
 	private List<User> friendOf;
-	
+
 	@ManyToMany(mappedBy = "friendOf")
 	private List<User> friends;
 
-	
 	@ManyToMany
 	private List<User> requestedFriendships;
 
 	@ManyToMany(mappedBy = "requestedFriendships")
 	private List<User> friendRequests;
 
-
-
-
 	@Transient
 	public String getImagePath() {
-		if (imageName == "" || imageName == null || id == null)
+		if (imageName.isBlank() || imageName == null || id == null)
 			return null;
 		String relative_path = IMAGE_PATH.substring(25);
 		return relative_path + "/" + id + "/" + imageName;
@@ -77,8 +71,6 @@ public class User {
 	public Integer getNumberOfFriends() {
 		return friends.size();
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -144,7 +136,6 @@ public class User {
 		this.friends = friends;
 	}
 
-
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -153,7 +144,6 @@ public class User {
 		this.comments = comments;
 	}
 
-	
 	public List<User> getFriendRequests() {
 		return friendRequests;
 	}
@@ -161,7 +151,6 @@ public class User {
 	public void setFriendRequests(List<User> friendRequests) {
 		this.friendRequests = friendRequests;
 	}
-
 
 	public List<User> getFriendOf() {
 		return friendOf;
@@ -171,8 +160,6 @@ public class User {
 		this.friendOf = friendOf;
 	}
 
-
-
 	public List<User> getRequestedFriendships() {
 		return requestedFriendships;
 	}
@@ -180,8 +167,6 @@ public class User {
 	public void setRequestedFriendships(List<User> requestedFriendships) {
 		this.requestedFriendships = requestedFriendships;
 	}
-
-	
 
 	@Override
 	public int hashCode() {
@@ -207,6 +192,5 @@ public class User {
 			return false;
 		return true;
 	}
-	
-}
 
+}

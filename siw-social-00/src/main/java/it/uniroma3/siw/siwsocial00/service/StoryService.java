@@ -1,7 +1,7 @@
 package it.uniroma3.siw.siwsocial00.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwsocial00.model.Story;
 import it.uniroma3.siw.siwsocial00.model.User;
+import it.uniroma3.siw.siwsocial00.repository.CredentialsRepository;
 import it.uniroma3.siw.siwsocial00.repository.StoryRepository;
 import it.uniroma3.siw.siwsocial00.repository.UserRepository;
+import it.uniroma3.siw.siwsocial00.tool.AuthUtil;
 import it.uniroma3.siw.siwsocial00.tool.FileUploadUtil;
 
 @Service
@@ -26,6 +28,9 @@ public class StoryService {
     @Autowired
     protected UserRepository userRepository;
 
+    @Autowired
+    protected CredentialsRepository credentialsRepository;
+
     /******************************************************************************/
     /********************************** CUSTOM ************************************/
     /******************************************************************************/
@@ -33,7 +38,7 @@ public class StoryService {
     @Transactional
     public void addStory(Story story, User user, MultipartFile file) throws IOException {
 
-        story.setDateAdded(LocalDate.now());
+        story.setDateAdded(LocalDateTime.now());
         story.setLikes(0);
         story.setAuthor(user);
 
@@ -49,14 +54,18 @@ public class StoryService {
     }
 
     @Transactional
-    public User likeStory(Long id) {
+    public User likeStory(Long id, User currentUser) {
         Story story = storyRepository.findById(id).get();
-        User user = story.getAuthor();
-
-        story.addLike();
+        
+        if(story.getUsersThatLiked().contains(currentUser)){
+            story.getUsersThatLiked().remove(currentUser);
+            story.removeLike();
+        }else{
+            story.getUsersThatLiked().add(currentUser);
+            story.addLike();
+        }
         storyRepository.save(story);
-
-        return user;
+        return story.getAuthor();
     }
 
     @Transactional
@@ -100,7 +109,7 @@ public class StoryService {
     @Transactional
     public List<Story> findAll() {
         List<Story> stories = new ArrayList<>();
-        Iterable<Story> iterable = storyRepository.findAll();
+        Iterable<Story> iterable = storyRepository.findAllByOrderByIdDesc();
         for (Story story : iterable)
             stories.add(story);
 
@@ -110,7 +119,17 @@ public class StoryService {
     @Transactional
     public List<Story> findStoriesByUser(User user) {
         List<Story> stories = new ArrayList<>();
-        Iterable<Story> iterable = storyRepository.findByAuthor(user);
+        Iterable<Story> iterable = storyRepository.findByAuthorOrderByIdDesc(user);
+        for (Story story : iterable)
+            stories.add(story);
+
+        return stories;
+    }
+
+    @Transactional
+    public List<Story> getFriendStories(User user) {
+        List<Story> stories = new ArrayList<>();
+        Iterable<Story> iterable = storyRepository.findByAuthorInOrderByIdDesc(user.getFriends());
         for (Story story : iterable)
             stories.add(story);
 

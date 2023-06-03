@@ -9,6 +9,10 @@ import it.uniroma3.siw.siwsocial00.model.User;
 
 public interface StoryRepository extends CrudRepository<Story, Long> {
 
-   public List<Story> findByAuthor(User author);
+   public List<Story> findByAuthorOrderByIdDesc(User author);
+
+   public List<Story> findByAuthorInOrderByIdDesc(List<User> users);
+
+   public List<Story> findAllByOrderByIdDesc();
    
 }

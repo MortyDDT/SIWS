@@ -86,12 +86,25 @@ public class StoryController {
 
    @GetMapping("/likeStory/{id}")
    public String likeStory(@PathVariable("id") Long id, Model model) {
-      User user = storyService.likeStory(id);
+      User currentUser = userService.getCurrentUser();
+      User author = storyService.likeStory(id, currentUser);
 
-      model.addAttribute("user", user);
-      model.addAttribute("story", new Story());
-      model.addAttribute("stories", user.getStories());
-      return AuthUtil.parseLink("profile.html");
+      model.addAttribute("user", author);
+      model.addAttribute("stories", storyService.findStoriesByUser(author));
+      if(currentUser.getFriends().contains(author))
+			model.addAttribute("alreadyFriends", 1);
+      return AuthUtil.parseLink("user.html");
+   }
+
+   @GetMapping("/likeStoryIndex/{id}")
+   public String likeStoryIndex(@PathVariable("id") Long id, Model model) {
+      User currentUser = userService.getCurrentUser();
+      storyService.likeStory(id, currentUser);
+
+      model.addAttribute("stories", storyService.getFriendStories(currentUser));
+      if(AuthUtil.isAdmin())
+         return "admin/indexAdmin.html";
+      return "index.html";
    }
 
    @GetMapping("/removeStory/{id}")

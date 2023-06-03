@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.siwsocial00.model.Credentials;
 import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.service.CredentialsService;
+import it.uniroma3.siw.siwsocial00.service.StoryService;
 import it.uniroma3.siw.siwsocial00.service.UserService;
 import it.uniroma3.siw.siwsocial00.tool.AuthUtil;
 
@@ -34,9 +35,12 @@ public class AuthenticationController {
 	private CredentialsService credentialsService;
 
 	@Autowired
+	private StoryService storyService;
+
+	@Autowired
 	private UserService userService;
-   
-   @InitBinder
+
+	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields("image");
 
@@ -61,7 +65,7 @@ public class AuthenticationController {
 	public String registerUser(@Valid @ModelAttribute("user") User user,
 			BindingResult userBindingResult, @Valid @ModelAttribute("credentials") Credentials credentials,
 			BindingResult credentialsBindingResult,
-			Model model, @RequestParam("image") MultipartFile file) throws IOException{
+			Model model, @RequestParam("image") MultipartFile file) throws IOException {
 
 		// se user e credentials sono validi, memorizzali nel DB
 		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) {
@@ -95,6 +99,8 @@ public class AuthenticationController {
 	public String index(Model model) {
 		if (AuthUtil.isAdmin())
 			return "admin/indexAdmin.html";
+		if (AuthUtil.isUserAuthenticated())
+			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
 		return "index.html";
 	}
 
@@ -102,6 +108,8 @@ public class AuthenticationController {
 	public String defaultAfterLogin(Model model) {
 		if (AuthUtil.isAdmin())
 			return "admin/indexAdmin.html";
+		if (AuthUtil.isUserAuthenticated())
+			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
 		return "index.html";
 	}
 

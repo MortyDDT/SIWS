@@ -15,6 +15,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
    public List<User> findFriends(@Param("user") User user);
 
    public List<User> findByNameContainingIgnoreCase(String title);
-
    
 }
