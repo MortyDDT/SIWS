@@ -71,8 +71,10 @@
               <div th:text="*{author.surname} + ' ' + *{author.name}" class="user_name"> </div>
               <div th:text="*{DateParsed}"> </div>
               <div th:text="*{description}"> </div>
-              <a th:if="${authenticatedUser != null && (authenticatedUser.equals(story.author))}"
-                th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a>
+              <div th:if="${authenticatedUser}">
+                <a th:if="${authenticatedUser.equals(story.author) || authenticatedUser.equals(cmt.author)}"
+                  th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a>
+              </div>
             </div>
           </li>
         </ul>
@@ -82,14 +84,19 @@
 
 
   <section th:if="${#request.userPrincipal}" id="add_review">
-    <form th:action="@{'/addComment' + '/' + ${story.id} + '/' + ${story.author.id}}" method="post"
-      th:object="${comment}">
+    <form th:action="@{'/addComment' + '/' + ${story.id}}" method="post" th:object="${comment}">
       <div>
         <label for="cmt">Add a comment to the story:</label>
         <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
           placeholder="type something.."></textarea>
       </div>
+
       <div> <button type="submit"> Pubblica </button> </div>
+
+      <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
+      <div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+			</div>
     </form>
   </section>
 

@@ -51,7 +51,7 @@ public class Artist {
 
 	@Transient
 	public String getImagePath() {
-		if (imageName == null || id == null)
+		if (imageName == null || imageName.isBlank())
 			return null;
 		// need the relative path since in authConfig only /images/** is authorized not
 		// /src...

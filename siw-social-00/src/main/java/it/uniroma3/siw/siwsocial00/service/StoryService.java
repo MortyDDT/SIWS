@@ -42,25 +42,27 @@ public class StoryService {
         story.setLikes(0);
         story.setAuthor(user);
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        story.setImageName(fileName);
-        Story savedStory = storyRepository.save(story);
-        String uploadDir = Story.IMAGE_PATH + "/" + savedStory.getId();
-       
-        user.getStories().add(savedStory);
-        userRepository.save(user);
+        if (file.getSize() > 0) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            story.setImageName(fileName);
+            Story savedStory = storyRepository.save(story);
+            String uploadDir = Story.IMAGE_PATH + "/" + savedStory.getId();
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        }else
+            storyRepository.save(story);
 
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        user.getStories().add(story);
+        userRepository.save(user);
     }
 
     @Transactional
     public User likeStory(Long id, User currentUser) {
         Story story = storyRepository.findById(id).get();
-        
-        if(story.getUsersThatLiked().contains(currentUser)){
+
+        if (story.getUsersThatLiked().contains(currentUser)) {
             story.getUsersThatLiked().remove(currentUser);
             story.removeLike();
-        }else{
+        } else {
             story.getUsersThatLiked().add(currentUser);
             story.addLike();
         }

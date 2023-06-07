@@ -30,12 +30,15 @@ public class ArtistService {
     @Transactional
     public List<Artist> addArtist(Artist artist, MultipartFile file) throws IOException {
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        artist.setImageName(fileName);
-        Artist savedArtist = artistRepository.save(artist);
-        String uploadDir = Artist.IMAGE_PATH + "/" + savedArtist.getId();
+        if (file.getSize() > 0) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            artist.setImageName(fileName);
+            Artist savedArtist = artistRepository.save(artist);
+            String uploadDir = Artist.IMAGE_PATH + "/" + savedArtist.getId();
 
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        }else
+            artistRepository.save(artist);
 
         List<Artist> artists = new ArrayList<>();
         Iterable<Artist> iterable = artistRepository.findAll();

@@ -37,13 +37,15 @@ public class MovieService {
 
     @Transactional
     public void addMovie(Movie movie, MultipartFile file) throws IOException {
+        if (file.getSize() > 0) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            movie.setImageName(fileName);
+            Movie savedMovie = movieRepository.save(movie);
+            String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
 
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        movie.setImageName(fileName);
-        Movie savedMovie = movieRepository.save(movie);
-        String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        }else
+            movieRepository.save(movie);
     }
 
     @Transactional

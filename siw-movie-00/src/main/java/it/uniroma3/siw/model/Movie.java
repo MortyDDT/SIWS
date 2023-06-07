@@ -53,7 +53,7 @@ public class Movie {
 
 	@Transient
 	public String getImagePath() {
-		if (imageName == null || id == null)
+		if (imageName == null || imageName.isBlank())
 			return null;
 		// need relative path since in authConfig only /images/** is authorized not /src..
 		String relative_path = IMAGE_PATH.substring(25);

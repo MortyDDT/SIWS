@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwsocial00.model.Credentials;
 import it.uniroma3.siw.siwsocial00.model.User;
+import it.uniroma3.siw.siwsocial00.model.validator.UserValidator;
 import it.uniroma3.siw.siwsocial00.service.CredentialsService;
 import it.uniroma3.siw.siwsocial00.service.StoryService;
 import it.uniroma3.siw.siwsocial00.service.UserService;
@@ -39,6 +40,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	UserValidator userValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -67,8 +71,8 @@ public class AuthenticationController {
 			BindingResult credentialsBindingResult,
 			Model model, @RequestParam("image") MultipartFile file) throws IOException {
 
-		// se user e credentials sono validi, memorizzali nel DB
-		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) {
+		userValidator.validate(user, userBindingResult);
+		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) {  // se user e credentials sono validi, memorizzali nel DB
 			userService.addImageToUserAndSave(user, file);
 			credentials.setUser(user);
 			credentialsService.saveCredentials(credentials);
@@ -76,7 +80,7 @@ public class AuthenticationController {
 			model.addAttribute("user", user);
 			return "registrationSuccessful";
 		}
-		return "registerUser";
+		return "formRegisterUser";
 	}
 
 	@GetMapping("/register")

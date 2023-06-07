@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.Transient;
 
@@ -23,9 +24,9 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+   @NotBlank
    private String description;
 
-   @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
    private LocalDateTime dateAdded;
 
    @ManyToOne

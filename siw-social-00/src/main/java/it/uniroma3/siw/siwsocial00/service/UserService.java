@@ -38,12 +38,15 @@ public class UserService {
 
     @Transactional
     public void addImageToUserAndSave(User user, MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        user.setImageName(fileName);
-        User savedUser = userRepository.save(user);
-        String uploadDir = User.IMAGE_PATH + "/" + savedUser.getId();
-
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        if (file.getSize() > 0) {
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            user.setImageName(fileName);
+            User savedUser = userRepository.save(user);
+            String uploadDir = User.IMAGE_PATH + "/" + savedUser.getId();
+    
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        }else
+            userRepository.save(user);
     }
 
     @Transactional
@@ -208,6 +211,11 @@ public class UserService {
         String currentUsername = AuthUtil.getCurrentUsername();
         Credentials credentials = credentialsRepository.findByUsername(currentUsername).get();
         return credentials.getUser();
+    }
+
+    @Transactional
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 }

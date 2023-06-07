@@ -49,23 +49,25 @@
 
 
   <header>
-    <h1> Welcome to MovieDB! </h1>
-    <p> We have movies here! </p>
   </header>
 
-  <section>
-    <span>
-      <ul>
-        <li th:each="movie : ${movies}" th:object=${movie}>
-          <span class="hover_img">
-            <a th:href="@{'/movies' + '/' + *{id}}">
-              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
-            </a>
-          </span>
-        </li>
-      </ul>
-    </span>
+  <section th:if="${#request.userPrincipal}" id="add_review">
+    <form th:action="@{'/modifyStory' + '/' + *{id}}" method="post" enctype="multipart/form-data">
+      <div>
+        <label for="cmt">Edit Story:</label>
+        <textarea id="cmt" name="descrizione" rows="3" cols="50"
+          placeholder="type something.."></textarea>
+      </div>
+      <div class="p_rev">
+        <span>
+          <label for="file-upload" class="custom-file-upload">
+            <i class="fa fa-cloud-upload"></i> Upload Image
+          </label>
+          <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
+        </span>
+        <span> <button type="submit"> Modify </button> </span>
+      </div>
+    </form>
   </section>
 
   <footer>

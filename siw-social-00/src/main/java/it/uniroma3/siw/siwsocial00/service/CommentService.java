@@ -42,17 +42,18 @@ public class CommentService {
     }
 
     @Transactional
-    public void addComment(Comment comment, Long storyId, Long userId) {
+    public void addComment(Comment comment, Long storyId, User user) {
         Story story = storyRepository.findById(storyId).get();
-        User user = userRepository.findById(userId).get();
         comment.setDateAdded(LocalDateTime.now());
+        comment.setAuthor(user);
+        comment.setStory(story);
 
         story.getComments().add(comment);
         user.getComments().add(comment);
-        
-        comment.setAuthor(user);
-        comment.setStory(story);
+
         commentRepository.save(comment);
+        storyRepository.save(story);
+        userRepository.save(user);
     }
 
     /******************************************************************************/
@@ -78,6 +79,26 @@ public class CommentService {
     public List<Comment> findCommentsByStory(Story story) {
         List<Comment> comments = new ArrayList<>();
         Iterable<Comment> iterable = commentRepository.findByStory(story);
+        for (Comment comment : iterable)
+            comments.add(comment);
+
+        return comments;
+    }
+
+    @Transactional
+    public List<Comment> findCommentsByStoryAndUser(Story story, User user) {
+        List<Comment> comments = new ArrayList<>();
+        Iterable<Comment> iterable = commentRepository.findByStoryAndAuthor(story, user);
+        for (Comment comment : iterable)
+            comments.add(comment);
+
+        return comments;
+    }
+
+    @Transactional
+    public List<Comment> findCommentsByStoryNotContainingUser(Story story, User user) {
+        List<Comment> comments = new ArrayList<>();
+        Iterable<Comment> iterable = commentRepository.findByStoryWhereUserNotMemberOf(story, user);
         for (Comment comment : iterable)
             comments.add(comment);
 

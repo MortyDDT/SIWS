@@ -55,13 +55,13 @@ public class CommentController {
    /********************************** SHARED ************************************/
    /******************************************************************************/
 
-   @PostMapping("/addComment/{storyId}/{userId}")
+   @PostMapping("/addComment/{storyId}")
    public String addComment(@Valid @ModelAttribute("comment") Comment comment, BindingResult bindingResult,
-         Model model, @PathVariable("storyId") Long storyId, @PathVariable("userId") Long userId) {
+         Model model, @PathVariable("storyId") Long storyId) {
 
       commentValidator.validate(comment, bindingResult);
       if (!bindingResult.hasErrors())
-         commentService.addComment(comment, storyId, userId);
+         commentService.addComment(comment, storyId, userService.getCurrentUser());
       
       Story story = storyService.findById(storyId);
 

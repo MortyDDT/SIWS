@@ -62,25 +62,25 @@
       <div>
         <label>Username</label>
         <span>
-          <input type="text" placeholder="username" required th:field="${credentials.username}" />
+          <input required type="text" placeholder="username" th:field="${credentials.username}" />
         </span>
       </div>
       <div>
         <label>Password</label>
-        <span><input type="password" placeholder="password" required th:field="${credentials.password}" />
+        <span><input required type="password" placeholder="password" th:field="${credentials.password}" />
         </span>
       </div>
       <div>
         <label>Nome</label>
-        <span><input type="text" placeholder="name" required th:field="${user.name}" /></span>
+        <span><input required type="text" placeholder="name" th:field="${user.name}" /></span>
       </div>
       <div>
         <label>Cognome</label>
-        <span><input type="text" placeholder="surname" required th:field="${user.surname}" /></span>
+        <span><input required type="text" placeholder="surname" th:field="${user.surname}" /></span>
       </div>
       <div>
         <label>Email</label>
-        <span><input type="email" placeholder="email" required th:field="${user.email}" /></span>
+        <span><input required type="email" placeholder="email" th:field="${user.email}" /></span>
       </div>
       <div class="centered_box"> <button type="submit"> Registrati </button> </div>
 

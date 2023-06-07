@@ -22,6 +22,7 @@ import it.uniroma3.siw.siwsocial00.model.Comment;
 import it.uniroma3.siw.siwsocial00.model.Story;
 import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.model.validator.StoryValidator;
+import it.uniroma3.siw.siwsocial00.service.CommentService;
 import it.uniroma3.siw.siwsocial00.service.StoryService;
 import it.uniroma3.siw.siwsocial00.service.UserService;
 import it.uniroma3.siw.siwsocial00.tool.AuthUtil;
@@ -34,6 +35,9 @@ public class StoryController {
 
    @Autowired
    private UserService userService;
+
+   @Autowired
+   private CommentService commentService;
 
    @Autowired
    private StoryValidator storyValidator;
@@ -91,8 +95,8 @@ public class StoryController {
 
       model.addAttribute("user", author);
       model.addAttribute("stories", storyService.findStoriesByUser(author));
-      if(currentUser.getFriends().contains(author))
-			model.addAttribute("alreadyFriends", 1);
+      if (currentUser.getFriends().contains(author))
+         model.addAttribute("alreadyFriends", 1);
       return AuthUtil.parseLink("user.html");
    }
 
@@ -102,7 +106,7 @@ public class StoryController {
       storyService.likeStory(id, currentUser);
 
       model.addAttribute("stories", storyService.getFriendStories(currentUser));
-      if(AuthUtil.isAdmin())
+      if (AuthUtil.isAdmin())
          return "admin/indexAdmin.html";
       return "index.html";
    }
@@ -132,15 +136,16 @@ public class StoryController {
 
       model.addAttribute("story", story);
       model.addAttribute("messaggioSuccesso", "La storia e stata aggiornata!");
-      return AuthUtil.parseLink("manageStory.html");
+      return AuthUtil.parseLink("loadingPage.html");
    }
 
    @GetMapping("/stories/{id}")
    public String getMovie(@PathVariable("id") Long id, Model model) {
       Story story = storyService.findById(id);
+      User currentUser = userService.getCurrentUser();
 
       model.addAttribute("story", story);
-      model.addAttribute("authenticatedUser", userService.getCurrentUser());
+      model.addAttribute("authenticatedUser", currentUser);
       model.addAttribute("comment", new Comment());
       model.addAttribute("comments", story.getComments());
       return AuthUtil.parseLink("story.html");

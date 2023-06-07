@@ -9,19 +9,23 @@ import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.service.UserService;
 
 @Component
-public class UserValidator implements Validator{
-   
-   @Autowired
-   private UserService userService;
+public class UserValidator implements Validator {
 
-   @Override
-   public void validate(Object o, Errors errors) {
-       User user = (User) o;
-   }
+    @Autowired
+    private UserService userService;
 
-   @Override
-   public boolean supports(Class<?> aClass) {
-       return User.class.equals(aClass);
-   }
+    @Override
+    public void validate(Object o, Errors errors) {
+        User user = (User) o;
+        String email = user.getEmail();
+
+        if ((email != null) && userService.existsByEmail(email))
+            errors.reject("user.duplicate");
+    }
+
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return User.class.equals(aClass);
+    }
 
 }

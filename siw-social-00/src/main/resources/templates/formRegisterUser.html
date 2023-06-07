@@ -92,13 +92,13 @@
       <div class="centered_box"> <button type="submit"> Register </button> </div>
 
 
-
       <div th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" class="errors">
       </div>
       <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" class="errors">
       </div>
       <div th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" class="errors"> </div>
       <div th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}" class="errors"> </div>
+      <div th:if="${#fields.hasErrors('user.birthDate')}" th:errors="${user.birthDate}" class="errors"> </div>
       <div th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}" class="errors"> </div>
     </form>
   </section>

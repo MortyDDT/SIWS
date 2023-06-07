@@ -80,6 +80,12 @@
         </span>
         <span> <button type="submit"> Pubblica </button> </span>
       </div>
+      
+      <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
+      <div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+			</div>
+      
     </form>
   </section>
 
@@ -100,6 +106,7 @@
           </span>
 
           <div>
+            <a th:href="@{'/manageStory' + '/' + *{id}}"> Edit </a>
             <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>
             <a th:href="@{'/removeStory' + '/' + *{id}}"> Remove </a>
           </div>

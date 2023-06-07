@@ -102,7 +102,7 @@ public class UserController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("stories", storyService.findStoriesByUser(user));
-		if (userService.getCurrentUser().getFriends().contains(user))
+		if (AuthUtil.isUserAuthenticated() && userService.getCurrentUser().getFriends().contains(user))
 			model.addAttribute("alreadyFriends", 1);
 		return AuthUtil.parseLink("user.html");
 	}

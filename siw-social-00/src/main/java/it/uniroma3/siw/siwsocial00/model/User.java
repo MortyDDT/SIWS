@@ -61,7 +61,7 @@ public class User {
 
 	@Transient
 	public String getImagePath() {
-		if (imageName.isBlank() || imageName == null || id == null)
+		if (imageName == null || imageName.isBlank())
 			return null;
 		String relative_path = IMAGE_PATH.substring(25);
 		return relative_path + "/" + id + "/" + imageName;
