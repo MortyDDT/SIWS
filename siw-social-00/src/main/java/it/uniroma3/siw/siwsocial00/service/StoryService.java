@@ -16,7 +16,6 @@ import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.repository.CredentialsRepository;
 import it.uniroma3.siw.siwsocial00.repository.StoryRepository;
 import it.uniroma3.siw.siwsocial00.repository.UserRepository;
-import it.uniroma3.siw.siwsocial00.tool.AuthUtil;
 import it.uniroma3.siw.siwsocial00.tool.FileUploadUtil;
 
 @Service

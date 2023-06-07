@@ -68,7 +68,7 @@
     <form th:action="@{/addStory}" method="post" th:object="${story}" enctype="multipart/form-data">
       <div>
         <label for="cmt">Post a new story</label>
-        <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="*{description}"
+        <textarea required id="cmt" name="cmt" rows="3" cols="50" th:field="*{description}"
           placeholder="type something.."></textarea>
       </div>
       <div class="p_rev">

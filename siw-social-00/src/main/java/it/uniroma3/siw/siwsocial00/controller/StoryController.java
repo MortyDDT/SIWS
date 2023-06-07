@@ -22,7 +22,6 @@ import it.uniroma3.siw.siwsocial00.model.Comment;
 import it.uniroma3.siw.siwsocial00.model.Story;
 import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.model.validator.StoryValidator;
-import it.uniroma3.siw.siwsocial00.service.CommentService;
 import it.uniroma3.siw.siwsocial00.service.StoryService;
 import it.uniroma3.siw.siwsocial00.service.UserService;
 import it.uniroma3.siw.siwsocial00.tool.AuthUtil;
@@ -35,9 +34,6 @@ public class StoryController {
 
    @Autowired
    private UserService userService;
-
-   @Autowired
-   private CommentService commentService;
 
    @Autowired
    private StoryValidator storyValidator;

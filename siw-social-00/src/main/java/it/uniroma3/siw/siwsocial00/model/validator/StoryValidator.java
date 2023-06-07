@@ -1,22 +1,16 @@
 package it.uniroma3.siw.siwsocial00.model.validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import it.uniroma3.siw.siwsocial00.model.Story;
-import it.uniroma3.siw.siwsocial00.service.StoryService;
 
 @Component
 public class StoryValidator implements Validator{
-   
-   @Autowired
-   private StoryService storyService;
 
    @Override
    public void validate(Object o, Errors errors) {
-       Story story = (Story) o;
    }
 
    @Override

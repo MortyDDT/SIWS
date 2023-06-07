@@ -3,7 +3,6 @@ package it.uniroma3.siw.siwsocial00.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.Transient;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "comments")
