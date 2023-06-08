@@ -6,9 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
-  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
-  <title> Main Page </title>
+  <title> Story </title>
 
 </head>
 
@@ -17,8 +16,8 @@
 
   <nav>
     <a href="/"><img src="/images/logo-siw.png" id="logo"></a>
-    <form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-      <input type="text" name="substring" placeholder="Search movie" id="searchBar" />
+    <form th:action="@{/searchUser}" method="post" id="searchBarForm">
+      <input type="text" name="substring" placeholder="Search user" id="searchBar" />
       <i class="gg-search">
         <input type="submit" id="searchBar_button" />
       </i>
@@ -26,55 +25,78 @@
 
 
     <span class="dropdown">
-      <div class="dropbtn"> Movies </div>
-      <div class="dropdown-content">
-        <a href="/movies"> Vedi Film </a>
-        <a href="/formSearchMovies"> Cerca Film </a>
-      </div>
-    </span>
-
-    <span class="dropdown">
-      <div class="dropbtn"> Actors </div>
-      <div class="dropdown-content">
-        <a href="/artists"> Vedi Artisti </a>
-      </div>
-    </span>
-
-    <span class="dropdown">
       <div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
       <div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
         Username </div>
       <div class="dropdown-content">
+        <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+      </div>
+    </span>
+
+    <span class="dropdown">
+      <div class="dropbtn"> People </div>
+      <div class="dropdown-content">
+        <a th:if="${#request.userPrincipal}" href="/friendRequests"> Requests </a>
+        <a th:if="${#request.userPrincipal}" href="/friends"> Friends </a>
+        <a href="/users"> Users </a>
       </div>
     </span>
   </nav>
 
 
   <header>
-    <h1> Welcome to MovieDB! </h1>
-    <p> We have movies here! </p>
   </header>
 
-  <section>
-    <span>
-      <ul>
-        <li th:each="movie : ${movies}" th:object=${movie}>
-          <span class="hover_img">
-            <a th:href="@{'/movies' + '/' + *{id}}">
-              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
-            </a>
-          </span>
-        </li>
-      </ul>
-    </span>
+  <section th:if="${story}" class="centered_box">
+    <section th:object=${story} id="movie_description">
+      <span> <img th:src="*{ImagePath}" class="thumbnail" /> </span>
+
+      <span class="story_desc">
+        <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
+        <div th:text="*{DateParsed}"> </div>
+        <div th:text="*{description}"> </div>
+        <div th:text="'   Likes:' + *{likes}"> </div>
+      </span>
+    </section>
+
+    <section class="reviews">
+      <div>
+        <ul class="comments">
+          <li th:each="cmt : ${comments}" th:object=${cmt}>
+            <div>
+              <div th:text="*{author.surname} + ' ' + *{author.name}" class="user_name"> </div>
+              <div th:text="*{DateParsed}"> </div>
+              <div th:text="*{description}"> </div>
+              <div> <a th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a> </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </section>
+
+
+  <section th:if="${#request.userPrincipal}" id="add_review">
+    <form th:action="@{'/addComment' + '/' + ${story.id}}" method="post" th:object="${comment}">
+      <div>
+        <label for="cmt">Add a comment to the story:</label>
+        <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
+          placeholder="type something.."></textarea>
+      </div>
+
+      <div> <button type="submit"> Add Comment </button> </div>
+
+      <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
+      <div th:if="${#fields.hasGlobalErrors()}">
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+			</div>
+    </form>
   </section>
 
   <footer>
-    <p> Sito creato per il corso SIW di Roma3 </p>
   </footer>
 
 </body>

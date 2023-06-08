@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
-  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
   <title> My Profile </title>
 
@@ -73,12 +72,12 @@
       </div>
       <div class="p_rev">
         <span>
-          <label for="file-upload" class="custom-file-upload">
-            <i class="fa fa-cloud-upload"></i> Upload Image
+          <label for="file-upload" class="custom-file-upload"> Upload Image
+            <span><i class="gg-software-upload"></i></span>
           </label>
           <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
         </span>
-        <span> <button type="submit"> Pubblica </button> </span>
+        <span> <button type="submit"> Post </button> </span>
       </div>
       
       <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>

@@ -6,9 +6,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
-  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
-  <title> Main Page </title>
+  <title> Users </title>
 
 </head>
 
@@ -17,8 +16,8 @@
 
   <nav>
     <a href="/"><img src="/images/logo-siw.png" id="logo"></a>
-    <form th:action="@{/searchMovie}" method="post" id="searchBarForm">
-      <input type="text" name="substring" placeholder="Search movie" id="searchBar" />
+    <form th:action="@{/searchUser}" method="post" id="searchBarForm">
+      <input type="text" name="substring" placeholder="Search user" id="searchBar" />
       <i class="gg-search">
         <input type="submit" id="searchBar_button" />
       </i>
@@ -26,52 +25,50 @@
 
 
     <span class="dropdown">
-      <div class="dropbtn"> Movies </div>
-      <div class="dropdown-content">
-        <a href="/movies"> Vedi Film </a>
-        <a href="/formSearchMovies"> Cerca Film </a>
-      </div>
-    </span>
-
-    <span class="dropdown">
-      <div class="dropbtn"> Actors </div>
-      <div class="dropdown-content">
-        <a href="/artists"> Vedi Artisti </a>
-      </div>
-    </span>
-
-    <span class="dropdown">
       <div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
       <div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
         Username </div>
       <div class="dropdown-content">
+        <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+      </div>
+    </span>
+
+    <span class="dropdown">
+      <div class="dropbtn"> People </div>
+      <div class="dropdown-content">
+        <a th:if="${#request.userPrincipal}" href="/friendRequests"> Requests </a>
+        <a th:if="${#request.userPrincipal}" href="/friends"> Friends </a>
+        <a href="/users"> Users </a>
       </div>
     </span>
   </nav>
 
 
   <header>
-    <h1> Welcome to MovieDB! </h1>
-    <p> We have movies here! </p>
+    <h1> People </h1>
+    <div th:if="${users.isEmpty()}"> There is no user saved in the database! </div>
   </header>
 
-  <section>
-    <span>
-      <ul>
-        <li th:each="movie : ${movies}" th:object=${movie}>
+  <span>
+    <ul>
+      <span>
+        <li th:each="user : ${users}" th:object=${user}>
           <span class="hover_img">
-            <a th:href="@{'/movies' + '/' + *{id}}">
-              <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
+            <a th:href="@{'/users' + '/' + *{id}}">
+              <p th:text="*{surname} + ' ' + *{name}"> </p>
+              <span><img th:src="*{ImagePath}"
+                  onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
             </a>
           </span>
+          <span th:if="${friendsCheck}"> <a th:href="@{'/removeFriend' + '/' + *{id}}" style="color: red"> Remove Friend </a> </span>
+
         </li>
-      </ul>
-    </span>
-  </section>
+      </span>
+    </ul>
+  </span>
 
   <footer>
     <p> Sito creato per il corso SIW di Roma3 </p>

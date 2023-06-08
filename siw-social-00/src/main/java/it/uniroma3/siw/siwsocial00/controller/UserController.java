@@ -75,8 +75,7 @@ public class UserController {
 		return AuthUtil.parseLink("manageProfile.html");
 	}
 
-	@GetMapping("/myProfile") /// user to my profile should be received from the template directly from
-										/// autheticated user
+	@GetMapping("/myProfile")
 	public String showMyProfile(Model model) {
 		User user = userService.getCurrentUser();
 

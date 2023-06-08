@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/css/stile.css?version=2">
+
+	<title> Success </title>
+
+</head>
+
+
+<body>
+
+	<nav>
+		<a href="/"><img src="/images/logo-siw.png" id="logo"></a>
+		<form th:action="@{/searchUser}" method="post" id="searchBarForm">
+		  <input type="text" name="substring" placeholder="Search user" id="searchBar" />
+		  <i class="gg-search">
+			 <input type="submit" id="searchBar_button" />
+		  </i>
+		</form>
+  
+  
+		<span class="dropdown">
+		  <div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
+		  <div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
+			 Username </div>
+		  <div class="dropdown-content">
+			 <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
+			 <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
+			 <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
+				  <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+		  </div>
+		</span>
+  
+		<span class="dropdown">
+		  <div class="dropbtn"> People </div>
+		  <div class="dropdown-content">
+			 <a th:if="${#request.userPrincipal}" href="/friendRequests"> Requests </a>
+			 <a th:if="${#request.userPrincipal}" href="/friends"> Friends </a>
+			 <a href="/users"> Users </a>
+		  </div>
+		</span>
+	 </nav>
+
+
+	<header>
+		<h1> Congratulations, you have registered with the following credentials: </h1>
+	</header>
+
+
+	<section>
+		<div>
+			<span>Name: </span>
+			<span th:text="${user.name}"></span>
+		</div>
+		<div>
+			<span>Surname: </span>
+			<span th:text="${user.surname}"></span>
+		</div>
+		<div>
+			<span>Email: </span>
+			<span th:text="${user.email}"></span>
+		</div>
+	</section>
+
+
+	<footer>
+
+	</footer>
+
+</body>
+
+</html>

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
 
-  <title> Edit Profile </title>
+  <title> Login </title>
 
 </head>
 
@@ -48,44 +48,28 @@
 
 
   <header>
-    <h1> Update Your Profile: </h1>
+    <h1> Collegati con il tuo account: </h1>
   </header>
 
 
-  <section id="register_form">
-    <form th:action="@{/modifyUser}" method="post" class="data_input" enctype="multipart/form-data">
+  <section class="input_form">
+    <form th:action="@{/login}" method="post" class="data_input">
       <div>
-        <label>Name</label>
-        <span><input type="text" placeholder="name" name="name" /></span>
-      </div>
-      <div>
-        <label>Surname</label>
-        <span><input type="text" placeholder="surname" name="surname" /></span>
+        <label> Username </label>
+        <span> <input required type="text" name="username" /> </span>
       </div>
       <div>
-        <label>Birth Date</label>
-        <input type="date" name="birthdate" />
+        <label> Password </label>
+        <span> <input required type="password" name="password" /> </span>
       </div>
-      <div>
-        <label>Email</label>
-        <span><input type="email" placeholder="email" name="email" /></span>
-      </div>
-
-      <div class="centered_box">
-        <label for="file-upload" class="custom-file-upload"> Upload Image
-          <span><i class="gg-software-upload"></i></span>
-        </label>
-        <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
-      </div>
-
-      <div class="centered_box"> <button type="submit"> Update </button> </div>
-      <a href="/myProfile" class="centered_box"> Back To Profile </a>
-      <div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
+      <div class="centered_box"> <button type="submit"> Login </button> </div>
+      <div th:if="${param.error != null}">Username o password errati</div>
     </form>
   </section>
 
+
   <footer>
-    <p> Sito creato per il corso SIW di Roma3 </p>
+
   </footer>
 
 </body>

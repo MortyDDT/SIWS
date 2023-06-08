@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/stile.css?version=2">
-  <!--<meta http-equiv = "refresh" content = "0; url = /index" />-->
 
   <title> Story </title>
 
@@ -91,7 +90,7 @@
           placeholder="type something.."></textarea>
       </div>
 
-      <div> <button type="submit"> Pubblica </button> </div>
+      <div> <button type="submit"> Add Comment </button> </div>
 
       <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
       <div th:if="${#fields.hasGlobalErrors()}">

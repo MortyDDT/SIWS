@@ -15,7 +15,7 @@ public class AuthUtil {
 	private static final String ADMIN_REDIRECT = "admin/";
 
 	/*
-	 * PARSES THE LINK TO AN ADMIN TEMPLATE OR NOT IF AUTHENTICATED AS ADMIN (WORKS
+	 * PARSES THE LINK TO AN ADMIN TEMPLATE OR NOT DEPENDING ON THE ROLE (WORKS
 	 * ONLY IF THE TEMPLATE HAS THE SAME NAME)
 	 */
 	public static String parseLink(String link) {
@@ -36,7 +36,7 @@ public class AuthUtil {
 		return false;
 	}
 
-	/* RETURNS THE USERNAME OF THE CURRENT LOGGED-IN USER */
+	/* RETURNS THE USERNAME OF THE CURRENT LOGGED IN USER */
 	public static String getCurrentUsername() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (isUserAuthenticated())
