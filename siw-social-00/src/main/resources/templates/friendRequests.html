@@ -52,7 +52,7 @@
     <p th:if="${users.isEmpty()}"> You have no new friend requests! </p>
   </header>
 
-  <span>
+  <section>
     <ul>
       <li th:each="user : ${users}" th:object=${user}>
         <span class="hover_img">
@@ -65,7 +65,7 @@
         <span> <a th:href="@{'/declineFriendRequest' + '/' + *{id}}"> Decline </a> </span>
       </li>
     </ul>
-  </span>
+  </section>
 
   <footer>
     <p> Sito creato per il corso SIW di Roma3 </p>

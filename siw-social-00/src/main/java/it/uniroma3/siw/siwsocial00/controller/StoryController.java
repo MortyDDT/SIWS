@@ -113,7 +113,7 @@ public class StoryController {
 
       model.addAttribute("user", user);
       model.addAttribute("story", new Story());
-      model.addAttribute("stories", user.getStories());
+      model.addAttribute("stories", storyService.findStoriesByUser(user));
       return AuthUtil.parseLink("profile.html");
    }
 

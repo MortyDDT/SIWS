@@ -72,7 +72,8 @@ public class AuthenticationController {
 			Model model, @RequestParam("image") MultipartFile file) throws IOException {
 
 		userValidator.validate(user, userBindingResult);
-		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) {  // se user e credentials sono validi, memorizzali nel DB
+		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) { // se user e credentials sono
+																													// validi, memorizzali nel DB
 			userService.addImageToUserAndSave(user, file);
 			credentials.setUser(user);
 			credentialsService.saveCredentials(credentials);
@@ -101,19 +102,22 @@ public class AuthenticationController {
 
 	@GetMapping("/")
 	public String index(Model model) {
-		if (AuthUtil.isAdmin())
-			return "admin/indexAdmin.html";
-		if (AuthUtil.isUserAuthenticated())
+
+		if (AuthUtil.isUserAuthenticated()) {
 			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
+			if (AuthUtil.isAdmin())
+				return "admin/indexAdmin.html";
+		}
 		return "index.html";
 	}
 
 	@GetMapping("/success")
 	public String defaultAfterLogin(Model model) {
-		if (AuthUtil.isAdmin())
-			return "admin/indexAdmin.html";
-		if (AuthUtil.isUserAuthenticated())
+		if (AuthUtil.isUserAuthenticated()) {
 			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
+			if (AuthUtil.isAdmin())
+				return "admin/indexAdmin.html";
+		}
 		return "index.html";
 	}
 

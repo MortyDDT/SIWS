@@ -47,7 +47,7 @@
   </nav>
 
 
-  <header class="centered_box">
+  <header class="full_centered">
     <div id="profile_description" th:object="${user}">
       <span><img th:src="*{ImagePath}" class="propic"
           onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
@@ -65,7 +65,7 @@
 
   <div id="stories_divisor"> Stories </div>
 
-  <section class="reviews">
+  <section class="posts">
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
@@ -79,7 +79,7 @@
             </div>
           </span>
 
-          <div>
+          <div class="story_buttons">
             <a th:href="@{'/likeStory' + '/' + *{id}}"> Like </a>
             <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>
           </div>

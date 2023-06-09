@@ -1,6 +1,5 @@
-/******************************************************************************************************************************************************************************/
 /**************************************************************************** Main Items **************************************************************************************/
-/******************************************************************************************************************************************************************************/
+
 
 /*top right bot left*/
 
@@ -77,9 +76,129 @@ span {
   display: inline-block;
 }
 
+
+
 /******************************************************************************************************************************************************************************/
+/****************************************************************************** General ***************************************************************************************/
+/******************************************************************************************************************************************************************************/
+
+/* use as parent to float elems to fix em */
+.parent.clearfix {
+  overflow: hidden;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full_centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4%;
+}
+
+div.moved_a_lil {
+  margin-left: 15px;
+  min-width: 400px;
+}
+
+.div_text {
+  margin-left: 30%;
+  margin-right: 25%;
+}
+
+ul {
+  list-style: none;
+}
+
+ul.stories {
+  list-style: none;
+}
+
+ul.stories li {
+  border: 3px groove var(--primary_color);
+  border-radius: 10px;
+  margin-top: 7px;
+  width: 700px;
+}
+
+.story_buttons {
+  border-top: groove;
+}
+
+.story_desc {
+  margin-top: 13px;
+  margin-right: 260px;
+  float: right;
+}
+
+#stories_divisor {
+  margin-top: 100px;
+  width: 99%;
+
+  border-bottom: 3px groove var(--primary_color);
+  border-radius: 2px;
+}
+
+.user_info {
+  min-width: 500px;
+  border-left: 3px dashed var(--primary_color);
+}
+
+#profile_description {
+  display: flex;
+
+  height: 260px;
+  min-width: 700px;
+  max-width: 700px;
+
+  border: 3px groove var(--primary_color);
+  border-radius: 2px;
+}
+
+.story_full {
+  display: flex;
+
+  min-width: 700px;
+  min-height: 700px;
+  background-color: var(--theme_color);
+
+  border: 3px groove var(--primary_color);
+  border-radius: 2px;
+}
+
+#story {
+  min-width: 80%;
+}
+
+.story_full_desc {
+  min-height: 170px;
+  margin: 13px 5px 0px 1em;
+  width: 99%;
+
+}
+
+.comment_section {
+  border-left: 3px groove var(--primary_color);
+  border-radius: 2px;
+  float: left;
+}
+
+.comments_overflow {
+  overflow: auto;
+  height: 590px;
+  margin-bottom: 12px;
+}
+
+#story_new_comment {
+  position: relative;
+  min-width: 210px;
+}
+
 /***************************************************************************** Text Mod ***************************************************************************************/
-/******************************************************************************************************************************************************************************/
 
 a:link,
 a:visited {
@@ -107,6 +226,11 @@ label {
   color: var(--text_label);
 }
 
+#add_post label {
+  display: block;
+  color: var(--text_color);
+}
+
 header>h1 {
   margin-top: 7px;
   margin-bottom: 15px;
@@ -115,32 +239,19 @@ header>h1 {
   font-family: "Times New Roman", Times, serif;
 }
 
+.user_name {
+  padding-top: 3px;
+  color: var(--text_standout);
+  border-bottom: 3px groove var(--primary_color);
+}
+
 .errors {
   color: red;
   margin-left: 38.5%;
 }
 
-/******************************************************************************************************************************************************************************/
-/****************************************************************************** General ***************************************************************************************/
-/******************************************************************************************************************************************************************************/
 
-.centered {
-  padding-left: 50%;
-  padding-top: 50%;
-}
-
-div.moved_a_lil {
-  margin-left: 15px;
-  min-width: 400px;
-}
-
-ul.no_bullet {
-  list-style: none;
-}
-
-/******************************************************************************************************************************************************************************/
 /******************************************************************************* Images ***************************************************************************************/
-/******************************************************************************************************************************************************************************/
 
 #logo {
   padding: 6px 30px;
@@ -157,6 +268,14 @@ img.propic {
 img.story_preview {
   margin: 5px;
   width: 170px;
+  margin-bottom: 7%;
+  float: left;
+}
+
+img.story_image {
+  margin: 0% 5px -15px 5px;
+  max-width: 99%;
+  height: 690px;
 }
 
 .hover_img a {
@@ -192,13 +311,114 @@ i:hover {
   color: var(--primary_color);
 }
 
-.gg-software-upload:hover{
+.gg-software-upload:hover {
   color: var(--link_color_selected);
 }
 
-/******************************************************************************************************************************************************************************/
+/************************************************************************* Form/Buttons/Inputs *********************************************************************************/
+
+button {
+  background-color: var(--primary_color);
+  border: none;
+  border-radius: 7px;
+  height: 50px;
+  min-width: 120px;
+  color: var(--link_color);
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 0px 2px;
+  cursor: pointer;
+}
+
+.custom-file-upload {
+  background-color: var(--primary_color);
+  border: none;
+  border-radius: 7px;
+  color: var(--link_color);
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 0px 2px;
+  cursor: pointer;
+}
+
+button:hover,
+.custom-file-upload:hover {
+  background-color: var(--primary_color_selected);
+  color: var(--link_color_selected);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+input {
+  background-color: var(--input_color);
+  border: none;
+  border-radius: 5px;
+  width: 220px;
+  font-family: Helvetica;
+  color: var(--input_text_color);
+  padding: 8px 13px;
+  text-decoration: none;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+input:focus {
+  background-color: var(--input_color_selected);
+  border-color: var(--primary_color);
+  color: var(--input_text_color_selected);
+  transition: .3s;
+}
+
+
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--input_color);
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid var(--input_color);
+  border-radius: 4px;
+  background-color: var(--primary_color);
+  color: var(--text_color);
+  resize: none;
+}
+
+.input_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 320px;
+  margin: 6% 0px 0px 40%;
+  border: 3px groove var(--theme_color);
+  border-radius: 10px;
+  background-color: var(--secondary_color);
+}
+
+#register_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 350px;
+  height: 540px;
+  margin: 6% 0px 0px 40%;
+  border: 3px groove var(--theme_color);
+  border-radius: 10px;
+  background-color: var(--secondary_color);
+}
+
+
 /***************************************************************************** Searchbar **************************************************************************************/
-/******************************************************************************************************************************************************************************/
+
 
 #searchBarForm {
   width: 60%;
@@ -283,204 +503,4 @@ i:hover {
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-/******************************************************************************************************************************************************************************/
-/*************************************************************************** Buttons/Inputs ***********************************************************************************/
-/******************************************************************************************************************************************************************************/
-
-button,
-.custom-file-upload {
-  background-color: var(--primary_color);
-  border: none;
-  border-radius: 7px;
-  font-family: Helvetica;
-  color: var(--link_color);
-  padding: 16px 32px;
-  text-decoration: none;
-  margin: 0px 2px;
-  cursor: pointer;
-}
-
-button:hover,
-.custom-file-upload:hover {
-  background-color: var(--primary_color_selected);
-  font-family: Helvetica;
-  color: var(--link_color_selected);
-}
-
-
-input[type="file"] {
-  display: none;
-}
-
-input {
-  background-color: var(--input_color);
-  border: none;
-  border-radius: 5px;
-  width: 220px;
-  font-family: Helvetica;
-  color: var(--input_text_color);
-  padding: 8px 13px;
-  text-decoration: none;
-  margin-top: 2px;
-  cursor: pointer;
-}
-
-input:focus {
-  background-color: var(--input_color_selected);
-  border-color: var(--primary_color);
-  font-family: Helvetica;
-  color: var(--input_text_color_selected);
-  transition: .3s;
-}
-
-
-select {
-  width: 100%;
-  padding: 16px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--input_color);
-}
-
-/* HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe */
-textarea {
-  width: 100%;
-  height: 150px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: var(--primary_color);
-  color: var(--text_color);
-  resize: none;
-}
-
-#reviews {
-  position: relative;
-  top: 200px;
-  left: 40px;
-  border: 3px groove var(--primary_color);
-  border-radius: 10px;
-
-}
-
-#add_review {
-  margin-top: 40px;
-}
-
-.user_name {
-  padding-top: 3px;
-  color: var(--text_standout);
-  border-bottom: 3px groove var(--primary_color);
-}
-
-.p_rev {
-  margin-left: 36%;
-}
-
-.p_rev input {
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: var(--primary_color);
-  color: var(--text_color);
-  width: 200px;
-  height: 30px;
-}
-
-ul.stories {
-  list-style: none;
-}
-
-ul.stories li {
-  border: 3px groove var(--primary_color);
-  border-radius: 10px;
-  margin-top: 7px;
-  width: 600px;
-
-}
-
-.story_desc {
-  margin-top: 0;
-  margin-bottom: 30px;
-}
-
-#stories_divisor {
-  margin-top: 100px;
-  width: 100%;
-
-  border-bottom: 3px groove var(--primary_color);
-  border-radius: 2px;
-}
-
-
-
-.user_info {
-  min-width: 500px;
-  border-left: 3px dashed var(--primary_color);
-}
-
-.div_text {
-  margin-left: 27%;
-  margin-right: 23%;
-}
-
-
-/******************************************************************************************************************************************************************************/
-/**************************************************************************** Flex Items **************************************************************************************/
-/******************************************************************************************************************************************************************************/
-
-.centered_box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 4%;
-}
-
-.input_form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 350px;
-  height: 320px;
-  margin: 6% 0px 0px 40%;
-  border: 3px groove var(--theme_color);
-  border-radius: 10px;
-  background-color: var(--secondary_color);
-}
-
-.input_form_artist {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 350px;
-  height: 440px;
-  margin: 6% 0px 0px 40%;
-  border: 3px groove var(--theme_color);
-  border-radius: 10px;
-  background-color: var(--secondary_color);
-}
-
-#register_form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 350px;
-  height: 540px;
-  margin: 6% 0px 0px 40%;
-  border: 3px groove var(--theme_color);
-  border-radius: 10px;
-  background-color: var(--secondary_color);
-}
-
-#profile_description {
-  display: flex;
-
-  height: 260px;
-  min-width: 700px;
-  max-width: 700px;
-
-  border: 3px groove var(--primary_color);
-  border-radius: 2px;
 }

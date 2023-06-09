@@ -52,7 +52,7 @@
     <div th:if="${users.isEmpty()}"> There is no user saved in the database! </div>
   </header>
 
-  <span>
+  <section>
     <ul>
       <span>
         <li th:each="user : ${users}" th:object=${user}>
@@ -68,7 +68,7 @@
         </li>
       </span>
     </ul>
-  </span>
+  </section>
 
   <footer>
     <p> Sito creato per il corso SIW di Roma3 </p>

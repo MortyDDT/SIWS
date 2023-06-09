@@ -50,51 +50,53 @@
   <header>
   </header>
 
-  <section th:if="${story}" class="centered_box">
-    <section th:object=${story} id="movie_description">
-      <span> <img th:src="*{ImagePath}" class="thumbnail" /> </span>
+  <section th:if="${story}" class="story_full">
+    <section th:object=${story} id="story">
+      <span> <img th:src="*{ImagePath}" class="story_image" /> </span>
 
-      <span class="story_desc">
-        <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
-        <div th:text="*{DateParsed}"> </div>
-        <div th:text="*{description}"> </div>
-        <div th:text="'   Likes:' + *{likes}"> </div>
+      <span class="story_full_desc">
+        <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> user </a>
+        <div th:text="*{DateParsed}"> date </div>
+        <div th:text="*{description}"> desc </div>
+        <div th:text="'   Likes:' + *{likes}"> likes </div>
       </span>
     </section>
 
-    <section class="reviews">
-      <div>
-        <ul class="comments">
+    <section class="comment_section">
+      <div class="comments_overflow">
+        <ul>
           <li th:each="cmt : ${comments}" th:object=${cmt}>
             <div>
               <div th:text="*{author.surname} + ' ' + *{author.name}" class="user_name"> </div>
               <div th:text="*{DateParsed}"> </div>
               <div th:text="*{description}"> </div>
-              <div> <a th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a> </div>
+              <div>
+                <a th:href="@{'/removeComment' + '/' + *{id}}"> Remove Comment </a>
+              </div>
             </div>
           </li>
         </ul>
       </div>
+
+      <div id="story_new_comment">
+        <form th:action="@{'/addComment' + '/' + ${story.id}}" method="post" th:object="${comment}">
+          <div id="add_post">
+            <label for="cmt">Add a comment:</label>
+            <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
+              placeholder="type something.."></textarea>
+          </div>
+
+          <div class="centered"> <button type="submit"> Add Comment </button> </div>
+
+          <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
+          <div th:if="${#fields.hasGlobalErrors()}">
+            <p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+          </div>
+        </form>
+      </div>
     </section>
   </section>
 
-
-  <section th:if="${#request.userPrincipal}" id="add_review">
-    <form th:action="@{'/addComment' + '/' + ${story.id}}" method="post" th:object="${comment}">
-      <div>
-        <label for="cmt">Add a comment to the story:</label>
-        <textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${comment.description}"
-          placeholder="type something.."></textarea>
-      </div>
-
-      <div> <button type="submit"> Add Comment </button> </div>
-
-      <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
-      <div th:if="${#fields.hasGlobalErrors()}">
-				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
-			</div>
-    </form>
-  </section>
 
   <footer>
   </footer>

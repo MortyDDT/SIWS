@@ -47,9 +47,10 @@
   </nav>
 
 
-  <header class="centered_box">
+  <header class="full_centered">
     <div id="profile_description" th:object="${user}">
-      <span><img th:src="*{ImagePath}" class="propic" onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
+      <span><img th:src="*{ImagePath}" class="propic"
+          onerror="this.onerror=null; this.src='/images/defaultPropic.jpg'" /></span>
       <div class="user_info">
         <div>
           <h1 th:text="*{surname} + ' ' + *{name}">Surname Name</h1>
@@ -63,48 +64,53 @@
         </div>
   </header>
 
-  <section th:if="${#request.userPrincipal}" id="add_review">
+  <section th:if="${#request.userPrincipal}">
     <form th:action="@{/addStory}" method="post" th:object="${story}" enctype="multipart/form-data">
-      <div>
+      <div id="add_post">
         <label for="cmt">Post a new story</label>
         <textarea required id="cmt" name="cmt" rows="3" cols="50" th:field="*{description}"
           placeholder="type something.."></textarea>
       </div>
-      <div class="p_rev">
+
+      <div class="centered">
         <span>
           <label for="file-upload" class="custom-file-upload"> Upload Image
             <span><i class="gg-software-upload"></i></span>
           </label>
           <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
         </span>
+
         <span> <button type="submit"> Post </button> </span>
       </div>
-      
+
       <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="errors"></div>
       <div th:if="${#fields.hasGlobalErrors()}">
-				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
-			</div>
-      
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+      </div>
+
     </form>
   </section>
 
   <div id="stories_divisor"> Stories </div>
 
-  <section class="reviews">
+  <section class="posts">
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
-          
-          <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
-          <span class="story_desc">
-            <div th:text="*{description}"> </div>
-            <div>
-              <div th:text="*{DateParsed}"> </div>
-              <div th:text="'   Likes:' + *{likes}"> </div>
-            </div>
-          </span>
-
           <div>
+            <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+            <span class="parent_clearfix">
+              <span class="story_desc">
+                <div th:text="*{description}"> </div>
+                <div>
+                  <div th:text="*{DateParsed}"> </div>
+                  <div th:text="'   Likes:' + *{likes}"> </div>
+                </div>
+              </span>
+            </span>
+          </div>
+
+          <div class="story_buttons">
             <a th:href="@{'/manageStory' + '/' + *{id}}"> Edit </a>
             <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>
             <a th:href="@{'/removeStory' + '/' + *{id}}"> Remove </a>

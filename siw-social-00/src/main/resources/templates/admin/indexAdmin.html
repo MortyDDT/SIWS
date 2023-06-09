@@ -51,7 +51,9 @@
     <h1> Welcome back ADMIN! </h1>
   </header>
 
-  <section th:if="${#request.userPrincipal}" class="reviews">
+  <div id="stories_divisor"> Stories </div>
+
+  <section th:if="${#request.userPrincipal}" class="posts">
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
@@ -64,7 +66,7 @@
               <div th:text="'   Likes:' + *{likes}"> </div>
           </span>
 
-          <div>
+          <div class="story_buttons">
             <a th:href="@{'/likeStoryIndex' + '/' + *{id}}"> Like </a>
             <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>
           </div>

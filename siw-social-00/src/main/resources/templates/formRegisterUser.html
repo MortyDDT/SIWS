@@ -82,14 +82,14 @@
         <span><input required type="email" placeholder="email" th:field="${user.email}" /></span>
       </div>
 
-      <div class="centered_box">
+      <div class="full_centered">
         <label for="file-upload" class="custom-file-upload"> Upload Image
           <span><i class="gg-software-upload"></i></span>
         </label>
         <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
       </div>
 
-      <div class="centered_box"> <button type="submit"> Register </button> </div>
+      <div class="full_centered"> <button type="submit"> Register </button> </div>
 
 
       <div th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" class="errors">

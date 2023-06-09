@@ -50,14 +50,14 @@
   <header>
   </header>
 
-  <section th:if="${#request.userPrincipal}" id="add_review">
+  <section th:if="${#request.userPrincipal}">
     <form th:action="@{'/modifyStory' + '/' + *{id}}" method="post" enctype="multipart/form-data">
       <div>
         <label for="cmt">Edit Story:</label>
         <textarea id="cmt" name="descrizione" rows="3" cols="50"
           placeholder="type something.."></textarea>
       </div>
-      <div class="p_rev">
+      <div class="centered">
         <span>
           <label for="file-upload" class="custom-file-upload"> Upload Image
             <span><i class="gg-software-upload"></i></span>

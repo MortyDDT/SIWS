@@ -101,7 +101,8 @@ public class UserController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("stories", storyService.findStoriesByUser(user));
-		if (AuthUtil.isUserAuthenticated() && userService.getCurrentUser().getFriends().contains(user))
+		if (AuthUtil.isUserAuthenticated() && (userService.getCurrentUser().getFriends().contains(user)
+				|| userService.getCurrentUser().getRequestedFriendships().contains(user)))
 			model.addAttribute("alreadyFriends", 1);
 		return AuthUtil.parseLink("user.html");
 	}
@@ -128,6 +129,7 @@ public class UserController {
 	@GetMapping("/removeFriend/{idUser}")
 	public String removeFriend(@PathVariable("idUser") Long idUser, Model model) {
 		model.addAttribute("users", userService.removeFriend(idUser));
+		model.addAttribute("friendsCheck", 1);
 		return AuthUtil.parseLink("users.html");
 	}
 
@@ -135,6 +137,8 @@ public class UserController {
 	public String sendFriendRequest(@PathVariable("idUser") Long idUser, Model model) {
 		User user = userService.sendFriendRequest(idUser);
 
+		if (AuthUtil.isUserAuthenticated() && userService.getCurrentUser().getRequestedFriendships().contains(user))
+			model.addAttribute("alreadyFriends", 1);
 		model.addAttribute("user", user);
 		model.addAttribute("stories", user.getStories());
 		return AuthUtil.parseLink("user.html");
