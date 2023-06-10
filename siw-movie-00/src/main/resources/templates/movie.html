@@ -25,7 +25,7 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 			</div>
@@ -41,8 +41,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -57,12 +56,13 @@
 		<div th:unless="${movie}"> Film non trovato! </div>
 	</header>
 
-	<section th:if="${movie}" class="centered_box">
+	<section th:if="${movie}" class="full_centered">
 		<section th:object=${movie} id="movie_description">
-			<span> <img th:src="${movie.ImagePath}" class="thumbnail" /> </span>
+			<span> <img th:src="${movie.ImagePath}" class="thumbnail"
+					onerror="this.onerror=null; this.src='/images/TBA.jpg'" /> </span>
 
 			<section class="movie_info">
-				<div class="centered_box">
+				<div class="full_centered">
 					<h1 th:text="*{title}" id="movie_title"> Berserk Golden Age </h1>
 				</div>
 
@@ -90,20 +90,21 @@
 			</section>
 		</section>
 
-		<section class="reviews">
-			<div>
+		<section class="comments_overflow">
+			<div class="reviews">
 				<ul class="comments">
 					<li th:each="review : ${reviews}" th:object=${review}>
 						<div>
 							<div th:text="*{user.surname} + ' ' + *{user.name}" class="user_name"> </div>
-							<span th:text="*{title}"> </span>
-							<span th:text="'   Voto:' + *{score}"> </span>
+							<span th:text="*{title}" class="standout_text"> </span>
+							<span th:text="'   Voto:' + *{score}" class="standout_text"> </span>
 						</div>
 						<div th:text="*{comment}"> </div>
 					</li>
 				</ul>
 			</div>
 		</section>
+
 	</section>
 
 
@@ -114,7 +115,7 @@
 				<textarea id="cmt" name="cmt" rows="3" cols="50" th:field="${review.comment}"
 					placeholder="type something.."></textarea>
 			</div>
-			<div class="p_rev">
+			<div class="centered">
 				<span>
 					<span> Titolo </span>
 					<span> <input required type="text" th:field="${review.title}" /> </span>

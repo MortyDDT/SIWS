@@ -25,7 +25,7 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 			</div>
@@ -41,8 +41,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -58,37 +57,16 @@
 		<div th:if="${movies.isEmpty()}"> Non ci sono film salvati nel database! </div>
 	</header>
 
-	<span>
+	<section class="movie-container">
 		<ul>
 			<li th:each="movie : ${movies}" th:object=${movie}>
-				<span class="hover_img">
-					<a th:href="@{'/movies' + '/' + *{id}}">
-						<p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-						<span><img th:src="${movie.ImagePath}" /></span>
-					</a>
-				</span>
+				<a th:href="@{'/movies' + '/' + *{id}}">
+					<span><img th:src="${movie.ImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'" /></span>
+				</a>
+				<p th:text="*{title} + ' (' + *{year} + ')'"> </p>
 			</li>
 		</ul>
-	</span>
-
-	<span th:if="${movies.size() >= 3}" class="carousel-container">
-		<div class="carousel">
-			<div id="1st" class="carousel_item">
-				<img th:src="${movies.get(0).ImagePath}" class="carousel_movie" />
-			</div>
-			<div id="2nd" class="carousel_item">
-				<img th:src="${movies.get(1).ImagePath}" class="carousel_movie" />
-			</div>
-			<div id="3rd" class="carousel_item">
-				<img th:src="${movies.get(2).ImagePath}" class="carousel_movie" />
-			</div>
-		</div>
-		<div class="controls">
-			<a href="#1st" class="controls_dot"></a>
-			<a href="#2nd" class="controls_dot"></a>
-			<a href="#3rd" class="controls_dot"></a>
-		</div>
-	</span>
+	</section>
 
 	<footer>
 

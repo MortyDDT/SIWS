@@ -1,5 +1,7 @@
 package it.uniroma3.siw.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Year;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -45,33 +47,43 @@ public class Movie {
 	@ManyToOne
 	private Artist director;
 
-	@ManyToMany(mappedBy = "moviesActed", cascade = {CascadeType.PERSIST})
+	@ManyToMany(mappedBy = "moviesActed", cascade = { CascadeType.PERSIST })
 	private List<Artist> artists;
 
-	@OneToMany(mappedBy = "movie", cascade = {CascadeType.REMOVE})
+	@OneToMany(mappedBy = "movie", cascade = { CascadeType.REMOVE })
 	private List<Review> reviews;
 
 	@Transient
 	public String getImagePath() {
 		if (imageName == null || imageName.isBlank())
 			return null;
-		// need relative path since in authConfig only /images/** is authorized not /src..
+		// need relative path since in authConfig only /images/** is authorized not
+		// /src..
 		String relative_path = IMAGE_PATH.substring(25);
 		return relative_path + "/" + id + "/" + imageName;
 	}
 
 	@Transient
 	public Double getAverageScore() {
-		
+
 		if (reviews != null && !reviews.isEmpty()) {
 			Integer sum = 0;
+			Double media;
+
 			Collection<Integer> voti = new LinkedList<Integer>();
 
 			for (Review review : reviews)
 				voti.add(review.getScore());
 			for (Integer voto : voti)
 				sum += voto;
-			return sum.doubleValue() / voti.size();
+
+			media = (sum.doubleValue() / reviews.size());
+
+			Double truncatedDouble = BigDecimal.valueOf(media)
+					.setScale(1, RoundingMode.HALF_UP)
+					.doubleValue();
+
+			return truncatedDouble;
 		}
 		return 0.0;
 	}

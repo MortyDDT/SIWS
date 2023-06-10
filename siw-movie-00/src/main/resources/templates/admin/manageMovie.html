@@ -23,18 +23,17 @@
 			</i>
 		</form>
 
-
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
-				<a href="/formNewMovie"> Inserisci Film </a>
+				<a href="/formNewMovie"> Aggiungi Film </a>
 			</div>
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 				<a href="/formNewArtist"> Aggiungi Artista </a>
@@ -65,31 +64,6 @@
 	</header>
 
 
-	<section class="input_form">
-		<form th:action="@{'/modifyMovie' + '/' + ${movie.id}}" enctype="multipart/form-data" method="post"
-			class="data_input">
-			<div>
-				<label> Titolo </label>
-				<input type="text" name="titolo" />
-			</div>
-			<div>
-				<label> Anno </label>
-				<input type="text" name="anno" />
-			</div>
-
-			<div class="centered_box">
-				<label for="file-upload" class="custom-file-upload">
-					<i class="fa fa-cloud-upload"></i> Upload Image
-				</label>
-				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
-			</div>
-
-			<div class="centered_box"> <button type="submit"> Modifica </button> </div>
-			<div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
-		</form>
-	</section>
-
-
 	<section th:if="${movie}">
 		<div> Regista:
 			<a th:if="${movie.director == null}" th:href="@{'/changeMovieDirector' + '/' + ${movie.id}}"> Aggiungi
@@ -114,6 +88,30 @@
 		<span> <a th:href="@{'/movies' + '/' + ${movie.id}}"> Indietro </a> </span>
 	</section>
 
+
+	<section class="input_form">
+		<form th:action="@{'/modifyMovie' + '/' + ${movie.id}}" enctype="multipart/form-data" method="post"
+			class="data_input">
+			<div>
+				<label> Titolo </label>
+				<input type="text" name="titolo" />
+			</div>
+			<div>
+				<label> Anno </label>
+				<input type="text" name="anno" />
+			</div>
+
+			<div class="full_centered">
+				<label for="file-upload" class="custom-file-upload"> Carica File
+					<span><i class="gg-software-upload"></i></span>
+				</label>
+				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
+			</div>
+
+			<div class="full_centered"> <button type="submit"> Modifica </button> </div>
+			<div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
+		</form>
+	</section>
 
 	<footer>
 

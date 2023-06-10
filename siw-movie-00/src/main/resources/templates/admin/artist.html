@@ -25,16 +25,16 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
-				<a href="/formNewMovie"> Inserisci Film </a>
+				<a href="/formNewMovie"> Aggiungi Film </a>
 			</div>
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 				<a href="/formNewArtist"> Aggiungi Artista </a>
@@ -58,12 +58,13 @@
 		<div th:unless="${artist}"> Artista non trovato! </div>
 	</header>
 
-	<section th:if="${artist}" class="centered_box">
+	<section th:if="${artist}" class="full_centered">
 		<section th:object=${artist} id="movie_description">
-			<span> <img th:src="${artist.ImagePath}" class="thumbnail" /> </span>
+			<span> <img th:src="${artist.ImagePath}" class="thumbnail"
+					onerror="this.onerror=null; this.src='/images/TBA.jpg'" /> </span>
 
 			<section class="movie_info">
-				<div class="centered_box">
+				<div class="full_centered">
 					<h1 th:text="*{name} + '  ' + *{surname}" id="movie_title"> M D </h1>
 				</div>
 
@@ -72,8 +73,8 @@
 					<div th:if="*{deathDate}"> Data Morte: <span th:text="*{deathDate}"> </span> </div>
 				</div>
 
-				<div> <a th:href="@{'/manageArtist' + '/' + *{id}}" class="centered_box"> Aggiorna Artista </a> </div>
-				<div> <a th:href="@{'/removeArtist' + '/' + *{id}}" class="centered_box"> Rimuovi Artista </a> </div>
+				<div> <a th:href="@{'/manageArtist' + '/' + *{id}}" class="full_centered"> Aggiorna Artista </a> </div>
+				<div> <a th:href="@{'/removeArtist' + '/' + *{id}}" class="full_centered"> Rimuovi Artista </a> </div>
 
 			</section>
 		</section>

@@ -25,7 +25,7 @@
 
 
     <span class="dropdown">
-      <div class="dropbtn"> Movies </div>
+      <div class="dropbtn"> Film </div>
       <div class="dropdown-content">
         <a href="/movies"> Vedi Film </a>
         <a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
     </span>
 
     <span class="dropdown">
-      <div class="dropbtn"> Actors </div>
+      <div class="dropbtn"> Artisti </div>
       <div class="dropdown-content">
         <a href="/artists"> Vedi Artisti </a>
       </div>
@@ -82,7 +82,7 @@
         <label>Email</label>
         <span><input required type="email" placeholder="email" th:field="${user.email}" /></span>
       </div>
-      <div class="centered_box"> <button type="submit"> Registrati </button> </div>
+      <div class="full_centered"> <button type="submit"> Registrati </button> </div>
 
 
       <div th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" class="errors">

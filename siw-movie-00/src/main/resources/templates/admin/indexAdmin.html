@@ -25,16 +25,16 @@
 
 
     <span class="dropdown">
-      <div class="dropbtn"> Movies </div>
+      <div class="dropbtn"> Film </div>
       <div class="dropdown-content">
         <a href="/movies"> Vedi Film </a>
         <a href="/formSearchMovies"> Cerca Film </a>
-        <a href="/formNewMovie"> Inserisci Film </a>
+        <a href="/formNewMovie"> Aggiungi Film </a>
       </div>
     </span>
 
     <span class="dropdown">
-      <div class="dropbtn"> Actors </div>
+      <div class="dropbtn"> Artisti </div>
       <div class="dropdown-content">
         <a href="/artists"> Vedi Artisti </a>
         <a href="/formNewArtist"> Aggiungi Artista </a>
@@ -48,7 +48,7 @@
       <div class="dropdown-content">
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
       </div>
     </span>
   </nav>
@@ -65,11 +65,32 @@
           <span class="hover_img">
             <a th:href="@{'/movies' + '/' + *{id}}">
               <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}"></span>
+              <span><img th:src="${movie.ImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'"></span>
             </a>
           </span>
         </li>
       </ul>
+    </span>
+  </section>
+
+  <section class="full_centered">
+    <span th:if="${movies.size() >= 3}" class="carousel-container">
+      <div class="carousel">
+        <div id="1st" class="carousel_item">
+          <img th:src="${movies.get(0).ImagePath}" class="carousel_movie" />
+        </div>
+        <div id="2nd" class="carousel_item">
+          <img th:src="${movies.get(1).ImagePath}" class="carousel_movie" />
+        </div>
+        <div id="3rd" class="carousel_item">
+          <img th:src="${movies.get(2).ImagePath}" class="carousel_movie" />
+        </div>
+      </div>
+      <div class="controls">
+        <a href="#1st" class="controls_dot"></a>
+        <a href="#2nd" class="controls_dot"></a>
+        <a href="#3rd" class="controls_dot"></a>
+      </div>
     </span>
   </section>
 

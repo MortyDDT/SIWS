@@ -25,7 +25,7 @@
 
 
     <span class="dropdown">
-      <div class="dropbtn"> Movies </div>
+      <div class="dropbtn"> Film </div>
       <div class="dropdown-content">
         <a href="/movies"> Vedi Film </a>
         <a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
     </span>
 
     <span class="dropdown">
-      <div class="dropbtn"> Actors </div>
+      <div class="dropbtn"> Artisti </div>
       <div class="dropdown-content">
         <a href="/artists"> Vedi Artisti </a>
       </div>
@@ -67,7 +67,7 @@
         <label> Password </label>
         <span> <input required type="password" name="password" /> </span>
       </div>
-      <div class="centered_box"> <button type="submit"> Login </button> </div>
+      <div class="full_centered"> <button type="submit"> Login </button> </div>
       <div th:if="${param.error != null}">Username o password errati</div>
     </form>
   </section>

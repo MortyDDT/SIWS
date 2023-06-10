@@ -25,7 +25,7 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 			</div>
@@ -41,8 +41,7 @@
 
 		<span class="dropdown">
 			<div th:unless="${#request.userPrincipal}" class="dropbtn"> Account </div>
-			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}"
-				class="dropbtn">
+			<div th:if="${#request.userPrincipal}" th:text="${#request.userPrincipal.principal.username}" class="dropbtn">
 				Username </div>
 			<div class="dropdown-content">
 				<a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
@@ -59,12 +58,13 @@
 	</header>
 
 	<div>
-		<ul>
+		<ul class="no_bullet">
 			<li th:each="artist : ${artists}" th:object=${artist}>
 				<span class="hover_img">
 					<a th:href="@{'/artists' + '/' + *{id}}">
-						<p th:text="*{name} + '  ' + *{surname}  + ' (' + ${artist.birthDate} + ')'" > </p>
-						<span><img th:src="${artist.ImagePath}" /></span>
+						<p th:text="*{name} + '  ' + *{surname}  + ' (' + ${artist.birthDate} + ')'"> </p>
+						<span><img th:src="${artist.ImagePath}"
+								onerror="this.onerror=null; this.src='/images/TBA.jpg'" /></span>
 					</a>
 				</span>
 			</li>

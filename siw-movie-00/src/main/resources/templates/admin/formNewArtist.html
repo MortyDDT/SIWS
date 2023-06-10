@@ -25,16 +25,16 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
-				<a href="/formNewMovie"> Inserisci Film </a>
+				<a href="/formNewMovie"> Aggiungi Film </a>
 			</div>
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 				<a href="/formNewArtist"> Aggiungi Artista </a>
@@ -79,15 +79,15 @@
 				<input type="date" th:field="${artist.deathDate}" />
 			</div>
 
-			<div class="centered_box">
-				<label for="file-upload" class="custom-file-upload">
-					<i class="fa fa-cloud-upload"></i> Upload Image
-				</label>
-				<input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
+			<div class="full_centered">
+				<label for="file-upload" class="custom-file-upload"> Carica File
+					<span><i class="gg-software-upload"></i></span>
+				 </label>
+				 <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
 			</div>
 			
 
-			<div class="centered_box"> <button type="submit"> Aggiungi </button> </div>
+			<div class="full_centered"> <button type="submit"> Aggiungi </button> </div>
 			
 			<div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
 			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="errors"></div>

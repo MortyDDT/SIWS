@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.MovieService;
 import it.uniroma3.siw.tool.AuthUtil;
 
 @Controller
@@ -20,6 +21,9 @@ public class AuthenticationController {
 
 	@Autowired
 	private CredentialsService credentialsService;
+
+	@Autowired
+	private MovieService movieService;
 
 	/******************************************************************************/
 	/********************************** ANYONE ************************************/
@@ -59,6 +63,7 @@ public class AuthenticationController {
 
 	@GetMapping("/")
 	public String index(Model model) {
+		model.addAttribute("movies", movieService.findAll());
 		if (AuthUtil.isAdmin())
 			return "admin/indexAdmin.html";
 		return "index.html";
@@ -66,6 +71,7 @@ public class AuthenticationController {
 
 	@GetMapping("/success")
 	public String defaultAfterLogin(Model model) {
+		model.addAttribute("movies", movieService.findAll());
 		if (AuthUtil.isAdmin())
 			return "admin/indexAdmin.html";
 		return "index.html";

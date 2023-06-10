@@ -25,7 +25,7 @@
 
 
 		<span class="dropdown">
-			<div class="dropbtn"> Movies </div>
+			<div class="dropbtn"> Film </div>
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
@@ -33,7 +33,7 @@
 		</span>
 
 		<span class="dropdown">
-			<div class="dropbtn"> Actors </div>
+			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
 			</div>
@@ -57,13 +57,13 @@
 		<h1> Cerca un film in base all'anno </h1>
 	</header>
 
-
-	<section>
+	<section class="input_form">
 		<form th:action="@{/searchMovieByYear}" method="post" class="data_input">
-			<div> Anno: <input type="text" th:value="${year}" name="year" /> </div>
-			<div> <input type="submit" /> </div>
+			<label> Anno: </label>  
+			<input type="text" th:value="${year}" name="year" />
+			<div class="full_centered"> <button type="submit"> Cerca </button> </div>
 		</form>
-	</section>
+	 </section>
 
 
 	<footer>
