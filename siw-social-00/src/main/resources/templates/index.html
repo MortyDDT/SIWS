@@ -32,7 +32,7 @@
         <a th:if="${#request.userPrincipal}" href="/myProfile">Profile</a>
         <a th:if="${#request.userPrincipal}" href="/logout">Logout</a>
         <a th:unless="${#request.userPrincipal}" href="/login">Login</a>
-				<a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
+        <a th:unless="${#request.userPrincipal}" href="/register"> Register </a>
       </div>
     </span>
 
@@ -58,15 +58,16 @@
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
-          <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
-          
-          <span class="story_desc">
+          <div class="str">
+            <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+
+            <span class="story_desc">
               <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
               <div th:text="*{DateParsed}"> </div>
               <div th:text="*{description}"> </div>
               <div th:text="'   Likes:' + *{likes}"> </div>
-          </span>
-
+            </span>
+          </div>
           <div class="story_buttons">
             <a th:href="@{'/likeStoryIndex' + '/' + *{id}}"> Like </a>
             <a th:href="@{'/stories' + '/' + *{id}}" class="div_text"> See Comments </a>

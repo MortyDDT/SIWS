@@ -129,10 +129,16 @@ ul.stories li {
   border-top: groove;
 }
 
+.str {
+  display: inline-flex;
+  min-width: 960px;
+}
+
 .story_desc {
+  float: right;
   margin-top: 13px;
   margin-right: 260px;
-  float: right;
+  flex-grow: 4;
 }
 
 #stories_divisor {
@@ -271,6 +277,8 @@ img.story_preview {
   margin-bottom: 7%;
   float: left;
 }
+
+
 
 img.story_image {
   margin: 0% 5px -15px 5px;

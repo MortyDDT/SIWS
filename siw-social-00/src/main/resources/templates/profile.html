@@ -97,8 +97,9 @@
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
-          <div>
+          <div class="str">
             <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+
             <span class="parent_clearfix">
               <span class="story_desc">
                 <div th:text="*{description}"> </div>

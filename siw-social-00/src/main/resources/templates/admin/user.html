@@ -69,15 +69,17 @@
     <div>
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
-          <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+          <div class="str">
+            <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
 
-          <span class="story_desc">
-            <div th:text="*{description}"> </div>
-            <div>
-              <div th:text="*{DateParsed}"> </div>
-              <div th:text="'   Likes:' + *{likes}"> </div>
-            </div>
-          </span>
+            <span class="story_desc">
+              <div th:text="*{description}"> </div>
+              <div>
+                <div th:text="*{DateParsed}"> </div>
+                <div th:text="'   Likes:' + *{likes}"> </div>
+              </div>
+            </span>
+          </div>
 
           <div class="story_buttons">
             <a th:href="@{'/likeStory' + '/' + *{id}}"> Like </a>
