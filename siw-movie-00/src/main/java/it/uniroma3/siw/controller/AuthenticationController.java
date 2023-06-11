@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.model.validator.CredentialsValidator;
+import it.uniroma3.siw.model.validator.UserValidator;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.MovieService;
 import it.uniroma3.siw.tool.AuthUtil;
@@ -25,6 +27,12 @@ public class AuthenticationController {
 	@Autowired
 	private MovieService movieService;
 
+	@Autowired
+	private UserValidator userValidator;
+
+	@Autowired
+	private CredentialsValidator credentialsValidator;
+
 	/******************************************************************************/
 	/********************************** ANYONE ************************************/
 	/******************************************************************************/
@@ -36,6 +44,9 @@ public class AuthenticationController {
 			Model model) {
 
 		// se user e credentials sono validi, memorizzali nel DB
+		userValidator.validate(user, userBindingResult);
+		credentialsValidator.validate(credentials, credentialsBindingResult);
+
 		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) {
 			credentials.setUser(user);
 			credentialsService.saveCredentials(credentials);

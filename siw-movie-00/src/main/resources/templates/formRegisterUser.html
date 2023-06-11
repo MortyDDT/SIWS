@@ -85,13 +85,13 @@
       <div class="full_centered"> <button type="submit"> Registrati </button> </div>
 
 
-      <div th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" class="errors">
+      <div th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" class="errors2">
       </div>
-      <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" class="errors">
+      <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" class="errors2">
       </div>
-      <div th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" class="errors"> </div>
-      <div th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}" class="errors"> </div>
-      <div th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}" class="errors"> </div>
+      <div th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" class="errors2"> </div>
+      <div th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}" class="errors2"> </div>
+      <div th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}" class="errors2"> </div>
     </form>
   </section>
 

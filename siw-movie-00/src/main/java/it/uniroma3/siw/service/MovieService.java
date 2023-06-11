@@ -42,9 +42,34 @@ public class MovieService {
             movie.setImageNames(List.of(fileName));
             Movie savedMovie = movieRepository.save(movie);
             String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
+            
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         } else
             movieRepository.save(movie);
+    }
+
+    @Transactional
+    public Movie modifyMovie(Long movieId, String title, Year year, MultipartFile file) throws IOException {
+
+        Movie movie = movieRepository.findById(movieId).get();
+
+        if (!(title.isEmpty() || title.isBlank())) // in spring 2 empty fields get parsed as ""
+            movie.setTitle(title);
+
+        if (year != null)
+            movie.setYear(year);
+
+        if (file.getSize() > 0) { // in spring 2 isEmpty doesen't work
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            if(movie.getImageNames().contains(fileName))
+                movie.getImageNames().remove(fileName);
+            movie.getImageNames().add(fileName);
+            String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
+
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        }
+
+        return movieRepository.save(movie);
     }
 
     @Transactional
@@ -94,30 +119,6 @@ public class MovieService {
         return movie;
     }
 
-    @Transactional
-    public Movie modifyMovie(Long movieId, String title, Year year, MultipartFile file) throws IOException {
-
-        Movie movie = movieRepository.findById(movieId).get();
-
-        if (!(title.isEmpty() || title.isBlank())) // in spring 2 empty fields get parsed as ""
-            movie.setTitle(title);
-
-        if (year != null)
-            movie.setYear(year);
-
-        if (file.getSize() > 0) { // in spring 2 isEmpty doesen't work
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            if(movie.getImageNames().contains(fileName))
-                movie.getImageNames().remove(fileName);
-            movie.getImageNames().add(fileName);
-            String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
-
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
-        }
-
-        return movieRepository.save(movie);
-    }
-
     @Transactional // reviews get deleted automatically by cascade type remove in movie
     public List<Movie> removeMovie(Long id) {
         Movie movie = movieRepository.findById(id).get();
@@ -129,7 +130,7 @@ public class MovieService {
         movieRepository.delete(movie);
 
         List<Movie> movies = new ArrayList<>();
-        Iterable<Movie> iterable = movieRepository.findAll();
+        Iterable<Movie> iterable = movieRepository.findAllByOrderByIdAsc();
         for (Movie m : iterable)
             movies.add(m);
 
@@ -153,7 +154,7 @@ public class MovieService {
     @Transactional
     public List<Movie> findAll() {
         List<Movie> movies = new ArrayList<>();
-        Iterable<Movie> iterable = movieRepository.findAll();
+        Iterable<Movie> iterable = movieRepository.findAllByOrderByIdAsc();
         for (Movie movie : iterable)
             movies.add(movie);
 

@@ -101,6 +101,11 @@ header>h1 {
   margin-left: 38.5%;
 }
 
+.errors2 {
+  color: red;
+  max-width: 250px;
+}
+
 label {
   display: block;
 }

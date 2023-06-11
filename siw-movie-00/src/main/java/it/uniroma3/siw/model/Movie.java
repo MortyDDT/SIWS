@@ -42,7 +42,6 @@ public class Movie {
 	@PastOrPresent
 	private Year year;
 
-	// @Column(nullable = true, length = 64)
 	@ElementCollection
 	private List<String> imageNames;
 

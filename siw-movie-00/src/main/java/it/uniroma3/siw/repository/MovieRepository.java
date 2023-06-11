@@ -13,4 +13,7 @@ public interface MovieRepository extends CrudRepository<Movie, Long> {
 	public List<Movie> findByTitleContainingIgnoreCase(String title);
 
 	public boolean existsByTitleAndYear(String title, Year year);
+
+	public List<Movie> findAllByOrderByIdAsc();
+
 }

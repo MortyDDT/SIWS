@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwsocial00.model.Credentials;
 import it.uniroma3.siw.siwsocial00.model.User;
+import it.uniroma3.siw.siwsocial00.model.validator.CredentialsValidator;
 import it.uniroma3.siw.siwsocial00.model.validator.UserValidator;
 import it.uniroma3.siw.siwsocial00.service.CredentialsService;
 import it.uniroma3.siw.siwsocial00.service.StoryService;
@@ -42,7 +43,10 @@ public class AuthenticationController {
 	private UserService userService;
 
 	@Autowired
-	UserValidator userValidator;
+	private UserValidator userValidator;
+
+	@Autowired
+	private CredentialsValidator credentialsValidator;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -72,6 +76,8 @@ public class AuthenticationController {
 			Model model, @RequestParam("image") MultipartFile file) throws IOException {
 
 		userValidator.validate(user, userBindingResult);
+		credentialsValidator.validate(credentials, credentialsBindingResult);
+
 		if (!(userBindingResult.hasErrors() || credentialsBindingResult.hasErrors())) { // se user e credentials sono
 																													// validi, memorizzali nel DB
 			userService.addImageToUserAndSave(user, file);

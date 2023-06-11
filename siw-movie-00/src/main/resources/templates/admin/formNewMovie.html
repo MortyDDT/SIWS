@@ -78,14 +78,13 @@
 				 <input id="file-upload" type="file" accept="image/png, image/jpeg" name="image" />
 			</div>
 			
-
 			<div class="full_centered"> <button type="submit"> Aggiungi </button> </div>
 
 			<div th:if="${messaggioSuccesso}" th:text="${messaggioSuccesso}" style="color:green"></div>
-			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors"></div>
-			<div th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="errors"></div>
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="errors2"></div>
+			<div th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="errors2"></div>
 			<div th:if="${#fields.hasGlobalErrors()}">
-				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors">...</p>
+				<p th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="errors2">...</p>
 			</div>
 
 		</form>
