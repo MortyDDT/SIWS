@@ -601,8 +601,21 @@ input[type=text]#searchBar:focus {
   color: var(--link_color_selected);
   width: 100px;
   text-align: center;
-  line-height: 75px;
-  font-size: 12px;
+  line-height: 85px;
+  font-size: 15px;  border-radius: 3px;
+}
+
+.movie-container a.bttn {
+  background-color: var(--primary_color);
+  color: var(--link_color_selected);
+  width: 100px;
+  text-align: center;
+  line-height: 107px;
+  font-size: 18px;  border-radius: 3px;
+}
+
+.movie-container a.bttn:hover {
+  background-color: var(--primary_color_selected);
 }
 
 .movie-container img {

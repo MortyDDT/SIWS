@@ -92,6 +92,13 @@ public class MovieController {
 		return "admin/movies.html";
 	}
 
+	@GetMapping("/removeImage/{movieId}/{index}")
+	public String removeMovieImage(@PathVariable("movieId") Long movieId, @PathVariable("index") int index, Model model) {
+
+		model.addAttribute("movie", movieService.removeImage(movieId, index));
+		return "admin/movieImages.html";
+	}
+
 	@GetMapping("/manageMovie/{id}")
 	public String manageMovie(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("movie", movieService.findById(id));
@@ -197,6 +204,12 @@ public class MovieController {
 		model.addAttribute("review", new Review());
 		model.addAttribute("reviews", reviewService.findReviewsByMovie(movie));
 		return AuthUtil.parseLink("movie.html");
+	}
+
+	@GetMapping("/movieImages/{id}")
+	public String movieImages(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("movie", movieService.findById(id));
+		return AuthUtil.parseLink("movieImages.html");
 	}
 
 }

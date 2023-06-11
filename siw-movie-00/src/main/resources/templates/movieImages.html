@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="/css/stile.css?version=2">
 
-	<title> Movies </title>
+	<title> Immagini </title>
 
 </head>
 
@@ -29,7 +29,6 @@
 			<div class="dropdown-content">
 				<a href="/movies"> Vedi Film </a>
 				<a href="/formSearchMovies"> Cerca Film </a>
-				<a href="/formNewMovie"> Aggiungi Film </a>
 			</div>
 		</span>
 
@@ -37,7 +36,6 @@
 			<div class="dropbtn"> Artisti </div>
 			<div class="dropdown-content">
 				<a href="/artists"> Vedi Artisti </a>
-				<a href="/formNewArtist"> Aggiungi Artista </a>
 			</div>
 		</span>
 
@@ -55,17 +53,19 @@
 
 
 	<header>
-		<h1> Film </h1>
-		<div th:if="${movies.isEmpty()}"> Non ci sono film salvati nel database! </div>
+		<h1> Immagini Film: </h1>
+		<div th:if="${movie}">
+			<h1 th:text="${movie.title}"> Berserk </h1>
+		</div>
+		<div>
+			<a th:href="@{'/movies' + '/' + ${movie.id}}"> Indietro </a>
+		</div>
 	</header>
 
 	<section class="movie-container">
 		<ul>
-			<li th:each="movie : ${movies}" th:object=${movie}>
-				<a th:href="@{'/movies' + '/' + *{id}}">
-					<span><img th:src="${movie.LatestImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'" /></span>
-				</a>
-				<p th:text="*{title} + ' (' + *{year} + ')'"> </p>
+			<li th:each="img : ${movie.ImageNames}" th:object=${movie}>
+				<span><img th:src="@{'/images/movie-images' + '/' + *{id}  + '/' + ${img}}" /></span>
 			</li>
 		</ul>
 	</section>

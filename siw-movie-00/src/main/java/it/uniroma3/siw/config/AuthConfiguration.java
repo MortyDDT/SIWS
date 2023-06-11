@@ -54,6 +54,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 				"/artists/{id}",
 				"/artist",
 				"/formSearchMovies",
+				"/movieImages/{id}"
 		};
 
 		String[] publicPostMethods = {

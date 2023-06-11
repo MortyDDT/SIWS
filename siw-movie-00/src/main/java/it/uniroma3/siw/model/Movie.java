@@ -3,6 +3,7 @@ package it.uniroma3.siw.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,8 +43,9 @@ public class Movie {
 	@PastOrPresent
 	private Year year;
 
-	@Column(nullable = true, length = 64)
-	private String imageName;
+	// @Column(nullable = true, length = 64)
+	@ElementCollection
+	private List<String> imageNames;
 
 	@ManyToOne
 	private Artist director;
@@ -54,13 +57,26 @@ public class Movie {
 	private List<Review> reviews;
 
 	@Transient
-	public String getImagePath() {
-		if (imageName == null || imageName.isBlank())
+	public List<String> getImagePaths() {
+		if (imageNames.isEmpty())
 			return null;
-		// need relative path since in authConfig only /images/** is authorized not
-		// /src..
+
+		List<String> imagePaths = new ArrayList<String>();
+		for (String img : imageNames) {
+			String relative_path = IMAGE_PATH.substring(25);
+			imagePaths.add(relative_path + "/" + id + "/" + img);
+		}
+
+		return imagePaths;
+	}
+
+	@Transient
+	public String getLatestImagePath() {
+		if (imageNames.isEmpty())
+			return null;
+
 		String relative_path = IMAGE_PATH.substring(25);
-		return relative_path + "/" + id + "/" + imageName;
+		return relative_path + "/" + id + "/" + imageNames.get(imageNames.size() - 1);
 	}
 
 	@Transient
@@ -128,12 +144,12 @@ public class Movie {
 		this.artists = artists;
 	}
 
-	public String getImageName() {
-		return imageName;
+	public List<String> getImageNames() {
+		return imageNames;
 	}
 
-	public void setImageName(String image) {
-		this.imageName = image;
+	public void setImageNames(List<String> imageNames) {
+		this.imageNames = imageNames;
 	}
 
 	public List<Review> getReviews() {

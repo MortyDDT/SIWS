@@ -39,12 +39,11 @@ public class MovieService {
     public void addMovie(Movie movie, MultipartFile file) throws IOException {
         if (file.getSize() > 0) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            movie.setImageName(fileName);
+            movie.setImageNames(List.of(fileName));
             Movie savedMovie = movieRepository.save(movie);
             String uploadDir = Movie.IMAGE_PATH + "/" + savedMovie.getId();
-
             FileUploadUtil.saveFile(uploadDir, fileName, file);
-        }else
+        } else
             movieRepository.save(movie);
     }
 
@@ -87,6 +86,15 @@ public class MovieService {
     }
 
     @Transactional
+    public Movie removeImage(Long movieId, int index) {
+        Movie movie = movieRepository.findById(movieId).get();
+        movie.getImageNames().remove(index);
+        movieRepository.save(movie);
+
+        return movie;
+    }
+
+    @Transactional
     public Movie modifyMovie(Long movieId, String title, Year year, MultipartFile file) throws IOException {
 
         Movie movie = movieRepository.findById(movieId).get();
@@ -99,7 +107,9 @@ public class MovieService {
 
         if (file.getSize() > 0) { // in spring 2 isEmpty doesen't work
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            movie.setImageName(fileName);
+            if(movie.getImageNames().contains(fileName))
+                movie.getImageNames().remove(fileName);
+            movie.getImageNames().add(fileName);
             String uploadDir = Movie.IMAGE_PATH + "/" + movie.getId();
 
             FileUploadUtil.saveFile(uploadDir, fileName, file);

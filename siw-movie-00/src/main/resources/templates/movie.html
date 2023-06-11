@@ -58,7 +58,7 @@
 
 	<section th:if="${movie}" class="full_centered">
 		<section th:object=${movie} id="movie_description">
-			<span> <img th:src="${movie.ImagePath}" class="thumbnail"
+			<span> <img th:src="${movie.LatestImagePath}" class="thumbnail"
 					onerror="this.onerror=null; this.src='/images/TBA.jpg'" /> </span>
 
 			<section class="movie_info">
@@ -86,7 +86,9 @@
 							</li>
 						</ul>
 					</div>
+					<div> <a th:href="@{'/movieImages' + '/' + *{id}}" class="full_centered"> Vedi tutte le immagini </a> </div>
 				</div>
+
 			</section>
 		</section>
 

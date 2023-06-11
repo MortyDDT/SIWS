@@ -61,7 +61,7 @@
 		<ul>
 			<li th:each="movie : ${movies}" th:object=${movie}>
 				<a th:href="@{'/movies' + '/' + *{id}}">
-					<span><img th:src="${movie.ImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'" /></span>
+					<span><img th:src="${movie.LatestImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'" /></span>
 				</a>
 				<p th:text="*{title} + ' (' + *{year} + ')'"> </p>
 			</li>

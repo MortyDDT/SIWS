@@ -64,7 +64,7 @@
           <span class="hover_img">
             <a th:href="@{'/movies' + '/' + *{id}}">
               <p th:text="*{title} + ' (' + *{year} + ')'"> </p>
-              <span><img th:src="${movie.ImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'"></span>
+              <span><img th:src="${movie.LatestImagePath}" onerror="this.onerror=null; this.src='/images/TBA.jpg'"></span>
             </a>
           </span>
         </li>
@@ -77,13 +77,13 @@
     <span th:if="${movies.size() >= 3}" class="carousel-container">
       <div class="carousel">
         <div id="1st" class="carousel_item">
-          <img th:src="${movies.get(0).ImagePath}" class="carousel_movie" />
+          <img th:src="${movies.get(0).LatestImagePath}" class="carousel_movie" />
         </div>
         <div id="2nd" class="carousel_item">
-          <img th:src="${movies.get(1).ImagePath}" class="carousel_movie" />
+          <img th:src="${movies.get(1).LatestImagePath}" class="carousel_movie" />
         </div>
         <div id="3rd" class="carousel_item">
-          <img th:src="${movies.get(2).ImagePath}" class="carousel_movie" />
+          <img th:src="${movies.get(2).LatestImagePath}" class="carousel_movie" />
         </div>
       </div>
       <div class="controls">
