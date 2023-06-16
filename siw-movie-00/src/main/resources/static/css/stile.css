@@ -191,8 +191,9 @@ ul.comments li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  overflow: hidden;
 
-  height: 790px;
+  height: 49em;     /*790px; */
   min-width: 600px;
 
   border: 3px groove var(--secondary_theme_color);
@@ -221,7 +222,7 @@ section.movie_info {
 
 img.thumbnail {
   margin: 5px;
-  height: 98%;
+  height: 50em;
 }
 
 .hover_img a {

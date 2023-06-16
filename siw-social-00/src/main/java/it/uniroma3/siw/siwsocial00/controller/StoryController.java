@@ -52,7 +52,7 @@ public class StoryController {
       User user = storyService.removeStory(id);
 
       model.addAttribute("user", user);
-      model.addAttribute("stories", user.getStories());
+      model.addAttribute("stories", storyService.findStoriesByUser(user));
       return "admin/user.html";
    }
 

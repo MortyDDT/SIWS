@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwsocial00.model.Credentials;
+import it.uniroma3.siw.siwsocial00.model.Story;
 import it.uniroma3.siw.siwsocial00.model.User;
 import it.uniroma3.siw.siwsocial00.model.validator.CredentialsValidator;
 import it.uniroma3.siw.siwsocial00.model.validator.UserValidator;
@@ -109,21 +111,21 @@ public class AuthenticationController {
 	@GetMapping("/")
 	public String index(Model model) {
 
-		if (AuthUtil.isUserAuthenticated()) {
+		if (AuthUtil.isUserAuthenticated())
 			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
 			if (AuthUtil.isAdmin())
 				return "admin/indexAdmin.html";
-		}
+
 		return "index.html";
 	}
 
 	@GetMapping("/success")
 	public String defaultAfterLogin(Model model) {
-		if (AuthUtil.isUserAuthenticated()) {
+		if (AuthUtil.isUserAuthenticated())
 			model.addAttribute("stories", storyService.getFriendStories(userService.getCurrentUser()));
 			if (AuthUtil.isAdmin())
 				return "admin/indexAdmin.html";
-		}
+
 		return "index.html";
 	}
 

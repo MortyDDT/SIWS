@@ -59,7 +59,7 @@
       <ul class="stories">
         <li th:each="s : ${stories}" th:object=${s}>
           <div class="str">
-            <span> <img th:if="*{ImagePath}" th:src="*{ImagePath}" class="story_preview" /> </span>
+            <span> <img th:if="*{ImagePath}" th:src="${ImagePath}" class="story_preview" /> </span>
 
             <span class="story_desc">
               <a th:href="@{'/users' + '/' + *{author.id}}" th:text="*{author.surname} + ' ' + *{author.name}"> </a>
